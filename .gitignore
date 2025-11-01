@@ -9,6 +9,7 @@
 /src/fonts/coolicons_png
 /src/fonts/coolicons_svg
 /src/fonts/Webfont
+/src/assets/videos
 # Node
 /node_modules
 npm-debug.log
