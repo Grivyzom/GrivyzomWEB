@@ -8,7 +8,7 @@
   --color-secondary: #7c3aed;
   --color-accent: #10b981;
   --color-dark: #0f0a1a;
-  --font-display: 'Inter', sans-serif;
+  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 * {
@@ -20,9 +20,17 @@
 html, body {
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
   background-color: #f5f7fa;
   color: #1a202c;
-  font-family: 'Inter', sans-serif;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Clase auxiliar para gradientes de Grivyzom */
