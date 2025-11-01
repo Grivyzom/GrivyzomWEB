@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AnimatedButton } from '../animated-button/animated-button';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule],
+  imports: [CommonModule, AnimatedButton],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
@@ -11,8 +12,8 @@ export class Navbar {
   serverIP = 'grivyzom.network';
   isMenuOpen = signal(false);
 
-  // Ruta del video mini
-  videoSource = 'assets/videos/Puente_Magico_a_la_Biblioteca_Grivyzom.mp4';
+  // Ruta del GIF mini
+  videoSource = 'assets/videos/Puente_Magico_a_la_Biblioteca_Grivyzom.gif';
 
   toggleMenu() {
     this.isMenuOpen.set(!this.isMenuOpen());
