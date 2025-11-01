@@ -11,10 +11,11 @@ import { CommonModule } from '@angular/common';
 export class AnimatedButton {
   @Input() label: string = 'Button';
   @Input() icon: string = ''; // Clase del icono (ej: 'ci ci-Copy')
+  @Input() iconSrc: string = ''; // Ruta de imagen del icono (ej: 'fonts/coolicons_png/Black/User/User_Add.png')
   @Input() title: string = '';
   @Input() disabled: boolean = false;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
-  
+
   @Output() buttonClick = new EventEmitter<MouseEvent>();
 
   onClick(event: MouseEvent) {

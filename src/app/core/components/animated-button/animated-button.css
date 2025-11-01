@@ -124,6 +124,14 @@
   display: inline-block;
 }
 
+/* Button icon image styling */
+.button-content .button-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  object-fit: contain;
+  display: inline-block;
+}
+
 /* Estados adicionales */
 .animated-btn:active:not(:disabled) {
   transform: scale(0.98);
@@ -144,6 +152,11 @@
   font-size: 1rem;
 }
 
+.animated-btn.btn-sm .button-content .button-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
 .animated-btn.btn-lg {
   padding: 0.8rem 1.6rem;
   font-size: 1rem;
@@ -156,6 +169,11 @@
 
 .animated-btn.btn-lg .button-content i {
   font-size: 1.5rem;
+}
+
+.animated-btn.btn-lg .button-content .button-icon {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 /* Variante solo icono */
@@ -183,6 +201,11 @@
   .button-content i {
     font-size: 1.1rem;
   }
+
+  .button-content .button-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -197,5 +220,10 @@
 
   .button-content i {
     font-size: 1rem;
+  }
+
+  .button-content .button-icon {
+    width: 1rem;
+    height: 1rem;
   }
 }

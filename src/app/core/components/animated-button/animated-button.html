@@ -10,7 +10,11 @@
   <span class="fill-animation fill-bottom"></span>
   <span class="overlay-animation"></span>
   <span class="button-content">
-    <i *ngIf="icon" [class]="icon"></i>
+    @if (iconSrc) {
+      <img [src]="iconSrc" [alt]="label" class="button-icon">
+    } @else if (icon) {
+      <i [class]="icon"></i>
+    }
     <span class="button-text">{{ label }}</span>
   </span>
 </button>
