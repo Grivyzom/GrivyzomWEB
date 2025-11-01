@@ -5,6 +5,9 @@
   background: #ffffff;
   padding: 60px 20px;
   box-sizing: border-box;
+  margin-top: auto; /* Empuja el footer al final */
+  flex-shrink: 0; /* Evita que el footer se encoja */
+  border-top: 1px solid rgba(138, 116, 249, 0.1);
 }
 
 .footer-background {
@@ -13,7 +16,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
   z-index: 0;
 }
 
