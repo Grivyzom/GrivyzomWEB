@@ -5,7 +5,10 @@
 /tmp
 /out-tsc
 /bazel-out
-
+/src/fonts
+/src/fonts/coolicons_png
+/src/fonts/coolicons_svg
+/src/fonts/Webfont
 # Node
 /node_modules
 npm-debug.log

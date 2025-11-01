@@ -1,0 +1,16 @@
+/* App global styles */
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+/* Add padding to the top to account for fixed navbar + notification bar */
+.main-content {
+  padding-top: 110px; /* navbar (60px) + notification-bar (~50px) */
+  min-height: 100vh;
+}
+
+/* Ensure smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}

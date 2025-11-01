@@ -1,1 +1,31 @@
-<p>navbar works!</p>
+<nav class="navbar">
+  <div class="navbar-container">
+    <!-- Logo -->
+    <div class="navbar-logo">
+      <span class="logo-text">LOGO</span>
+    </div>
+
+    <!-- Spacer to push actions to the right -->
+    <div class="navbar-spacer"></div>
+
+    <!-- Action Icons -->
+    <div class="navbar-actions">
+      <button class="action-btn copy-ip-btn" title="Copiar IP" (click)="copyIP()">
+        <i class="ci ci-Copy"></i>
+        <span class="action-text">Copiar IP</span>
+      </button>
+      <button class="action-btn action-btn-round" title="Documentación">
+        <i class="ci ci-Book_Open"></i>
+      </button>
+      <button class="action-btn action-btn-round" title="Logros">
+        <i class="ci ci-Star"></i>
+      </button>
+      <button class="action-btn action-btn-round" title="Herramientas">
+        <i class="ci ci-Settings"></i>
+      </button>
+      <button class="action-btn action-btn-round profile-btn" title="Perfil">
+        <i class="ci ci-User_Circle"></i>
+      </button>
+    </div>
+  </div>
+</nav>
