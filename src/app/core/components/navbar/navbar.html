@@ -3,7 +3,7 @@
     <!-- Logo y Video Container -->
     <div class="navbar-brand">
       <div class="navbar-logo">
-        <img src="assets/img/Logo_Grivyzom_navbar.png" alt="Logo" class="logo-image">
+        <img ngSrc="assets/img/Logo_Grivyzom_navbar.png" alt="Logo Grivyzom" class="logo-image" width="180" height="60">
       </div>
 
       <!-- Mini GIF Container -->
@@ -47,10 +47,30 @@
         <i class="ci ci-Settings"></i>
         <span class="mobile-label">Herramientas</span>
       </button>
-      <button class="action-btn action-btn-round profile-btn" title="Perfil">
-        <i class="ci ci-User_Circle"></i>
-        <span class="mobile-label">Perfil</span>
-      </button>
+
+      <!-- Botones de autenticación (no autenticado) -->
+      @if (!isAuthenticated()) {
+        <app-animated-button
+          label="Login"
+          icon="ci ci-Lock_Open"
+          title="Iniciar sesión"
+          (buttonClick)="onLogin()">
+        </app-animated-button>
+        <app-animated-button
+          label="Register"
+          icon="ci ci-User_Add"
+          title="Registrarse"
+          (buttonClick)="onRegister()">
+        </app-animated-button>
+      }
+
+      <!-- Botón de perfil (autenticado) -->
+      @if (isAuthenticated()) {
+        <button class="action-btn action-btn-round profile-btn" title="Perfil">
+          <i class="ci ci-User_Circle"></i>
+          <span class="mobile-label">Perfil</span>
+        </button>
+      }
     </div>
   </div>
 </nav>
