@@ -1,12 +1,25 @@
-<div class="notification-bar">
-  <div class="ticker-wrapper">
-    <div class="ticker-content">
-      @for (notification of notifications; track $index) {
-        <span class="ticker-item">{{ notification }}</span>
-      }
-      @for (notification of notifications; track $index) {
-        <span class="ticker-item">{{ notification }}</span>
-      }
+@if (isVisible()) {
+  <div class="notification-bar" [attr.data-type]="currentNotification().type">
+    <div class="ticker-wrapper">
+      <div class="ticker-content">
+        @for (notification of notifications; track $index) {
+          <div class="ticker-item" [attr.data-type]="notification.type">
+            <span class="notification-icon" [innerHTML]="getIcon(notification.type)"></span>
+            <span class="notification-text">{{ notification.message }}</span>
+          </div>
+        }
+        @for (notification of notifications; track $index) {
+          <div class="ticker-item" [attr.data-type]="notification.type">
+            <span class="notification-icon" [innerHTML]="getIcon(notification.type)"></span>
+            <span class="notification-text">{{ notification.message }}</span>
+          </div>
+        }
+      </div>
     </div>
+    <button class="notification-close" (click)="closeNotificationBar()" aria-label="Cerrar barra de notificaciones">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
   </div>
-</div>
+}

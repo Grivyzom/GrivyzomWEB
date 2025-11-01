@@ -59,7 +59,7 @@
 
 .action-btn {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 13px;
   padding: 0.6rem;
   min-width: 42px;
@@ -69,20 +69,55 @@
   justify-content: center;
   gap: 0.5rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease;
   position: relative;
   color: #ffffff;
+  overflow: visible;
+}
+
+.action-btn::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 270deg,
+    #8a74f9 270deg,
+    #764ba2 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Animación solo para botones redondos */
+.action-btn-round:hover::before,
+.action-btn-round:active::before {
+  opacity: 1;
+  animation: spinningBorder 0.96s linear infinite;
+}
+
+@keyframes spinningBorder {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .action-btn:hover {
-  background: rgba(138, 116, 249, 0.2);
-  border-color: rgba(138, 116, 249, 0.5);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(138, 116, 249, 0.3);
+  background: rgba(138, 116, 249, 0.1);
 }
 
 .action-btn:active {
-  transform: translateY(0);
+  background: rgba(138, 116, 249, 0.15);
 }
 
 /* Coolicons styling */
@@ -103,6 +138,10 @@
   width: 42px;
   height: 42px;
   padding: 0.6rem;
+}
+
+.action-btn-round::before {
+  border-radius: 50%;
 }
 
 .action-text {
@@ -135,10 +174,31 @@
 
 .profile-btn:hover {
   background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-  border-color: rgba(255, 255, 255, 0.4);
 }
 
 /* Responsive */
+/* Tablets y pantallas medianas (768px - 1024px) */
+@media (max-width: 1024px) {
+  .navbar-container {
+    padding: 0.5rem 1.2rem;
+    gap: 0.75rem;
+  }
+
+  .logo-text {
+    font-size: 1.1rem;
+    letter-spacing: 1.5px;
+  }
+
+  .action-text {
+    font-size: 0.85rem;
+  }
+
+  .navbar-actions {
+    gap: 0.6rem;
+  }
+}
+
+/* Tablets pequeñas y móviles grandes (481px - 768px) */
 @media (max-width: 768px) {
   .navbar-container {
     padding: 0.5rem 1rem;
@@ -146,40 +206,129 @@
     height: 55px;
   }
 
-  .logo-text {
-    font-size: 1rem;
+  .navbar-logo {
+    padding: 0.5rem 1.2rem;
   }
 
+  .logo-text {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  /* Ocultar texto "Copiar IP" en tablets */
   .action-text {
     display: none;
   }
 
   .copy-ip-btn {
     padding: 0.6rem;
-    min-width: 42px;
+    min-width: 40px;
+    width: 40px;
+  }
+
+  .action-btn-round {
+    width: 40px;
+    height: 40px;
+    padding: 0.55rem;
   }
 
   .navbar-actions {
     gap: 0.5rem;
   }
-}
-
-@media (max-width: 480px) {
-  .navbar-container {
-    height: 52px;
-  }
-
-  .action-btn {
-    width: 38px;
-    height: 38px;
-    padding: 0.5rem;
-  }
 
   .ci {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* Móviles (max 480px) */
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0.4rem 0.8rem;
+    height: 50px;
+    gap: 0.4rem;
   }
 
   .navbar-logo {
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+  }
+
+  .logo-text {
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+
+  .action-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0.45rem;
+    border-width: 1.5px;
+  }
+
+  .action-btn-round {
+    width: 36px;
+    height: 36px;
+    padding: 0.45rem;
+  }
+
+  .copy-ip-btn {
+    width: 36px;
+    min-width: 36px;
+  }
+
+  .navbar-actions {
+    gap: 0.4rem;
+  }
+
+  .ci {
+    font-size: 1rem;
+  }
+
+  /* Ajustar el pseudo-elemento para botones más pequeños */
+  .action-btn::before {
+    inset: -1.5px;
+    padding: 1.5px;
+  }
+}
+
+/* Móviles muy pequeños (max 360px) */
+@media (max-width: 360px) {
+  .navbar-container {
+    padding: 0.3rem 0.6rem;
+    height: 48px;
+  }
+
+  .navbar-logo {
+    padding: 0.35rem 0.8rem;
+  }
+
+  .logo-text {
+    font-size: 0.8rem;
+  }
+
+  .action-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0.4rem;
+  }
+
+  .action-btn-round {
+    width: 34px;
+    height: 34px;
+    padding: 0.4rem;
+  }
+
+  .copy-ip-btn {
+    width: 34px;
+    min-width: 34px;
+  }
+
+  .navbar-actions {
+    gap: 0.3rem;
+  }
+
+  .ci {
+    font-size: 0.95rem;
   }
 }
