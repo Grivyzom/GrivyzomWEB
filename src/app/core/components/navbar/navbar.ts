@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,6 +9,14 @@ import { CommonModule } from '@angular/common';
 })
 export class Navbar {
   serverIP = 'grivyzom.network';
+  isMenuOpen = signal(false);
+
+  // Configura aquí la ruta de tu video
+  videoSource = 'assets/videos/navbar-mini-video.mp4';
+
+  toggleMenu() {
+    this.isMenuOpen.set(!this.isMenuOpen());
+  }
 
   copyIP() {
     navigator.clipboard.writeText(this.serverIP).then(() => {

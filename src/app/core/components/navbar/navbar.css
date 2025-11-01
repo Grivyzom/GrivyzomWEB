@@ -20,6 +20,14 @@
   height: 60px;
 }
 
+/* Brand Container (Logo + Video) */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
 /* Logo */
 .navbar-logo {
   flex-shrink: 0;
@@ -27,12 +35,6 @@
   padding: 0.6rem 1.5rem;
   border-radius: 25px;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  transition: transform 0.2s ease;
-}
-
-.navbar-logo:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .logo-text {
@@ -44,9 +46,65 @@
   letter-spacing: 2px;
 }
 
+/* Mini Video Container */
+.mini-video-container {
+  width: 80px;
+  height: 45px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(138, 116, 249, 0.3);
+  box-shadow: 0 4px 15px rgba(138, 116, 249, 0.2);
+  position: relative;
+}
+
+.mini-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* Spacer */
 .navbar-spacer {
   flex: 1;
+}
+
+/* Hamburger Menu (Mobile) */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+  position: relative;
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 3px;
+  background: #ffffff;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.hamburger-menu.active .hamburger-line:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
 }
 
 /* Action Icons */
@@ -55,6 +113,16 @@
   align-items: center;
   gap: 0.75rem;
   flex-shrink: 0;
+}
+
+/* Mobile label - oculto por defecto */
+.mobile-label {
+  display: none;
+}
+
+/* Desktop only - visible por defecto */
+.desktop-only {
+  display: flex;
 }
 
 .action-btn {
@@ -196,6 +264,11 @@
   .navbar-actions {
     gap: 0.6rem;
   }
+
+  .mini-video-container {
+    width: 70px;
+    height: 40px;
+  }
 }
 
 /* Tablets pequeñas y móviles grandes (481px - 768px) */
@@ -204,6 +277,7 @@
     padding: 0.5rem 1rem;
     gap: 0.5rem;
     height: 55px;
+    position: relative;
   }
 
   .navbar-logo {
@@ -215,29 +289,85 @@
     letter-spacing: 1px;
   }
 
-  /* Ocultar texto "Copiar IP" en tablets */
-  .action-text {
-    display: none;
+  .mini-video-container {
+    width: 60px;
+    height: 35px;
+    border-radius: 10px;
   }
 
-  .copy-ip-btn {
-    padding: 0.6rem;
-    min-width: 40px;
-    width: 40px;
+  .navbar-brand {
+    gap: 0.75rem;
+  }
+
+  /* Mostrar hamburger menu */
+  .hamburger-menu {
+    display: flex;
+  }
+
+  /* Ocultar botón "Copiar IP" en mobile */
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* Navbar actions como menú desplegable */
+  .navbar-actions {
+    position: fixed;
+    top: 55px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: linear-gradient(180deg, rgba(30, 30, 45, 0.98) 0%, rgba(20, 20, 35, 0.98) 100%);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(138, 116, 249, 0.3);
+    padding: 1rem;
+    gap: 0.75rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    z-index: 998;
+  }
+
+  .navbar-actions.mobile-menu-open {
+    max-height: 400px;
+    opacity: 1;
+  }
+
+  /* Botones en menú mobile */
+  .action-btn {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0.875rem 1.25rem;
+    border-radius: 12px;
+    gap: 1rem;
   }
 
   .action-btn-round {
-    width: 40px;
-    height: 40px;
-    padding: 0.55rem;
+    width: 100%;
+    border-radius: 12px;
+    padding: 0.875rem 1.25rem;
   }
 
-  .navbar-actions {
-    gap: 0.5rem;
+  .action-btn-round::before {
+    border-radius: 12px;
+  }
+
+  /* Mostrar labels en mobile */
+  .mobile-label {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
   }
 
   .ci {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+  }
+
+  /* Ocultar texto "Copiar IP" */
+  .action-text {
+    display: none;
   }
 }
 
@@ -259,30 +389,46 @@
     letter-spacing: 0.5px;
   }
 
-  .action-btn {
-    min-width: 36px;
-    height: 36px;
-    padding: 0.45rem;
+  .mini-video-container {
+    width: 50px;
+    height: 30px;
+    border-radius: 8px;
     border-width: 1.5px;
   }
 
-  .action-btn-round {
-    width: 36px;
-    height: 36px;
-    padding: 0.45rem;
+  .navbar-brand {
+    gap: 0.5rem;
   }
 
-  .copy-ip-btn {
-    width: 36px;
-    min-width: 36px;
+  .hamburger-menu {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hamburger-line {
+    height: 2.5px;
   }
 
   .navbar-actions {
-    gap: 0.4rem;
+    top: 50px;
+    padding: 0.875rem;
+    gap: 0.625rem;
+  }
+
+  .action-btn {
+    padding: 0.75rem 1rem;
+  }
+
+  .action-btn-round {
+    padding: 0.75rem 1rem;
+  }
+
+  .mobile-label {
+    font-size: 0.9rem;
   }
 
   .ci {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   /* Ajustar el pseudo-elemento para botones más pequeños */
@@ -307,28 +453,44 @@
     font-size: 0.8rem;
   }
 
-  .action-btn {
-    min-width: 34px;
-    height: 34px;
-    padding: 0.4rem;
+  .mini-video-container {
+    width: 45px;
+    height: 26px;
+    border-radius: 6px;
   }
 
-  .action-btn-round {
-    width: 34px;
-    height: 34px;
-    padding: 0.4rem;
+  .navbar-brand {
+    gap: 0.4rem;
   }
 
-  .copy-ip-btn {
-    width: 34px;
-    min-width: 34px;
+  .hamburger-menu {
+    width: 26px;
+    height: 26px;
+  }
+
+  .hamburger-line {
+    height: 2px;
   }
 
   .navbar-actions {
-    gap: 0.3rem;
+    top: 48px;
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .action-btn {
+    padding: 0.625rem 0.875rem;
+  }
+
+  .action-btn-round {
+    padding: 0.625rem 0.875rem;
+  }
+
+  .mobile-label {
+    font-size: 0.85rem;
   }
 
   .ci {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
   }
 }
