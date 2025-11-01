@@ -161,6 +161,27 @@
   display: flex;
 }
 
+/* Copy IP Container con feedback visual */
+.copy-ip-container {
+  position: relative;
+
+  app-animated-button.copied {
+    animation: successPulse 0.5s ease;
+  }
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .action-btn {
   background: rgba(248, 249, 250, 0.8);
   border: 2px solid rgba(138, 116, 249, 0.2);

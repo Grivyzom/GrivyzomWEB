@@ -1,40 +1,98 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { AnimatedButton } from '../animated-button/animated-button';
+import { ServerIpService, IPServer } from '../../services/server-ip.service';
+import { IpAddressesDropdownComponent } from '../ip-addresses-dropdown/ip-addresses-dropdown';
+import { BaseModalComponent } from '../base-modal/base-modal';
+import { WhyMultipleServersComponent } from '../why-multiple-servers/why-multiple-servers';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, AnimatedButton, NgOptimizedImage],
+  imports: [
+    CommonModule,
+    AnimatedButton,
+    NgOptimizedImage,
+    IpAddressesDropdownComponent,
+    BaseModalComponent,
+    WhyMultipleServersComponent
+  ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  serverIP = 'grivyzom.network';
-  isMenuOpen = signal(false);
-  isAuthenticated = signal(false); // Estado de autenticación del usuario
+  // Inyectar el servicio de IPs
+  private readonly serverIpService = inject(ServerIpService);
+
+  // Estado reactivo
+  readonly isMenuOpen = signal(false);
+  readonly isAuthenticated = signal(false);
+  readonly showCopyFeedback = signal(false);
+  readonly showIPModal = signal(false);
+  readonly showInfoModal = signal(false);
+
+  // Computed values desde el servicio
+  readonly selectedServer = computed(() => this.serverIpService.selectedServer());
+  readonly serverIP = computed(() => this.selectedServer().ip);
 
   // Ruta del GIF mini
-  videoSource = 'assets/videos/Puente_Magico_a_la_Biblioteca_Grivyzom.gif';
+  readonly videoSource = 'assets/videos/Puente_Magico_a_la_Biblioteca_Grivyzom.gif';
 
-  toggleMenu() {
-    this.isMenuOpen.set(!this.isMenuOpen());
+  /**
+   * Alterna el menú móvil
+   */
+  toggleMenu(): void {
+    this.isMenuOpen.update(value => !value);
   }
 
-  copyIP() {
-    navigator.clipboard.writeText(this.serverIP).then(() => {
-      console.log('IP copiada al portapapeles');
-      // Aquí podrías agregar un toast o notificación visual
-    }).catch(err => {
-      console.error('Error al copiar IP:', err);
-    });
+  /**
+   * Abre el modal de selección de IPs
+   */
+  openIPModal(): void {
+    this.showIPModal.set(true);
   }
 
-  onLogin() {
+  /**
+   * Cierra el modal de selección de IPs
+   */
+  closeIPModal(): void {
+    this.showIPModal.set(false);
+  }
+
+  /**
+   * Maneja la selección de un servidor desde el modal
+   */
+  onServerSelect(server: IPServer): void {
+    console.log('Servidor seleccionado:', server);
+    // Cerrar el modal automáticamente
+    this.closeIPModal();
+  }
+
+  /**
+   * Abre el modal de información "¿Por qué hay varias direcciones?"
+   */
+  openInfoModal(): void {
+    this.showInfoModal.set(true);
+  }
+
+  /**
+   * Cierra el modal de información
+   */
+  closeInfoModal(): void {
+    this.showInfoModal.set(false);
+  }
+
+  /**
+   * Navega a la página de login
+   */
+  onLogin(): void {
     // TODO: Implementar navegación a la página de login
     console.log('Navegar a Login');
   }
 
-  onRegister() {
+  /**
+   * Navega a la página de registro
+   */
+  onRegister(): void {
     // TODO: Implementar navegación a la página de registro
     console.log('Navegar a Register');
   }
