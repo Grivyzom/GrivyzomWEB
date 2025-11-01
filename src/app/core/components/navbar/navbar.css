@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(180deg, rgba(30, 30, 45, 0.95) 0%, rgba(20, 20, 35, 0.95) 100%);
+  background: rgba(25, 25, 40, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 2px solid rgba(138, 116, 249, 0.3);
   z-index: 1000;
@@ -34,7 +34,6 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 0.6rem 1.5rem;
   border-radius: 25px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .logo-text {
@@ -54,7 +53,6 @@
   overflow: hidden;
   background: rgba(0, 0, 0, 0.4);
   border: 2px solid rgba(138, 116, 249, 0.3);
-  box-shadow: 0 4px 15px rgba(138, 116, 249, 0.2);
   position: relative;
 }
 
@@ -351,6 +349,13 @@
 
   .action-btn-round::before {
     border-radius: 12px;
+  }
+
+  /* Desactivar animación en mobile */
+  .action-btn-round:hover::before,
+  .action-btn-round:active::before {
+    opacity: 0;
+    animation: none;
   }
 
   /* Mostrar labels en mobile */
