@@ -245,7 +245,7 @@
 
 .action-text {
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 400;
   color: #2d3748;
   white-space: nowrap;
 }
@@ -411,7 +411,7 @@
   .mobile-label {
     display: inline-block;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 400;
     color: #2d3748;
   }
 
