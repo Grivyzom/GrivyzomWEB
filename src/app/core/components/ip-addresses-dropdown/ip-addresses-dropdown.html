@@ -1,0 +1,51 @@
+<div class="ip-dropdown-container modal-mode">
+  <!-- Botón de información (opcional) -->
+  @if (showInfoButton) {
+    <div class="info-header">
+      <button class="info-button-link" (click)="handleInfoClick()" title="¿Por qué hay varias direcciones?">
+        <span class="info-icon">ⓘ</span>
+        <span class="info-text">¿Por qué hay varias direcciones?</span>
+      </button>
+    </div>
+  }
+
+  <!-- Lista de servidores siempre visible en el modal -->
+  <div class="servers-list-modal">
+    @for (server of servers(); track server.id) {
+      <div class="server-item"
+           [class.selected]="selectedServer().id === server.id"
+           (click)="selectServer(server)">
+        <div class="server-icon">
+          <img [src]="server.icon" [alt]="server.name + ' icon'" class="server-icon-img">
+        </div>
+        <div class="server-info">
+          <p class="server-name">{{ server.name }}</p>
+          <p class="server-ip">{{ server.ip }}</p>
+          @if (server.description) {
+            <p class="server-description">{{ server.description }}</p>
+          }
+        </div>
+        <button class="copy-button"
+                [class.copied]="wasCopied(server.id)"
+                (click)="copyToClipboard($event, server)"
+                [title]="wasCopied(server.id) ? '¡Copiado!' : 'Copiar IP'">
+          @if (wasCopied(server.id)) {
+            <svg class="copy-icon checkmark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          } @else {
+            <svg class="copy-icon clipboard-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          }
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Botón Hecho -->
+  <button class="done-button" (click)="closeDropdown()">
+    Hecho
+  </button>
+</div>
