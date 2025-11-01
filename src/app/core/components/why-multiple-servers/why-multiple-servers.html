@@ -1,0 +1,38 @@
+<div class="info-card-container" [class.standalone-mode]="isStandalone">
+  <div class="info-card">
+    <!-- Header solo si no es standalone (dentro del modal ya tiene título) -->
+    @if (!isStandalone) {
+      <button class="card-header"
+              (click)="toggleExpand()"
+              [attr.aria-expanded]="isExpanded()">
+        <div class="header-content">
+          <span class="header-icon">ℹ️</span>
+          <h3>¿Por qué hay varias direcciones?</h3>
+        </div>
+        <span class="toggle-icon" [class.expanded]="isExpanded()">
+          {{ toggleIcon() }}
+        </span>
+      </button>
+    }
+
+    @if (isExpanded()) {
+      <div class="card-content" [@expandCollapse]>
+        <div class="content-text">
+          <p class="intro-text">
+            En nuestra network contamos con variedad de servidores, para nuestro público diversificado.
+          </p>
+
+          <div class="server-types-grid">
+            @for (serverType of serverTypes(); track serverType.label) {
+              <div class="server-type">
+                <div class="server-type-header">
+                  <span>En <strong [style.color]="serverType.color">{{ serverType.label }}</strong>, {{ serverType.description }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
