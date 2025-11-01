@@ -3,15 +3,12 @@
     <!-- Logo y Video Container -->
     <div class="navbar-brand">
       <div class="navbar-logo">
-        <span class="logo-text">LOGO</span>
+        <img src="assets/img/Logo_Grivyzom_navbar.png" alt="Logo" class="logo-image">
       </div>
 
-      <!-- Mini Video Container -->
+      <!-- Mini GIF Container -->
       <div class="mini-video-container">
-        <video class="mini-video" autoplay muted loop playsinline>
-          <!-- El src se puede configurar desde el componente TypeScript -->
-          <source [src]="videoSource" type="video/mp4">
-        </video>
+        <img [src]="videoSource" alt="Puente Mágico" class="mini-video">
       </div>
     </div>
 
@@ -28,10 +25,14 @@
     <!-- Action Icons (Desktop) / Mobile Menu -->
     <div class="navbar-actions" [class.mobile-menu-open]="isMenuOpen()">
       <!-- Copiar IP - Solo desktop -->
-      <button class="action-btn copy-ip-btn desktop-only" title="Copiar IP" (click)="copyIP()">
-        <i class="ci ci-Copy"></i>
-        <span class="action-text">Copiar IP</span>
-      </button>
+      <div class="desktop-only">
+        <app-animated-button
+          label="Copiar IP"
+          icon="ci ci-Copy"
+          title="Copiar IP del servidor"
+          (buttonClick)="copyIP()">
+        </app-animated-button>
+      </div>
 
       <!-- Opciones disponibles en desktop y mobile -->
       <button class="action-btn action-btn-round" title="Documentación">
