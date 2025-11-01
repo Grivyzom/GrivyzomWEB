@@ -1,16 +1,17 @@
 import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { AnimatedButton } from '../animated-button/animated-button';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, AnimatedButton],
+  imports: [CommonModule, AnimatedButton, NgOptimizedImage],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
   serverIP = 'grivyzom.network';
   isMenuOpen = signal(false);
+  isAuthenticated = signal(false); // Estado de autenticación del usuario
 
   // Ruta del GIF mini
   videoSource = 'assets/videos/Puente_Magico_a_la_Biblioteca_Grivyzom.gif';
@@ -26,5 +27,15 @@ export class Navbar {
     }).catch(err => {
       console.error('Error al copiar IP:', err);
     });
+  }
+
+  onLogin() {
+    // TODO: Implementar navegación a la página de login
+    console.log('Navegar a Login');
+  }
+
+  onRegister() {
+    // TODO: Implementar navegación a la página de registro
+    console.log('Navegar a Register');
   }
 }
