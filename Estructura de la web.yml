@@ -1,0 +1,21 @@
+src/app/
+├── core/                 (elementos reutilizables)
+│   ├── components/
+│   │   ├── header/
+│   │   ├── navbar/
+│   │   ├── footer/
+│   │   └── buttons/
+│   ├── services/
+│   └── tipos/
+│
+├── pages/                    (páginas principales)
+│   ├── homes/
+│   ├── servers/
+│   └── commnity/
+│
+├── caracteristicas/            (módulos grandes de funcionalidad)
+│   ├── auth/
+│   ├── perfil/
+│   └── dashboard/
+│
+└── app.component.ts            (componente raíz)
