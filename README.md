@@ -2,6 +2,33 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
 
+## 🎨 Componentes Personalizados
+
+### AnimatedButton - Botón Animado Reutilizable
+
+Un componente de botón con efectos de animación que incluye:
+- ✨ Bordes animados que se expanden
+- 🎭 Relleno de color progresivo
+- 🌈 Overlay con gradiente
+- 📱 Completamente responsive
+
+**Ubicación:** `src/app/core/components/animated-button/`
+
+**Uso rápido:**
+```html
+<app-animated-button
+  label="Mi Botón"
+  icon="ci ci-Copy"
+  (buttonClick)="miFuncion()">
+</app-animated-button>
+```
+
+**Documentación completa:** Ver [README del componente](src/app/core/components/animated-button/README.md)
+
+**Ejemplos:** Ver [EJEMPLOS.html](src/app/core/components/animated-button/EJEMPLOS.html)
+
+---
+
 ## Development server
 
 To start a local development server, run:
