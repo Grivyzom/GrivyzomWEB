@@ -1,0 +1,16 @@
+<button 
+  class="animated-btn" 
+  [title]="title"
+  [type]="type"
+  [disabled]="disabled"
+  (click)="onClick($event)">
+  <span class="border-animation border-top"></span>
+  <span class="border-animation border-bottom"></span>
+  <span class="fill-animation fill-top"></span>
+  <span class="fill-animation fill-bottom"></span>
+  <span class="overlay-animation"></span>
+  <span class="button-content">
+    <i *ngIf="icon" [class]="icon"></i>
+    <span class="button-text">{{ label }}</span>
+  </span>
+</button>

@@ -1,0 +1,201 @@
+/* Animated Button - Componente Reutilizable */
+.animated-btn {
+  position: relative;
+  padding: 0.6rem 1.2rem;
+  overflow: hidden;
+  background: rgba(248, 249, 250, 0.8);
+  border: 2px solid rgba(138, 116, 249, 0.2);
+  border-radius: 13px;
+  box-shadow: inset 0 2px 4px rgba(138, 116, 249, 0.05);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2d3748;
+  white-space: nowrap;
+  transition: background 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 42px;
+}
+
+.animated-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.animated-btn:disabled:hover .border-animation,
+.animated-btn:disabled:hover .fill-animation,
+.animated-btn:disabled:hover .overlay-animation {
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+}
+
+/* Animaciones de borde */
+.border-animation {
+  position: absolute;
+  width: 0;
+  height: 0;
+  transition: all 0.2s ease;
+}
+
+.border-top {
+  top: 0;
+  left: 0;
+  border-top: 2px solid rgba(138, 116, 249, 1);
+}
+
+.border-bottom {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid rgba(138, 116, 249, 1);
+}
+
+.animated-btn:hover:not(:disabled) .border-top,
+.animated-btn:hover:not(:disabled) .border-bottom {
+  width: 100%;
+}
+
+/* Animaciones de relleno */
+.fill-animation {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  left: 0;
+  transition: all 0.3s ease 0.2s;
+  background: rgba(138, 116, 249, 0.8);
+}
+
+.fill-top {
+  top: 0;
+}
+
+.fill-bottom {
+  bottom: 0;
+}
+
+.animated-btn:hover:not(:disabled) .fill-top,
+.animated-btn:hover:not(:disabled) .fill-bottom {
+  height: 50%;
+}
+
+/* Overlay final */
+.overlay-animation {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.3s;
+}
+
+.animated-btn:hover:not(:disabled) .overlay-animation {
+  opacity: 1;
+}
+
+/* Contenido del botón */
+.button-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2d3748;
+  transition: color 0.3s ease 0.2s;
+}
+
+.animated-btn:hover:not(:disabled) .button-content {
+  color: #ffffff;
+}
+
+.button-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+/* Coolicons styling */
+.button-content i {
+  font-size: 1.25rem;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* Estados adicionales */
+.animated-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Variantes de tamaño */
+.animated-btn.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  min-height: 36px;
+}
+
+.animated-btn.btn-sm .button-text {
+  font-size: 0.8rem;
+}
+
+.animated-btn.btn-sm .button-content i {
+  font-size: 1rem;
+}
+
+.animated-btn.btn-lg {
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  min-height: 48px;
+}
+
+.animated-btn.btn-lg .button-text {
+  font-size: 1rem;
+}
+
+.animated-btn.btn-lg .button-content i {
+  font-size: 1.5rem;
+}
+
+/* Variante solo icono */
+.animated-btn.btn-icon-only {
+  padding: 0.6rem;
+  min-width: 42px;
+  aspect-ratio: 1;
+}
+
+.animated-btn.btn-icon-only .button-text {
+  display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .animated-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .button-text {
+    font-size: 0.85rem;
+  }
+
+  .button-content i {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .animated-btn {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  .button-text {
+    font-size: 0.8rem;
+  }
+
+  .button-content i {
+    font-size: 1rem;
+  }
+}
