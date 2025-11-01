@@ -184,23 +184,61 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1.5px solid #0a142f;
-  border-color: #0a142f;
-  opacity: 0.15;
+  border: 2px solid rgba(138, 116, 249, 0.2);
   color: #0a142f;
+  opacity: 0.8;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
-  background: transparent;
+  background: rgba(248, 249, 250, 0.8);
   cursor: pointer;
+  position: relative;
+  overflow: visible;
+}
+
+.social-icon::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 270deg,
+    #8a74f9 270deg,
+    #764ba2 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.social-icon:hover::before {
+  opacity: 1;
+  animation: spinningBorder 0.96s linear infinite;
+}
+
+@keyframes spinningBorder {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .social-icon:hover {
-  opacity: 0.3;
+  background: rgba(138, 116, 249, 0.15);
+  opacity: 1;
   transform: translateY(-2px);
 }
 
 .social-icon:active {
   transform: translateY(0);
+  background: rgba(138, 116, 249, 0.2);
 }
 
 .social-icon svg {
