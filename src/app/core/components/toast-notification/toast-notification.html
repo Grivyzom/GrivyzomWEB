@@ -1,0 +1,15 @@
+@if (notification().show) {
+  <div class="toast-container" [@slideIn]>
+    <div class="toast success">
+      <div class="toast-icon">
+        <span class="icon">✓</span>
+      </div>
+      <div class="toast-content">
+        <p class="toast-message">{{ notification().message }}</p>
+      </div>
+      <button class="toast-close" (click)="close()" aria-label="Cerrar notificación">
+        <span>&times;</span>
+      </button>
+    </div>
+  </div>
+}
