@@ -1,0 +1,22 @@
+<div class="modal-overlay" [@fadeIn] (click)="onOverlayClick()" role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-title'">
+  <div
+    #modalContent
+    class="modal-content"
+    [@slideUp]
+    (click)="onContentClick($event)"
+    [style.max-width]="maxWidth"
+    tabindex="-1"
+    role="document">
+    <div class="modal-header">
+      <h2 id="modal-title">{{ title }}</h2>
+      @if (showCloseButton) {
+        <button class="modal-close-btn" (click)="close()" aria-label="Cerrar modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      }
+    </div>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
