@@ -103,31 +103,101 @@
 }
 
 .action-badge {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 8px 20px;
   border-radius: 20px;
-  border: none;
+  border: 2px solid rgba(138, 116, 249, 0.2);
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
-  background: #f7f9fb;
+  background: rgba(248, 249, 250, 0.8);
   color: #0a142f;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(138, 116, 249, 0.05);
+  transition: background 0.3s ease;
+  min-height: 38px;
 }
 
-.action-badge:hover {
-  background: #eef2f7;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Animaciones de borde */
+.action-badge .border-animation {
+  position: absolute;
+  width: 0;
+  height: 0;
+  transition: all 0.2s ease;
 }
 
-.action-badge:active {
-  transform: translateY(0);
+.action-badge .border-top {
+  top: 0;
+  left: 0;
+  border-top: 2px solid rgba(138, 116, 249, 1);
+}
+
+.action-badge .border-bottom {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid rgba(138, 116, 249, 1);
+}
+
+.action-badge:hover .border-top,
+.action-badge:hover .border-bottom {
+  width: 100%;
+}
+
+/* Animaciones de relleno */
+.action-badge .fill-animation {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  left: 0;
+  transition: all 0.3s ease 0.2s;
+  background: rgba(138, 116, 249, 0.8);
+}
+
+.action-badge .fill-top {
+  top: 0;
+}
+
+.action-badge .fill-bottom {
+  bottom: 0;
+}
+
+.action-badge:hover .fill-top,
+.action-badge:hover .fill-bottom {
+  height: 50%;
+}
+
+/* Overlay final */
+.action-badge .overlay-animation {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.3s;
+}
+
+.action-badge:hover .overlay-animation {
+  opacity: 1;
+}
+
+/* Contenido del botón */
+.action-badge .emoji,
+.action-badge span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease 0.2s;
+}
+
+.action-badge:hover .emoji,
+.action-badge:hover span {
+  color: #ffffff;
 }
 
 .action-badge .emoji {
@@ -135,14 +205,8 @@
   display: inline-flex;
 }
 
-.action-badge.objectives {
-  background: #f7f9fb;
-  color: #0a142f;
-}
-
-.action-badge.contact {
-  background: #f7f9fb;
-  color: #0a142f;
+.action-badge:active {
+  transform: scale(0.98);
 }
 
 /* Divider */
