@@ -2,5 +2,40 @@
 
 @theme {
   --color-primary: #3b82f6;
+  --color-secondary: #7c3aed;
+  --color-accent: #10b981;
+  --color-dark: #0f0a1a;
   --font-display: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #0f0a1a;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Clase auxiliar para gradientes de Grivyzom */
+.gradient-grivyzom {
+  background: linear-gradient(
+    90deg,
+    #7c3aed 0%,
+    #3b82f6 50%,
+    #06b6d4 100%
+  );
+}
+
+.gradient-header {
+  background: linear-gradient(
+    180deg,
+    #2d1b4e 0%,
+    #1a0f3e 100%
+  );
 }
