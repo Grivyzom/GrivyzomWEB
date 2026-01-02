@@ -1,0 +1,159 @@
+.home-container {
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  padding: 16px 20px 60px;
+  box-sizing: border-box;
+}
+
+.parent {
+  display: grid;
+  /* Desktop Layout (Default) - Más compacto */
+  grid-template-columns: 3fr 1.5fr 1.5fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "hero store events";
+  gap: 16px;
+  height: 45vh;
+  min-height: 320px;
+  max-height: 420px;
+  padding: 0;
+}
+
+.action-bar-wrapper {
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.hero-container {
+  grid-area: hero;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.events-container {
+  grid-area: events;
+}
+
+.store-container {
+  grid-area: store;
+}
+
+/* Tablet Breakpoint */
+@media (max-width: 1024px) {
+  .parent {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 35vh auto;
+    grid-template-areas:
+      "hero hero"
+      "store events";
+    gap: 12px;
+    height: auto;
+    min-height: unset;
+    max-height: unset;
+    padding: 0;
+  }
+
+  .events-container,
+  .store-container {
+    min-height: 280px;
+  }
+
+  .action-bar-wrapper {
+    padding: 0;
+  }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 10px 10px 40px;
+  }
+
+  .parent {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "hero"
+      "store"
+      "events";
+    gap: 10px;
+    height: auto;
+    padding: 0;
+  }
+
+  .hero-container {
+    height: 40vh;
+    min-height: 250px;
+  }
+
+  .events-container {
+    min-height: 320px;
+    height: auto;
+  }
+
+  .store-container {
+    min-height: 80px;
+    height: auto;
+  }
+
+  .action-bar-wrapper {
+    padding: 0;
+  }
+
+  .card-button h3 {
+    font-size: 1rem;
+  }
+
+  .card-button i {
+    font-size: 2rem;
+  }
+}
+
+.card-button {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+  padding: 16px;
+  box-sizing: border-box;
+  color: #333;
+}
+
+.card-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.card-button h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.card-button i {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+  color: #4f46e5;
+}
+
+/* Dark mode support if needed, based on previous context */
+@media (prefers-color-scheme: dark) {
+  .card-button {
+    background-color: #1f2937;
+    color: #f3f4f6;
+  }
+
+  .card-button i {
+    color: #818cf8;
+  }
+}
+
+/* Game Header styles are now in game-header.css component */

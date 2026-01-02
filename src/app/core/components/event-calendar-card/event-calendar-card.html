@@ -1,0 +1,65 @@
+<div class="event-calendar-card" (click)="openModal()">
+    <!-- Header -->
+    <div class="card-header">
+        <div class="header-content">
+            <lucide-angular [img]="icons.Calendar" [size]="22" class="calendar-icon"></lucide-angular>
+            <h3>Calendario de Eventos</h3>
+        </div>
+        @if (upcomingCount() > 0) {
+            <span class="event-badge">{{ upcomingCount() }}</span>
+        }
+    </div>
+
+    <!-- Mini Calendar -->
+    <div class="mini-calendar">
+        <!-- Month Navigation -->
+        <div class="month-header">
+            <button class="nav-button" (click)="previousMonth($event)" type="button" aria-label="Mes anterior">
+                <lucide-angular [img]="icons.ChevronLeft" [size]="16"></lucide-angular>
+            </button>
+            <span class="month-name">{{ monthData().monthName }} {{ monthData().year }}</span>
+            <button class="nav-button" (click)="nextMonth($event)" type="button" aria-label="Mes siguiente">
+                <lucide-angular [img]="icons.ChevronRight" [size]="16"></lucide-angular>
+            </button>
+        </div>
+
+        <!-- Day Names -->
+        <div class="day-names">
+            @for (dayName of DAY_NAMES; track dayName) {
+                <div class="day-name">{{ dayName }}</div>
+            }
+        </div>
+
+        <!-- Calendar Grid -->
+        <div class="calendar-grid">
+            @for (week of monthData().weeks; track $index) {
+                @for (day of week; track day.date.getTime()) {
+                    <div class="calendar-day"
+                         [class.other-month]="!day.isCurrentMonth"
+                         [class.today]="day.isToday"
+                         [class.has-events]="day.hasEvents">
+                        <span class="day-number">{{ day.dayNumber }}</span>
+                        @if (day.hasEvents) {
+                            <div class="event-indicators">
+                                @for (event of day.events.slice(0, 3); track event.id) {
+                                    <span class="event-dot"
+                                          [style.background-color]="getCategoryColor(event.category)"></span>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <!-- Footer hint -->
+    <div class="card-footer">
+        <span class="footer-text">Click para ver todos los eventos</span>
+    </div>
+</div>
+
+<!-- Modal -->
+@if (showModal()) {
+    <app-event-calendar-modal (onClose)="closeModal()" />
+}

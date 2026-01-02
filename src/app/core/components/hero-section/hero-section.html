@@ -1,0 +1,74 @@
+<section class="hero-section-container">
+  <!-- Background Hero with Transition -->
+  <div class="hero-background">
+    <img
+      [src]="getCurrentSlide().backgroundImage"
+      [alt]="'Fondo Hero'"
+      class="hero-image"
+      [class.active]="true"
+      (error)="onImageError($event)"
+      loading="lazy">
+  </div>
+
+  <!-- Navigation Controls -->
+  @if (activeSlides.length > 1) {
+    <button
+      class="slider-control prev"
+      (click)="prevSlide()"
+      aria-label="Slide anterior">
+      <i class="ci ci-ChevronLeft"></i>
+    </button>
+
+    <button
+      class="slider-control next"
+      (click)="nextSlide()"
+      aria-label="Siguiente slide">
+      <i class="ci ci-ChevronRight"></i>
+    </button>
+  }
+
+  <!-- Content Wrapper -->
+  <div class="hero-content">
+    <!-- Title & Subtitle -->
+    <div class="hero-text">
+      <h1 class="hero-title">{{ getCurrentSlide().title }}</h1>
+      <p class="hero-subtitle">{{ getCurrentSlide().subtitle }}</p>
+    </div>
+  </div>
+
+  <!-- Action Button -->
+  @if (getCurrentSlide().button) {
+    <button class="hero-button" (click)="onButtonClick()">
+      <span class="border-animation border-top"></span>
+      <span class="border-animation border-bottom"></span>
+      <span class="fill-animation fill-top"></span>
+      <span class="fill-animation fill-bottom"></span>
+      <span class="overlay-animation"></span>
+      <div class="button-content">
+        @if (getCurrentSlide().button?.icon) {
+          <img
+            [src]="getCurrentSlide().button!.icon"
+            alt="Button Icon"
+            class="button-icon"
+            (error)="onImageError($event)"
+            loading="lazy">
+        }
+        <span>{{ getCurrentSlide().button!.text }}</span>
+      </div>
+    </button>
+  }
+
+  <!-- Slide Indicators (Dots) -->
+  @if (activeSlides.length > 1) {
+    <div class="slider-indicators">
+      @for (slide of activeSlides; track slide.backgroundImage; let i = $index) {
+        <button
+          class="indicator-dot"
+          [class.active]="currentSlideIndex() === i"
+          (click)="goToSlide(i)"
+          [attr.aria-label]="'Ir a slide ' + (i + 1)">
+        </button>
+      }
+    </div>
+  }
+</section>
