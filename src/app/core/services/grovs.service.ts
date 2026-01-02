@@ -84,15 +84,17 @@ export class GrovsService {
 
   constructor() {
     // Efecto que sincroniza balance cuando el usuario cambia
+    // allowSignalWrites: true permite actualizar signals dentro del effect
     effect(() => {
       const user = this.authService.currentUser();
       if (user) {
+        // Solo actualizar si hay un usuario autenticado
         this.updateStateFromUser(user);
         this.checkDailyRewardAvailability();
       } else {
         this.resetState();
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   // ========================================================================
