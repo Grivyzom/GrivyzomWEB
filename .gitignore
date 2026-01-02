@@ -5,15 +5,34 @@
 /tmp
 /out-tsc
 /bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Python virtual environment (if accidentally created in frontend)
+/venv
+/env
+/.venv
+
+# Fonts and assets that shouldn't be committed
 /src/fonts
 /src/fonts/coolicons_png
 /src/fonts/coolicons_svg
 /src/fonts/Webfont
 /src/assets/videos
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
+
+# Archive files
+*.tar
+*.tar.gz
+*.zip
+
+# Temporary/backup files
+/path
+*.bak
+*.backup
 
 # IDEs and editors
 .idea/
@@ -42,6 +61,19 @@ testem.log
 /typings
 __screenshots__/
 
+# Environment files
+.env
+.env.local
+.env.*.local
+*.local
+
 # System files
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Build configuration (keep vite.config but ignore generated configs)
+vite.config.js.timestamp*
+
+# Tailwind (if not using)
+/src/tailwind.css
