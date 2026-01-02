@@ -1,0 +1,71 @@
+/* ==================================================
+   EVENT CALENDAR MODAL - Main Modal Container
+   ================================================== */
+
+.calendar-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 600px;
+    max-height: 85vh;
+}
+
+/* ==================================================
+   CALENDAR GRID
+   ================================================== */
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+.calendar-section,
+.events-section {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-section {
+    border-right: 2px solid #f3f4f6;
+}
+
+/* ==================================================
+   RESPONSIVE
+   ================================================== */
+
+@media (max-width: 1024px) {
+    .calendar-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .calendar-modal-content {
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-modal-content {
+        min-height: auto;
+        max-height: 90vh;
+    }
+
+    .calendar-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-section {
+        border-right: none;
+        border-bottom: 2px solid #f3f4f6;
+        max-height: 450px;
+    }
+
+    .events-section {
+        flex: 1;
+        min-height: 300px;
+    }
+}

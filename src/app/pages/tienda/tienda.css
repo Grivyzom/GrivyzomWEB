@@ -1,0 +1,211 @@
+/* ============================================
+   TIENDA PAGE - Main Store Layout
+   ============================================ */
+
+.tienda-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 24px 60px;
+    min-height: calc(100vh - 200px);
+}
+
+/* ============================================
+   STORE NAVIGATION
+   ============================================ */
+
+.store-nav {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    padding: 28px 0;
+    margin: 28px 0;
+    border-bottom: 2px solid #f1f5f9;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.store-nav::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #6366f1, transparent);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #374151;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.04),
+        0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+        rgba(99, 102, 241, 0.1),
+        rgba(139, 92, 246, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-item:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+    transform: translateY(-4px) scale(1.03);
+    box-shadow:
+        0 8px 20px rgba(99, 102, 241, 0.15),
+        0 4px 8px rgba(99, 102, 241, 0.1);
+}
+
+.nav-item:hover::before {
+    opacity: 1;
+}
+
+.nav-item:active {
+    transform: translateY(-2px) scale(1.01);
+}
+
+.nav-icon {
+    font-size: 1.35rem;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-item:hover .nav-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+.loading-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px;
+    gap: 24px;
+}
+
+.loading-spinner {
+    width: 56px;
+    height: 56px;
+    border: 5px solid #f1f5f9;
+    border-top-color: #6366f1;
+    border-right-color: #8b5cf6;
+    border-radius: 50%;
+    animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    box-shadow:
+        0 4px 12px rgba(99, 102, 241, 0.2),
+        0 0 20px rgba(99, 102, 241, 0.1);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-overlay p {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #6b7280;
+    animation: pulse-text 2s ease-in-out infinite;
+}
+
+@keyframes pulse-text {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .tienda-container {
+        padding: 16px;
+    }
+
+    .store-nav {
+        gap: 8px;
+        padding: 16px 0;
+        margin: 16px 0;
+    }
+
+    .nav-item {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+        border-radius: 12px;
+    }
+
+    .nav-icon {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tienda-container {
+        padding: 12px;
+    }
+
+    .store-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-item {
+        flex-shrink: 0;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Dark mode removed - Enforcing light mode per design philosophy */
+
+/* ============================================
+   SCROLL BEHAVIOR
+   ============================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Add padding for fixed elements */
+app-store-section {
+    scroll-margin-top: 20px;
+}

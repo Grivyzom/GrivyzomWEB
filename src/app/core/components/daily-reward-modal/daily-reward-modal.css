@@ -1,0 +1,532 @@
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Container */
+.modal-container {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 24px;
+  max-width: 480px;
+  width: 100%;
+  padding: 2.5rem 2rem;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2px solid rgba(251, 191, 36, 0.2);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Close Button */
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #6b7280;
+}
+
+.modal-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: rotate(90deg);
+  color: #374151;
+}
+
+/* Modal Content */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Gift Icon */
+.gift-icon-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.gift-icon-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border-radius: 50%;
+  opacity: 0.3;
+  filter: blur(20px);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+.gift-icon {
+  position: relative;
+  z-index: 1;
+  color: #f59e0b;
+  filter: drop-shadow(0 4px 12px rgba(251, 191, 36, 0.4));
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Title */
+.modal-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: center;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.modal-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  text-align: center;
+  margin: -0.5rem 0 0;
+}
+
+/* Reward Breakdown */
+.reward-breakdown {
+  width: 100%;
+  background: rgba(251, 191, 36, 0.05);
+  border: 2px solid rgba(251, 191, 36, 0.2);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.reward-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.reward-label {
+  font-size: 0.9rem;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reward-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: nowrap;
+}
+
+.reward-item.bonus .reward-label {
+  color: #f59e0b;
+}
+
+.reward-item.bonus .reward-value {
+  color: #f59e0b;
+}
+
+.reward-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 191, 36, 0.3) 20%,
+    rgba(251, 191, 36, 0.5) 50%,
+    rgba(251, 191, 36, 0.3) 80%,
+    transparent 100%
+  );
+  margin: 0.25rem 0;
+}
+
+.reward-item.total {
+  margin-top: 0.25rem;
+}
+
+.reward-item.total .reward-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.reward-item.total .reward-value {
+  font-size: 1.25rem;
+}
+
+.reward-value.highlight {
+  color: #f59e0b;
+  animation: glow 1.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+  }
+}
+
+/* Streak Section */
+.streak-section {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(139, 92, 246, 0.02) 100%);
+  border: 2px solid rgba(139, 92, 246, 0.15);
+  border-radius: 12px;
+}
+
+.streak-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.streak-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #8b5cf6;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.streak-days {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* Progress Bar */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%);
+  border-radius: 4px;
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.milestone-info {
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: center;
+  margin: 0;
+}
+
+.milestone-info strong {
+  color: #8b5cf6;
+}
+
+.streak-section.completed {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.02) 100%);
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.milestone-completed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #22c55e;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Claim Button */
+.claim-btn {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.claim-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.4);
+}
+
+.claim-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.claim-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==================== SUCCESS STATE ==================== */
+
+.modal-content.success {
+  animation: successPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes successPop {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Success Icon */
+.success-icon-container {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 1rem;
+}
+
+.success-checkmark {
+  width: 100%;
+  height: 100%;
+  animation: checkmarkScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes checkmarkScale {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.checkmark-circle {
+  stroke: #22c55e;
+  stroke-width: 2;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+  transform-origin: 50% 50%;
+  stroke: #22c55e;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.5s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.success-title {
+  color: #22c55e;
+}
+
+.success-amount {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.amount-earned {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: countUp 0.6s ease-out;
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.grovs-icon {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 4px 12px rgba(251, 191, 36, 0.4));
+  animation: bounce 1s ease-in-out infinite;
+}
+
+.success-streak {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f59e0b;
+  margin: 0.5rem 0;
+}
+
+.success-message {
+  font-size: 0.95rem;
+  color: #6b7280;
+  text-align: center;
+  margin: 0.5rem 0 0;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 480px) {
+  .modal-container {
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+  }
+
+  .gift-icon-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .gift-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .reward-breakdown {
+    padding: 1rem;
+  }
+
+  .claim-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .amount-earned {
+    font-size: 2.5rem;
+  }
+
+  .grovs-icon {
+    font-size: 2rem;
+  }
+}

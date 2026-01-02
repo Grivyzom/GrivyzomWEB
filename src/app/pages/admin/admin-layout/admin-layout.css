@@ -1,0 +1,113 @@
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f8f9fa 0%, #eef2f7 50%, #e8ecf3 100%);
+}
+
+.admin-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+/* ==================== MOBILE HEADER ==================== */
+.admin-mobile-header {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(138, 116, 249, 0.15);
+    padding: 0 16px;
+    align-items: center;
+    gap: 16px;
+    z-index: 50;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+}
+
+.hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(138, 116, 249, 0.08);
+    border: 2px solid rgba(138, 116, 249, 0.2);
+    border-radius: 12px;
+    color: #667eea;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.hamburger-btn:hover {
+    background: rgba(138, 116, 249, 0.15);
+    border-color: rgba(138, 116, 249, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(138, 116, 249, 0.15);
+}
+
+.hamburger-btn:active {
+    transform: translateY(0);
+}
+
+.mobile-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d3748;
+    letter-spacing: 0.3px;
+}
+
+/* ==================== RESPONSIVE ==================== */
+/* Tablet */
+@media (max-width: 1024px) {
+    .admin-main {
+        margin-left: 0;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+
+    .admin-mobile-header {
+        display: flex;
+    }
+
+    .admin-main {
+        margin-top: 60px;
+        padding: 16px;
+        min-height: calc(100vh - 60px);
+    }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+    .admin-mobile-header {
+        padding: 0 12px;
+        height: 56px;
+    }
+
+    .hamburger-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .mobile-title {
+        font-size: 16px;
+    }
+
+    .admin-main {
+        margin-top: 56px;
+        padding: 12px;
+        min-height: calc(100vh - 56px);
+    }
+}

@@ -1,0 +1,23 @@
+<article class="stat-card">
+    <div class="stat-icon"
+        [style.background]="'linear-gradient(135deg, ' + iconColor + '20 0%, ' + iconColor + '10 100%)'">
+        @if (icon) {
+        <lucide-icon [img]="icon" [size]="24" [style.color]="iconColor"></lucide-icon>
+        }
+    </div>
+
+    <div class="stat-content">
+        <span class="stat-title">{{ title }}</span>
+        <span class="stat-value">{{ value }}</span>
+
+        @if (trend !== undefined) {
+        <div class="stat-trend" [class]="trendDirection">
+            <lucide-icon [img]="trendIcon" [size]="14"></lucide-icon>
+            <span class="trend-value">{{ formattedTrend }}</span>
+            @if (trendLabel) {
+            <span class="trend-label">{{ trendLabel }}</span>
+            }
+        </div>
+        }
+    </div>
+</article>

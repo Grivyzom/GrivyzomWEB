@@ -1,0 +1,69 @@
+<!-- Mobile Backdrop -->
+<div class="sidebar-backdrop" [class.visible]="isMobileOpen()" (click)="closeMobile()"></div>
+
+<aside class="admin-sidebar" [class.collapsed]="isCollapsed()" [class.mobile-open]="isMobileOpen()">
+    <!-- Header -->
+    <div class="sidebar-header">
+        <div class="logo-container">
+            <lucide-icon [img]="icons.Shield" [size]="28" class="logo-icon"></lucide-icon>
+            @if (!isCollapsed() || isMobile()) {
+            <span class="logo-text">Admin Panel</span>
+            }
+        </div>
+        <!-- Desktop collapse button -->
+        <button class="collapse-btn" (click)="toggleCollapse()" [title]="isCollapsed() ? 'Expandir' : 'Colapsar'">
+            <lucide-icon [img]="isCollapsed() ? icons.ChevronRight : icons.ChevronLeft" [size]="18"></lucide-icon>
+        </button>
+        <!-- Mobile close button -->
+        <button class="mobile-close-btn" (click)="closeMobile()" title="Cerrar menú">
+            <lucide-icon [img]="icons.X" [size]="20"></lucide-icon>
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+        @for (item of navItems; track item.route) {
+        <a class="nav-item" [routerLink]="item.route" routerLinkActive="active"
+            [title]="isCollapsed() && !isMobile() ? item.label : ''" (click)="onNavClick()">
+            <lucide-icon [img]="item.icon" [size]="20" class="nav-icon"></lucide-icon>
+            @if (!isCollapsed() || isMobile()) {
+            <span class="nav-label">{{ item.label }}</span>
+            }
+            @if (item.badge && (!isCollapsed() || isMobile())) {
+            <span class="nav-badge">{{ item.badge }}</span>
+            }
+        </a>
+        }
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar-footer">
+        <!-- User Info -->
+        <div class="user-info" [class.compact]="isCollapsed() && !isMobile()">
+            <img [src]="getAvatarUrl()" alt="Avatar" class="user-avatar">
+            @if (!isCollapsed() || isMobile()) {
+            <div class="user-details">
+                <span class="user-name">{{ currentUser()?.username }}</span>
+                <span class="user-role">{{ currentUser()?.role_display }}</span>
+            </div>
+            }
+        </div>
+
+        <!-- Actions -->
+        <div class="footer-actions">
+            <button class="action-btn" (click)="goToSite()" [title]="isCollapsed() && !isMobile() ? 'Ir al sitio' : ''">
+                <lucide-icon [img]="icons.Home" [size]="18"></lucide-icon>
+                @if (!isCollapsed() || isMobile()) {
+                <span>Ir al sitio</span>
+                }
+            </button>
+            <button class="action-btn logout" (click)="logout()"
+                [title]="isCollapsed() && !isMobile() ? 'Cerrar sesión' : ''">
+                <lucide-icon [img]="icons.LogOut" [size]="18"></lucide-icon>
+                @if (!isCollapsed() || isMobile()) {
+                <span>Salir</span>
+                }
+            </button>
+        </div>
+    </div>
+</aside>

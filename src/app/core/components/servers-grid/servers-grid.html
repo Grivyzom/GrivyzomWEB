@@ -1,0 +1,21 @@
+<section class="servers-section">
+    <!-- Header -->
+    @if (showHeader) {
+    <header class="section-header">
+        <h2 class="section-title">{{ title }}</h2>
+        <p class="section-subtitle">{{ subtitle }}</p>
+    </header>
+    }
+
+    <!-- Grid -->
+    <div class="servers-grid" [class]="'cols-' + columns">
+        @for (server of servers; track trackByServerId($index, server)) {
+        <app-server-card [server]="server" (viewMore)="onServerViewMore($event)">
+        </app-server-card>
+        } @empty {
+        <div class="empty-state">
+            <p>No hay servidores disponibles en este momento.</p>
+        </div>
+        }
+    </div>
+</section>

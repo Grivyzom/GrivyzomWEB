@@ -1,0 +1,285 @@
+<div class="users-page">
+    <app-admin-header title="Gestión de Usuarios" subtitle="Buscar, ver información y administrar usuarios"
+        [breadcrumbs]="breadcrumbs">
+    </app-admin-header>
+
+    <div class="users-content">
+        @if (isLoading()) {
+        <div class="loading-state">
+            <div class="loader"></div>
+            <span>Cargando...</span>
+        </div>
+        } @else {
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                @for (card of statCards(); track card.title) {
+                <app-stat-card [title]="card.title" [value]="card.value" [icon]="card.icon"
+                    [iconColor]="card.iconColor">
+                </app-stat-card>
+                }
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Search Panel -->
+            <section class="search-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">
+                        <lucide-icon [img]="icons.Search" [size]="18"></lucide-icon>
+                        Buscar Usuarios
+                    </h3>
+                    <span class="user-count">{{ totalUsers() }} usuarios</span>
+                </div>
+
+                <!-- Search Input -->
+                <div class="search-input-wrapper">
+                    <lucide-icon [img]="icons.Search" [size]="18" class="search-icon"></lucide-icon>
+                    <input type="text" class="search-input" placeholder="Buscar por correo, ID o nick..."
+                        (input)="onSearchInput($event)">
+                </div>
+
+                <!-- Filters -->
+                <div class="filters-row">
+                    <select class="filter-select" [value]="roleFilter()"
+                        (change)="onRoleFilterChange($any($event.target).value)">
+                        @for (role of roles; track role.value) {
+                        <option [value]="role.value">{{ role.label }}</option>
+                        }
+                    </select>
+                    <select class="filter-select" [value]="statusFilter()"
+                        (change)="onStatusFilterChange($any($event.target).value)">
+                        @for (status of statuses; track status.value) {
+                        <option [value]="status.value">{{ status.label }}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Users List -->
+                <div class="users-list" [class.loading]="isLoadingUsers()">
+                    @if (isLoadingUsers()) {
+                    <div class="list-loader">
+                        <div class="loader-small"></div>
+                    </div>
+                    }
+
+                    @for (user of users(); track user.id) {
+                    <button class="user-item" [class.active]="selectedUser()?.id === user.id"
+                        [class.banned]="user.is_banned" (click)="selectUser(user)">
+                        <img [src]="getMinecraftAvatar(user.minecraft_username)" alt="Avatar" class="user-avatar">
+                        <div class="user-info">
+                            <span class="user-name">{{ user.minecraft_username || user.username }}</span>
+                            <span class="user-email">{{ user.email }}</span>
+                        </div>
+                        <span class="user-role-badge" [style.background]="getRoleColor(user.role) + '20'"
+                            [style.color]="getRoleColor(user.role)">
+                            {{ user.role_display }}
+                        </span>
+                    </button>
+                    } @empty {
+                    <div class="empty-list">
+                        <lucide-icon [img]="icons.Users" [size]="32" class="empty-icon"></lucide-icon>
+                        <p>No se encontraron usuarios</p>
+                    </div>
+                    }
+                </div>
+
+                <!-- Pagination -->
+                @if (totalPages() > 1) {
+                <div class="pagination">
+                    <button class="pagination-btn" [disabled]="currentPage() === 1" (click)="previousPage()">
+                        <lucide-icon [img]="icons.ChevronLeft" [size]="16"></lucide-icon>
+                    </button>
+                    <span class="pagination-info">
+                        {{ currentPage() }} / {{ totalPages() }}
+                    </span>
+                    <button class="pagination-btn" [disabled]="currentPage() === totalPages()" (click)="nextPage()">
+                        <lucide-icon [img]="icons.ChevronRight" [size]="16"></lucide-icon>
+                    </button>
+                </div>
+                }
+            </section>
+
+            <!-- User Detail Panel -->
+            <section class="detail-panel" [class.empty]="!selectedUser()">
+                @if (isLoadingDetail()) {
+                <div class="detail-loading">
+                    <div class="loader"></div>
+                </div>
+                } @else if (selectedUser(); as user) {
+
+                <!-- User Header -->
+                <div class="detail-header">
+                    <img [src]="getMinecraftAvatar(user.minecraft_username)" alt="Avatar" class="detail-avatar">
+                    <div class="detail-header-info">
+                        <h2 class="detail-name">{{ user.minecraft_username || user.username }}</h2>
+                        <span class="detail-role-badge" [style.background]="getRoleColor(user.role)"
+                            [style.color]="'#fff'">
+                            {{ user.role_display }}
+                        </span>
+                    </div>
+                    @if (user.is_banned) {
+                    <div class="banned-indicator">
+                        <lucide-icon [img]="icons.Ban" [size]="16"></lucide-icon>
+                        BANEADO
+                    </div>
+                    }
+                </div>
+
+                <!-- User Stats -->
+                <div class="detail-stats">
+                    <div class="stat-item">
+                        <lucide-icon [img]="icons.MessageSquare" [size]="16"></lucide-icon>
+                        <span class="stat-value">{{ user.stats.posts_count }}</span>
+                        <span class="stat-label">Posts</span>
+                    </div>
+                    <div class="stat-item">
+                        <lucide-icon [img]="icons.Heart" [size]="16"></lucide-icon>
+                        <span class="stat-value">{{ user.stats.followers_count }}</span>
+                        <span class="stat-label">Seguidores</span>
+                    </div>
+                    <div class="stat-item">
+                        <lucide-icon [img]="icons.Users" [size]="16"></lucide-icon>
+                        <span class="stat-value">{{ user.stats.following_count }}</span>
+                        <span class="stat-label">Siguiendo</span>
+                    </div>
+                </div>
+
+                <!-- User Info -->
+                <div class="detail-info-grid">
+                    <div class="info-item">
+                        <lucide-icon [img]="icons.Mail" [size]="16" class="info-icon"></lucide-icon>
+                        <div class="info-content">
+                            <span class="info-label">Email</span>
+                            <span class="info-value">{{ user.email }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <lucide-icon [img]="icons.Gamepad2" [size]="16" class="info-icon"></lucide-icon>
+                        <div class="info-content">
+                            <span class="info-label">Minecraft</span>
+                            <span class="info-value">{{ user.minecraft_username || 'No vinculado' }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <lucide-icon [img]="icons.AtSign" [size]="16" class="info-icon"></lucide-icon>
+                        <div class="info-content">
+                            <span class="info-label">Discord</span>
+                            <span class="info-value">{{ user.discord_username || 'No vinculado' }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <lucide-icon [img]="icons.Calendar" [size]="16" class="info-icon"></lucide-icon>
+                        <div class="info-content">
+                            <span class="info-label">Registro</span>
+                            <span class="info-value">{{ formatDate(user.date_joined) }}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <lucide-icon [img]="icons.Clock" [size]="16" class="info-icon"></lucide-icon>
+                        <div class="info-content">
+                            <span class="info-label">Último acceso</span>
+                            <span class="info-value">{{ formatRelativeTime(user.last_login) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                @if (user.bio) {
+                <div class="detail-bio">
+                    <span class="bio-label">Biografía</span>
+                    <p class="bio-text">{{ user.bio }}</p>
+                </div>
+                }
+
+                @if (user.is_banned && user.ban_reason) {
+                <div class="ban-reason-box">
+                    <span class="ban-label">Motivo del baneo:</span>
+                    <p class="ban-text">{{ user.ban_reason }}</p>
+                </div>
+                }
+
+                <!-- Actions -->
+                <div class="detail-actions">
+                    <div class="action-group">
+                        <label class="action-label">Cambiar Rol</label>
+                        <div class="role-change-row">
+                            <select class="role-select" [value]="selectedNewRole()"
+                                (change)="selectedNewRole.set($any($event.target).value)">
+                                @for (role of roles.slice(1); track role.value) {
+                                <option [value]="role.value">{{ role.label }}</option>
+                                }
+                            </select>
+                            <button class="btn btn-primary"
+                                [disabled]="isChangingRole() || selectedNewRole() === user.role" (click)="changeRole()">
+                                @if (isChangingRole()) {
+                                <div class="btn-loader"></div>
+                                } @else {
+                                Aplicar
+                                }
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="action-group">
+                        @if (user.is_banned) {
+                        <button class="btn btn-success" [disabled]="isProcessingBan()" (click)="unbanUser()">
+                            <lucide-icon [img]="icons.UserCheck" [size]="16"></lucide-icon>
+                            Desbanear Usuario
+                        </button>
+                        } @else {
+                        <button class="btn btn-danger" (click)="openBanModal()">
+                            <lucide-icon [img]="icons.Ban" [size]="16"></lucide-icon>
+                            Banear Usuario
+                        </button>
+                        }
+                    </div>
+                </div>
+
+                } @else {
+                <!-- Empty State -->
+                <div class="detail-empty">
+                    <lucide-icon [img]="icons.User" [size]="48" class="empty-icon"></lucide-icon>
+                    <h3>Selecciona un usuario</h3>
+                    <p>Haz clic en un usuario de la lista para ver su información</p>
+                </div>
+                }
+            </section>
+        </div>
+        }
+    </div>
+</div>
+
+<!-- Ban Modal -->
+@if (showBanModal()) {
+<div class="modal-overlay" (click)="closeBanModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <h3 class="modal-title">
+            <lucide-icon [img]="icons.Ban" [size]="20"></lucide-icon>
+            Banear Usuario
+        </h3>
+        <p class="modal-desc">
+            Estás a punto de banear a <strong>{{ selectedUser()?.minecraft_username || selectedUser()?.username
+                }}</strong>
+        </p>
+        <div class="modal-field">
+            <label>Motivo del baneo</label>
+            <textarea class="modal-textarea" placeholder="Ingresa el motivo del baneo..." [value]="banReason()"
+                (input)="banReason.set($any($event.target).value)"></textarea>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" (click)="closeBanModal()">
+                Cancelar
+            </button>
+            <button class="btn btn-danger" [disabled]="isProcessingBan()" (click)="confirmBan()">
+                @if (isProcessingBan()) {
+                <div class="btn-loader"></div>
+                } @else {
+                Confirmar Baneo
+                }
+            </button>
+        </div>
+    </div>
+</div>
+}

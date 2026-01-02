@@ -2,8 +2,9 @@
   <div class="navbar-container">
     <!-- Logo y Video Container -->
     <div class="navbar-brand">
-      <div class="navbar-logo">
-        <img ngSrc="assets/img/Logo_Grivyzom_navbar.png" alt="Logo Grivyzom" class="logo-image" width="180" height="78" priority ngSrcset="196w, 392w" sizes="(max-width: 768px) 100vw, 180px">
+      <div class="navbar-logo" routerLink="/">
+        <img ngSrc="assets/img/Logo_Grivyzom_navbar.png" alt="Logo Grivyzom" class="logo-image" width="180" height="78"
+          priority>
       </div>
 
       <!-- Mini GIF Container -->
@@ -24,52 +25,57 @@
 
     <!-- Action Icons (Desktop) / Mobile Menu -->
     <div class="navbar-actions" [class.mobile-menu-open]="isMenuOpen()">
-      <!-- Copiar IP - Solo desktop -->
-      <div class="desktop-only copy-ip-container">
-        <app-animated-button
-          label="Copiar IP"
-          icon="ci ci-Copy"
-          [title]="'Seleccionar servidor - IP actual: ' + serverIP()"
-          (buttonClick)="openIPModal()">
-        </app-animated-button>
-      </div>
 
-      <!-- Opciones disponibles en desktop y mobile -->
-      <button class="action-btn action-btn-round" title="Documentación">
-        <i class="ci ci-Book_Open"></i>
-        <span class="mobile-label">Documentación</span>
-      </button>
-      <button class="action-btn action-btn-round" title="Logros">
-        <i class="ci ci-Star"></i>
-        <span class="mobile-label">Logros</span>
-      </button>
-      <button class="action-btn action-btn-round" title="Herramientas">
-        <i class="ci ci-Settings"></i>
-        <span class="mobile-label">Herramientas</span>
-      </button>
+      <!-- Navegación Principal -->
+      <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <lucide-icon [img]="icons.Home" [size]="18" [strokeWidth]="2"></lucide-icon>
+        <span>Inicio</span>
+      </a>
 
-      <!-- Botones de autenticación (no autenticado) -->
+      <a class="nav-link" routerLink="/foro" routerLinkActive="active">
+        <lucide-icon [img]="icons.MessageSquare" [size]="18" [strokeWidth]="2"></lucide-icon>
+        <span>Foro</span>
+      </a>
+
+      <a class="nav-link" routerLink="/tienda" routerLinkActive="active">
+        <lucide-icon [img]="icons.ShoppingBag" [size]="18" [strokeWidth]="2"></lucide-icon>
+        <span>Tienda</span>
+      </a>
+
+      <a class="nav-link" href="https://vote.grivyzom.com" target="_blank" rel="noopener">
+        <lucide-icon [img]="icons.Vote" [size]="18" [strokeWidth]="2"></lucide-icon>
+        <span>Votar</span>
+      </a>
+
+      <!-- Recursos Dropdown (Docs, Rankings, Herramientas) -->
+      <app-nav-dropdown label="Recursos" [icon]="icons.FolderOpen" [items]="resourcesMenuItems" triggerClass="nav-link">
+      </app-nav-dropdown>
+
+      <!-- Separador y botón de acceso (no autenticado) -->
       @if (!isAuthenticated()) {
-        <app-animated-button
-          label="Login"
-          icon="ci ci-Lock_Open"
-          title="Iniciar sesión"
-          (buttonClick)="onLogin()">
-        </app-animated-button>
-        <app-animated-button
-          label="Register"
-          icon="ci ci-User_Add"
-          title="Registrarse"
-          (buttonClick)="onRegister()">
-        </app-animated-button>
+      <div class="nav-separator"></div>
+      <button class="access-btn" title="Iniciar sesión o registrarse" (click)="onLogin()">
+        <span class="access-btn-glow"></span>
+        <span class="access-btn-content">
+          <lucide-icon [img]="icons.User" [size]="20" [strokeWidth]="2"></lucide-icon>
+          <span class="access-btn-text">Acceder</span>
+        </span>
+      </button>
       }
 
-      <!-- Botón de perfil (autenticado) -->
+      <!-- Botón de perfil y logout (autenticado) -->
       @if (isAuthenticated()) {
-        <button class="action-btn action-btn-round profile-btn" title="Perfil">
-          <i class="ci ci-User_Circle"></i>
-          <span class="mobile-label">Perfil</span>
-        </button>
+      <div class="user-section">
+        <!-- Grovs Balance Badge -->
+        <div class="grovs-balance-badge" [routerLink]="['/profile']" [queryParams]="{tab: 'grovs'}" title="Mis Grovs">
+          <span class="grovs-icon">💎</span>
+          <span class="grovs-amount">{{ grovsBalance() }}</span>
+        </div>
+
+        <!-- Profile Dropdown (incluye Admin para staff, Perfil, Settings, Logout) -->
+        <app-profile-dropdown [user]="currentUser()" [avatarUrl]="getAvatarUrl()" (logout)="onLogout()">
+        </app-profile-dropdown>
+      </div>
       }
     </div>
   </div>
@@ -77,25 +83,16 @@
 
 <!-- Modal de selección de IPs -->
 @if (showIPModal()) {
-  <app-base-modal
-    title="Direcciones de Servidores"
-    (onClose)="closeIPModal()"
-    maxWidth="420px">
-    <app-ip-addresses-dropdown
-      (onServerSelect)="onServerSelect($event)"
-      [showInfoButton]="true"
-      (onInfoClick)="openInfoModal()"
-      (onDone)="closeIPModal()">
-    </app-ip-addresses-dropdown>
-  </app-base-modal>
+<app-base-modal title="Direcciones de Servidores" (onClose)="closeIPModal()" maxWidth="420px">
+  <app-ip-addresses-dropdown (onServerSelect)="onServerSelect($event)" [showInfoButton]="true"
+    (onInfoClick)="openInfoModal()" (onDone)="closeIPModal()">
+  </app-ip-addresses-dropdown>
+</app-base-modal>
 }
 
 <!-- Modal de información "¿Por qué hay varias direcciones?" -->
 @if (showInfoModal()) {
-  <app-base-modal
-    title="¿Por qué hay varias direcciones?"
-    (onClose)="closeInfoModal()"
-    maxWidth="550px">
-    <app-why-multiple-servers [isStandalone]="true"></app-why-multiple-servers>
-  </app-base-modal>
+<app-base-modal title="¿Por qué hay varias direcciones?" (onClose)="closeInfoModal()" maxWidth="550px">
+  <app-why-multiple-servers [isStandalone]="true"></app-why-multiple-servers>
+</app-base-modal>
 }

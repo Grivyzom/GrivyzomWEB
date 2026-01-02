@@ -1,0 +1,77 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <img src="assets/img/Logo_Grivyzom_navbar.png" alt="Grivyzom Logo" class="login-logo">
+      <h1 class="login-title">Bienvenido</h1>
+      <p class="login-subtitle">Inicia sesión para continuar</p>
+    </div>
+
+    <form class="login-form" (ngSubmit)="onSubmit()">
+      <!-- Email / Username -->
+      <div class="form-group">
+        <label for="username" class="form-label">Usuario o Email</label>
+        <div class="input-wrapper">
+          <lucide-icon [img]="icons.User" [size]="20" [strokeWidth]="2" class="input-icon"></lucide-icon>
+          <input 
+            type="text" 
+            id="username" 
+            class="form-input" 
+            placeholder="Ingresa tu usuario"
+            [(ngModel)]="username"
+            name="username"
+            required>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="input-wrapper">
+          <lucide-icon [img]="icons.Lock" [size]="20" [strokeWidth]="2" class="input-icon"></lucide-icon>
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            id="password" 
+            class="form-input" 
+            placeholder="Ingresa tu contraseña"
+            [(ngModel)]="password"
+            name="password"
+            required>
+          <button 
+            type="button" 
+            class="password-toggle-btn"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+            <lucide-icon [img]="showPassword ? icons.EyeOff : icons.Eye" [size]="18" [strokeWidth]="2"></lucide-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Options -->
+      <div class="form-options">
+        <label class="remember-me">
+          <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe">
+          <span class="checkbox-custom">
+            <lucide-icon [img]="icons.Check" [size]="12" [strokeWidth]="3"></lucide-icon>
+          </span>
+          Recordarme
+        </label>
+        <a routerLink="/forgot-password" class="forgot-password">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="login-actions">
+        <app-animated-button
+          label="Iniciar Sesión"
+          [icon]="icons.LogIn"
+          type="submit"
+          [disabled]="!username || !password">
+        </app-animated-button>
+      </div>
+    </form>
+
+    <div class="login-footer">
+      ¿No tienes una cuenta?
+      <a routerLink="/register" class="register-link">Regístrate</a>
+    </div>
+  </div>
+</div>

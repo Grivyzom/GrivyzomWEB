@@ -1,0 +1,17 @@
+<div class="admin-layout">
+    <!-- Mobile Header -->
+    @if (isMobile()) {
+    <header class="admin-mobile-header">
+        <button class="hamburger-btn" (click)="openMobileSidebar()" aria-label="Abrir menú">
+            <lucide-icon [img]="icons.Menu" [size]="24"></lucide-icon>
+        </button>
+        <span class="mobile-title">Admin Panel</span>
+    </header>
+    }
+
+    <app-admin-sidebar></app-admin-sidebar>
+
+    <main class="admin-main">
+        <router-outlet></router-outlet>
+    </main>
+</div>

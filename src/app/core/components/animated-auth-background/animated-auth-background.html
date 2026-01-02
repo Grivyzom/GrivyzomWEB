@@ -1,0 +1,251 @@
+<div class="animated-background">
+  <svg #interactiveSvg class="background-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <!-- Gradientes Mágicos Premium - Modo Claro -->
+      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#c7d2fe;stop-opacity:0.6">
+          <animate attributeName="stop-color" values="#c7d2fe; #ddd6fe; #fae8ff; #c7d2fe" dur="20s" repeatCount="indefinite"/>
+        </stop>
+        <stop offset="100%" style="stop-color:#e0e7ff;stop-opacity:0.4">
+          <animate attributeName="stop-color" values="#e0e7ff; #f3e8ff; #fce7f3; #e0e7ff" dur="20s" repeatCount="indefinite"/>
+        </stop>
+      </linearGradient>
+
+      <linearGradient id="grad2" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#ddd6fe;stop-opacity:0.5">
+          <animate attributeName="stop-color" values="#ddd6fe; #fae8ff; #fbcfe8; #ddd6fe" dur="18s" repeatCount="indefinite"/>
+        </stop>
+        <stop offset="100%" style="stop-color:#fae8ff;stop-opacity:0.4">
+          <animate attributeName="stop-color" values="#fae8ff; #fce7f3; #e0e7ff; #fae8ff" dur="18s" repeatCount="indefinite"/>
+        </stop>
+      </linearGradient>
+
+      <radialGradient id="grad3" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" style="stop-color:#a5b4fc;stop-opacity:0.5">
+          <animate attributeName="stop-color" values="#a5b4fc; #c4b5fd; #f9a8d4; #a5b4fc" dur="16s" repeatCount="indefinite"/>
+        </stop>
+        <stop offset="100%" style="stop-color:#e0e7ff;stop-opacity:0.3">
+          <animate attributeName="stop-color" values="#e0e7ff; #f3e8ff; #fce7f3; #e0e7ff" dur="16s" repeatCount="indefinite"/>
+        </stop>
+      </radialGradient>
+
+      <!-- Gradiente mágico interactivo que sigue el cursor -->
+      <radialGradient id="gradientFollow" cx="50%" cy="50%" r="60%">
+        <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:0.6">
+          <animate attributeName="stop-color" values="#a78bfa; #ec4899; #6366f1; #a78bfa" dur="8s" repeatCount="indefinite"/>
+        </stop>
+        <stop offset="50%" style="stop-color:#c4b5fd;stop-opacity:0.3">
+          <animate attributeName="stop-color" values="#c4b5fd; #f9a8d4; #a5b4fc; #c4b5fd" dur="8s" repeatCount="indefinite"/>
+        </stop>
+        <stop offset="100%" style="stop-color:#e0e7ff;stop-opacity:0"/>
+      </radialGradient>
+
+      <!-- Filtros mágicos premium -->
+      <filter id="blur">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="60" />
+      </filter>
+
+      <filter id="blurSoft">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="40" />
+      </filter>
+
+      <!-- Glow effect mágico premium -->
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="12" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- Capa de fondo base con gradiente radial mágico -->
+    <rect width="1920" height="1080" fill="url(#grad3)" opacity="0.6"/>
+
+    <!-- Círculos grandes animados mágicos (blobs) - Capa profunda -->
+    <circle class="blob blob-1" cx="300" cy="200" r="320" fill="url(#grad1)" filter="url(#blur)" opacity="0.85">
+      <animate attributeName="cx" values="300;420;300" dur="25s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="200;320;200" dur="30s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="320;380;320" dur="22s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.75;0.95;0.75" dur="18s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="blob blob-2" cx="1600" cy="800" r="360" fill="url(#grad2)" filter="url(#blur)" opacity="0.9">
+      <animate attributeName="cx" values="1600;1480;1600" dur="28s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="800;680;800" dur="26s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="360;420;360" dur="24s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="20s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="blob blob-3" cx="960" cy="540" r="240" fill="url(#grad1)" filter="url(#blur)" opacity="0.75">
+      <animate attributeName="cx" values="960;1080;960" dur="32s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="540;660;540" dur="35s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="240;300;240" dur="28s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.65;0.85;0.65" dur="22s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Círculos medianos mágicos - Capa intermedia -->
+    <circle class="blob blob-4" cx="400" cy="700" r="180" fill="url(#grad3)" filter="url(#blurSoft)" opacity="0.7">
+      <animate attributeName="cx" values="400;480;400" dur="20s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="700;780;700" dur="24s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="180;220;180" dur="18s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0.8;0.6" dur="16s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="blob blob-5" cx="1500" cy="300" r="200" fill="url(#grad2)" filter="url(#blurSoft)" opacity="0.75">
+      <animate attributeName="cx" values="1500;1420;1500" dur="22s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="300;380;300" dur="26s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="200;240;200" dur="20s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.65;0.85;0.65" dur="19s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Partículas flotantes mágicas premium -->
+    <circle class="floating-particle particle-1" cx="200" cy="150" r="40" fill="#c7d2fe" filter="url(#glow)">
+      <animate attributeName="cy" values="150;100;150" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="40;55;40" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="fill" values="#c7d2fe; #a78bfa; #c7d2fe" dur="6s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="floating-particle particle-2" cx="1750" cy="200" r="35" fill="#ddd6fe" filter="url(#glow)">
+      <animate attributeName="cy" values="200;150;200" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="35;50;35" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="fill" values="#ddd6fe; #c4b5fd; #ddd6fe" dur="7s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="floating-particle particle-3" cx="850" cy="950" r="45" fill="#fae8ff" filter="url(#glow)">
+      <animate attributeName="cy" values="950;900;950" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="45;60;45" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="fill" values="#fae8ff; #f9a8d4; #fae8ff" dur="8s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="floating-particle particle-4" cx="1200" cy="100" r="30" fill="#a5b4fc" filter="url(#glow)">
+      <animate attributeName="cy" values="100;50;100" dur="9s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="9s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="30;45;30" dur="9s" repeatCount="indefinite"/>
+      <animate attributeName="fill" values="#a5b4fc; #6366f1; #a5b4fc" dur="9s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="floating-particle particle-5" cx="600" cy="920" r="38" fill="#fbcfe8" filter="url(#glow)">
+      <animate attributeName="cy" values="920;870;920" dur="10s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="10s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="38;53;38" dur="10s" repeatCount="indefinite"/>
+      <animate attributeName="fill" values="#fbcfe8; #ec4899; #fbcfe8" dur="10s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Estrellas pequeñas mágicas -->
+    <circle class="floating-particle particle-star-1" cx="450" cy="400" r="15" fill="#a78bfa" filter="url(#glow)">
+      <animate attributeName="cx" values="450;480;450" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="400;370;400" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="15;22;15" dur="5s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="floating-particle particle-star-2" cx="1450" cy="550" r="18" fill="#ec4899" filter="url(#glow)">
+      <animate attributeName="cx" values="1450;1420;1450" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="550;520;550" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="18;25;18" dur="6s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="floating-particle particle-star-3" cx="350" cy="800" r="12" fill="#6366f1" filter="url(#glow)">
+      <animate attributeName="cx" values="350;320;350" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="800;770;800" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0.9;0.3" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="12;20;12" dur="7s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle class="floating-particle particle-star-4" cx="1600" cy="450" r="14" fill="#c4b5fd" filter="url(#glow)">
+      <animate attributeName="cx" values="1600;1630;1600" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="450;420;450" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="8s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="14;21;14" dur="8s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Micro partículas brillantes tipo estrellas -->
+    <circle class="shimmer-particle" cx="280" cy="250" r="6" fill="#f9a8d4" opacity="0.6">
+      <animate attributeName="opacity" values="0.2;1;0.2" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="6;10;6" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle class="shimmer-particle" cx="1700" cy="750" r="5" fill="#a5b4fc" opacity="0.5">
+      <animate attributeName="opacity" values="0.2;0.9;0.2" dur="3.5s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="5;9;5" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle class="shimmer-particle" cx="950" cy="150" r="7" fill="#c4b5fd" opacity="0.6">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="7;11;7" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle class="shimmer-particle" cx="700" cy="650" r="6" fill="#ec4899" opacity="0.5">
+      <animate attributeName="opacity" values="0.2;0.9;0.2" dur="4.5s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="6;10;6" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle class="shimmer-particle" cx="1350" cy="250" r="5" fill="#a78bfa" opacity="0.6">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="5;9;5" dur="5s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Ondas dinámicas mágicas premium -->
+    <path class="wave wave-1" d="M0,540 Q480,480 960,540 T1920,540" stroke="#a78bfa" fill="none" stroke-width="3" stroke-linecap="round" opacity="0.7">
+      <animate attributeName="d"
+        values="M0,540 Q480,480 960,540 T1920,540;
+                M0,540 Q480,600 960,540 T1920,540;
+                M0,540 Q480,480 960,540 T1920,540"
+        dur="20s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="10s" repeatCount="indefinite"/>
+      <animate attributeName="stroke" values="#a78bfa; #c4b5fd; #a78bfa" dur="20s" repeatCount="indefinite"/>
+    </path>
+
+    <path class="wave wave-2" d="M0,600 Q480,660 960,600 T1920,600" stroke="#ec4899" fill="none" stroke-width="2.5" stroke-linecap="round" opacity="0.6">
+      <animate attributeName="d"
+        values="M0,600 Q480,660 960,600 T1920,600;
+                M0,600 Q480,540 960,600 T1920,600;
+                M0,600 Q480,660 960,600 T1920,600"
+        dur="18s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.5;0.9;0.5" dur="9s" repeatCount="indefinite"/>
+      <animate attributeName="stroke" values="#ec4899; #f9a8d4; #ec4899" dur="18s" repeatCount="indefinite"/>
+    </path>
+
+    <path class="wave wave-3" d="M0,480 Q480,420 960,480 T1920,480" stroke="#6366f1" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.5">
+      <animate attributeName="d"
+        values="M0,480 Q480,420 960,480 T1920,480;
+                M0,480 Q480,540 960,480 T1920,480;
+                M0,480 Q480,420 960,480 T1920,480"
+        dur="22s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-opacity" values="0.4;0.8;0.4" dur="11s" repeatCount="indefinite"/>
+      <animate attributeName="stroke" values="#6366f1; #a5b4fc; #6366f1" dur="22s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- Formas geométricas mágicas premium con glow -->
+    <rect class="geo-shape geo-rect-1" x="120" y="620" width="100" height="100" rx="25" fill="#c7d2fe" filter="url(#glow)" opacity="0.7">
+      <animateTransform attributeName="transform" type="rotate" from="0 170 670" to="360 170 670" dur="40s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="15s" repeatCount="indefinite"/>
+      <animate attributeName="fill" values="#c7d2fe; #a78bfa; #c7d2fe" dur="15s" repeatCount="indefinite"/>
+    </rect>
+
+    <polygon class="geo-shape geo-triangle-1" points="1730,880 1830,1030 1630,1030" fill="#fae8ff" filter="url(#glow)" opacity="0.7">
+      <animateTransform attributeName="transform" type="rotate" from="0 1730 955" to="360 1730 955" dur="45s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="18s" repeatCount="indefinite"/>
+      <animate attributeName="fill" values="#fae8ff; #ec4899; #fae8ff" dur="18s" repeatCount="indefinite"/>
+    </polygon>
+
+    <circle class="geo-shape geo-circle-1" cx="1300" cy="850" r="60" fill="#a5b4fc" filter="url(#glow)" opacity="0.6">
+      <animate attributeName="r" values="60;85;60" dur="12s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="12s" repeatCount="indefinite"/>
+      <animate attributeName="fill" values="#a5b4fc; #6366f1; #a5b4fc" dur="12s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Círculo interactivo mágico que sigue el cursor -->
+    <circle class="interactive-cursor-circle" cx="960" cy="540" r="200" fill="url(#gradientFollow)" opacity="0.7">
+      <animate attributeName="r" values="200;220;200" dur="4s" repeatCount="indefinite"/>
+    </circle>
+  </svg>
+
+  <!-- Overlay de degradado premium -->
+  <div class="gradient-overlay"></div>
+
+  <!-- Capa de partículas CSS adicional -->
+  <div class="particles-layer"></div>
+</div>

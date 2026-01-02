@@ -1,0 +1,38 @@
+<!-- Página de Inicio -->
+<div class="home-container">
+
+  <!-- New Game Header -->
+  <app-game-header (buttonClick)="playNow()"></app-game-header>
+
+  <!-- Action Bar - Solo visible si el usuario está autenticado -->
+  @if (isAuthenticated()) {
+  <div class="action-bar-wrapper">
+    <app-action-bar></app-action-bar>
+  </div>
+  }
+
+  <div class="parent">
+    <div class="hero-container">
+      <!-- Hero Section Slider -->
+      <app-hero-section [autoPlay]="autoPlay" [autoPlayInterval]="autoPlayInterval" [showStats]="showStats()"
+        [usersOnline]="usersOnline()" [totalUsers]="totalUsers()" (buttonClick)="onHeroButtonClick()"
+        (slideChange)="onSlideChange($event)"></app-hero-section>
+    </div>
+
+    <div class="store-container">
+      <div class="card-button" (click)="navigateToStore()">
+        <i class="ci ci-Shopping_Bag"></i>
+        <h3>Tienda</h3>
+      </div>
+    </div>
+
+    <div class="events-container">
+      <app-event-calendar-card></app-event-calendar-card>
+    </div>
+  </div>
+
+  <!-- Servers Grid Section -->
+  <app-servers-grid title="Nuestros Servidores" subtitle="Explora los diferentes mundos disponibles"
+    [servers]="servers()" [columns]="3" [showHeader]="true" (serverClick)="onServerClick($event)">
+  </app-servers-grid>
+</div>

@@ -1,0 +1,94 @@
+<article class="rank-card" [class.legendary]="isLegendary" [class.has-discount]="rank.discountPrice">
+    <!-- Header con color del rango -->
+    <header class="rank-header" [style.background]="headerGradient">
+        <!-- Badge de descuento -->
+        @if (rank.discountPrice) {
+        <div class="discount-badge">
+            <span>-{{ discountPercent }}%</span>
+        </div>
+        }
+
+        <!-- Badge nuevo -->
+        @if (rank.new) {
+        <div class="new-badge">
+            <lucide-icon [img]="icons.Sparkles" [size]="12"></lucide-icon>
+            <span>NUEVO</span>
+        </div>
+        }
+
+        <!-- Icono del rango -->
+        <div class="rank-icon">
+            <lucide-icon [img]="icons.Crown" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+        </div>
+
+        <!-- Nombre del rango -->
+        <h3 class="rank-name">{{ rank.name }}</h3>
+
+        <!-- Prefijo preview -->
+        <div class="rank-prefix" [style.color]="rank.prefixColor || '#ffffff'">
+            {{ rank.prefix }}
+        </div>
+    </header>
+
+    <!-- Cuerpo con beneficios -->
+    <div class="rank-body">
+        <p class="rank-description">{{ rank.shortDescription || rank.description }}</p>
+
+        <!-- Lista de beneficios -->
+        <ul class="benefits-list">
+            @for (benefit of rank.benefits; track benefit.text) {
+            <li class="benefit-item" [class.highlight]="benefit.highlight">
+                <span class="benefit-icon">
+                    @if (benefit.icon) {
+                    {{ benefit.icon }}
+                    } @else {
+                    <lucide-icon [img]="icons.Check" [size]="16"></lucide-icon>
+                    }
+                </span>
+                <span class="benefit-text">{{ benefit.text }}</span>
+            </li>
+            }
+        </ul>
+    </div>
+
+    <!-- Footer con precio y botón -->
+    <footer class="rank-footer">
+        <div class="price-section">
+            <!-- Precio en dinero -->
+            <div class="price-container">
+                @if (rank.discountPrice) {
+                <span class="original-price">${{ rank.price.toFixed(2) }}</span>
+                <span class="current-price">${{ rank.discountPrice.toFixed(2) }}</span>
+                } @else {
+                <span class="current-price">${{ rank.price.toFixed(2) }}</span>
+                }
+            </div>
+
+            <!-- Precio en Grovs (si aplica) -->
+            @if (rank.grovs_price) {
+            <div class="price-divider">O</div>
+            <div class="price-grovs">
+                <span class="grovs-amount">{{ rank.grovs_price }}</span>
+                <span class="grovs-icon">💎</span>
+            </div>
+            }
+
+            <!-- Badge de Cashback -->
+            @if (cashbackGrovs > 0) {
+            <div class="cashback-badge">
+                +{{ cashbackGrovs }} 💎 Cashback
+            </div>
+            }
+        </div>
+
+        <button class="btn-purchase" [style.background]="headerGradient" (click)="onAddToCart()">
+            <lucide-icon [img]="icons.ShoppingCart" [size]="18"></lucide-icon>
+            <span>Obtener Rango</span>
+        </button>
+    </footer>
+
+    <!-- Efecto shimmer para legendarios -->
+    @if (isLegendary) {
+    <div class="shimmer-overlay"></div>
+    }
+</article>

@@ -1,0 +1,83 @@
+<div class="tienda-container">
+    <!-- Hero Banner -->
+    <app-store-hero [offer]="activeOffers()[0] || null" title="¡Bienvenido a la Tienda!"
+        subtitle="Descubre rangos exclusivos, cosméticos únicos y mucho más" (ctaClick)="scrollToSection('rangos')">
+    </app-store-hero>
+
+    <!-- Quick Navigation -->
+    <nav class="store-nav">
+        <button class="nav-item" (click)="scrollToSection('rangos')">
+            <span class="nav-icon">👑</span>
+            <span>Rangos</span>
+        </button>
+        <button class="nav-item" (click)="scrollToSection('cosmeticos')">
+            <span class="nav-icon">✨</span>
+            <span>Cosméticos</span>
+        </button>
+        <button class="nav-item" (click)="scrollToSection('crates')">
+            <span class="nav-icon">🎁</span>
+            <span>Crates</span>
+        </button>
+        <button class="nav-item" (click)="scrollToSection('funciones')">
+            <span class="nav-icon">🔓</span>
+            <span>Funciones</span>
+        </button>
+    </nav>
+
+    <!-- Rangos Section -->
+    @if (rankProducts().length > 0) {
+    <app-store-section id="rangos" title="Rangos VIP"
+        subtitle="Desbloquea beneficios exclusivos y destaca en el servidor" icon="👑" [columns]="3">
+        @for (rank of rankProducts(); track rank.id) {
+        <app-rank-card [rank]="rank" (addToCart)="onAddRankToCart($event)">
+        </app-rank-card>
+        }
+    </app-store-section>
+    }
+
+    <!-- Cosméticos Section -->
+    @if (cosmeticProducts().length > 0) {
+    <app-store-section id="cosmeticos" title="Cosméticos"
+        subtitle="Personaliza tu personaje con partículas, mascotas y más" icon="✨" [columns]="4" [compact]="true">
+        @for (cosmetic of cosmeticProducts(); track cosmetic.id) {
+        <app-cosmetic-card [cosmetic]="cosmetic" (addToCart)="onAddCosmeticToCart($event)"
+            (preview)="onCosmeticPreview($event)">
+        </app-cosmetic-card>
+        }
+    </app-store-section>
+    }
+
+    <!-- Crates Section -->
+    @if (crateProducts().length > 0) {
+    <app-store-section id="crates" title="Crates" subtitle="Abre cajas y obtén recompensas aleatorias" icon="🎁"
+        [columns]="3">
+        @for (crate of crateProducts(); track crate.id) {
+        <app-crate-card [crate]="crate" (addToCart)="onAddCrateToCart($event)" (viewDetails)="onCrateDetails($event)">
+        </app-crate-card>
+        }
+    </app-store-section>
+    }
+
+    <!-- Funciones Section -->
+    @if (featureProducts().length > 0) {
+    <app-store-section id="funciones" title="Funciones Exclusivas"
+        subtitle="Desbloquea comandos y habilidades especiales" icon="🔓" [columns]="3">
+        @for (feature of featureProducts(); track feature.id) {
+        <app-feature-card [feature]="feature" (addToCart)="onAddFeatureToCart($event)">
+        </app-feature-card>
+        }
+    </app-store-section>
+    }
+
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Cargando tienda...</p>
+    </div>
+    }
+</div>
+
+<!-- Cart Components -->
+<app-cart-button></app-cart-button>
+<app-cart-sidebar></app-cart-sidebar>

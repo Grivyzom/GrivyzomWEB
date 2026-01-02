@@ -1,0 +1,234 @@
+<div class="register-container">
+  <!-- FORM CARD -->
+  @if (!showVerificationPanel) {
+  <div class="register-card">
+    <div class="register-header">
+      <img src="assets/img/Logo_Grivyzom_navbar.png" alt="Grivyzom Logo" class="register-logo">
+      <h1 class="register-title">Crear Cuenta</h1>
+      <p class="register-subtitle">Únete a nuestra comunidad</p>
+    </div>
+
+    <form class="register-form" (ngSubmit)="onSubmit()">
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username" class="form-label">Nombre de Usuario</label>
+        <div class="input-wrapper">
+          <lucide-icon [img]="icons.User" [size]="20" [strokeWidth]="2" class="input-icon"></lucide-icon>
+          <input type="text" id="username" class="form-input" placeholder="Elige un nombre de usuario"
+            [(ngModel)]="username" name="username" required>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email" class="form-label">Correo Electrónico</label>
+        <div class="input-wrapper">
+          <lucide-icon [img]="icons.Mail" [size]="20" [strokeWidth]="2" class="input-icon"></lucide-icon>
+          <input type="email" id="email" class="form-input" placeholder="Ingresa tu correo" [(ngModel)]="email"
+            name="email" required>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="input-wrapper">
+          <lucide-icon [img]="icons.Lock" [size]="20" [strokeWidth]="2" class="input-icon"></lucide-icon>
+          <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-input"
+            placeholder="Crea una contraseña" [(ngModel)]="password" (ngModelChange)="onPasswordChange()"
+            name="password" required>
+          <button type="button" class="toggle-password-btn" (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+            <lucide-icon [img]="showPassword ? icons.EyeOff : icons.Eye" [size]="18" [strokeWidth]="2"></lucide-icon>
+          </button>
+        </div>
+
+        <!-- Indicador de requisitos de contraseña -->
+        @if (password.length > 0) {
+        <div class="password-requirements">
+          <div class="requirement" [class.met]="passwordRequirements.minLength">
+            <lucide-icon [img]="passwordRequirements.minLength ? icons.CheckCircle : icons.Circle" [size]="14"
+              [strokeWidth]="2"></lucide-icon>
+            <span>Mínimo 8 caracteres</span>
+          </div>
+          <div class="requirement" [class.met]="passwordRequirements.hasUppercase">
+            <lucide-icon [img]="passwordRequirements.hasUppercase ? icons.CheckCircle : icons.Circle" [size]="14"
+              [strokeWidth]="2"></lucide-icon>
+            <span>Una letra mayúscula</span>
+          </div>
+          <div class="requirement" [class.met]="passwordRequirements.hasLowercase">
+            <lucide-icon [img]="passwordRequirements.hasLowercase ? icons.CheckCircle : icons.Circle" [size]="14"
+              [strokeWidth]="2"></lucide-icon>
+            <span>Una letra minúscula</span>
+          </div>
+          <div class="requirement" [class.met]="passwordRequirements.hasNumber">
+            <lucide-icon [img]="passwordRequirements.hasNumber ? icons.CheckCircle : icons.Circle" [size]="14"
+              [strokeWidth]="2"></lucide-icon>
+            <span>Un número</span>
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+        <div class="input-wrapper">
+          <lucide-icon [img]="icons.ShieldCheck" [size]="20" [strokeWidth]="2" class="input-icon"></lucide-icon>
+          <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" class="form-input"
+            placeholder="Repite tu contraseña" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+          <button type="button" class="toggle-password-btn" (click)="toggleConfirmPasswordVisibility()"
+            [attr.aria-label]="showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+            <lucide-icon [img]="showConfirmPassword ? icons.EyeOff : icons.Eye" [size]="18"
+              [strokeWidth]="2"></lucide-icon>
+          </button>
+        </div>
+        @if (confirmPassword.length > 0 && password !== confirmPassword) {
+        <div class="field-error">
+          <lucide-icon [img]="icons.XCircle" [size]="14" [strokeWidth]="2"></lucide-icon>
+          <span>Las contraseñas no coinciden</span>
+        </div>
+        }
+      </div>
+
+      <!-- Terms and Conditions -->
+      <div class="form-options">
+        <label class="terms-check">
+          <input type="checkbox" [(ngModel)]="acceptTerms" name="acceptTerms" required>
+          <span class="checkbox-custom">
+            <lucide-icon [img]="icons.Check" [size]="12" [strokeWidth]="3"></lucide-icon>
+          </span>
+          <span>Acepto los <a href="#" class="terms-link">Términos y Condiciones</a></span>
+        </label>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="register-actions">
+        <!-- Error Message -->
+        @if (errorMessage) {
+        <div class="error-message">
+          <lucide-icon [img]="icons.AlertTriangle" [size]="18" [strokeWidth]="2"></lucide-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+        }
+
+        <app-animated-button label="Registrarse" [icon]="icons.UserPlus" type="submit"
+          [disabled]="!isValidForm() || isLoading">
+        </app-animated-button>
+      </div>
+    </form>
+
+    <div class="register-footer">
+      ¿Ya tienes una cuenta?
+      <a routerLink="/login" class="login-link">Inicia Sesión</a>
+    </div>
+  </div>
+  }
+
+  <!-- VERIFICATION PANEL -->
+  @if (showVerificationPanel && pendingRegistration) {
+  <div class="verification-card" [class.verified]="isVerified">
+    @if (!isVerified) {
+    <div class="verification-header">
+      <div class="verification-icon-container">
+        <div class="verification-icon">
+          <lucide-icon [img]="icons.Gamepad2" [size]="40" [strokeWidth]="1.5"></lucide-icon>
+        </div>
+        <div class="icon-glow"></div>
+      </div>
+      <h1 class="verification-title">Verifica tu cuenta</h1>
+      <p class="verification-subtitle">Conéctate y ejecuta el comando en el servidor</p>
+    </div>
+
+    <!-- Command Showcase - Elemento principal -->
+    <div class="command-showcase">
+      <div class="command-label">
+        <lucide-icon [img]="icons.Terminal" [size]="16" [strokeWidth]="2"></lucide-icon>
+        <span>Ejecuta este comando en Minecraft</span>
+      </div>
+      <div class="command-box-premium">
+        <div class="command-content">
+          <span class="command-slash">/</span>
+          <span class="command-name">verificar</span>
+          <span class="command-code">{{ pendingRegistration.verification_code }}</span>
+        </div>
+        <button class="copy-command-btn" (click)="copyCode()" [class.copied]="codeCopied">
+          <lucide-icon [img]="codeCopied ? icons.CheckCheck : icons.Copy" [size]="18" [strokeWidth]="2"></lucide-icon>
+          <span>{{ codeCopied ? '¡Copiado!' : 'Copiar' }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Instrucciones simplificadas -->
+    <div class="verification-steps">
+      <div class="step-item">
+        <div class="step-icon">
+          <lucide-icon [img]="icons.Server" [size]="18" [strokeWidth]="2"></lucide-icon>
+        </div>
+        <div class="step-content">
+          <span class="step-title">Conéctate al servidor</span>
+          <span class="step-value">play.grivyzom.com</span>
+        </div>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item">
+        <div class="step-icon active">
+          <lucide-icon [img]="icons.Terminal" [size]="18" [strokeWidth]="2"></lucide-icon>
+        </div>
+        <div class="step-content">
+          <span class="step-title">Ejecuta el comando</span>
+          <span class="step-value">Usa el comando de arriba</span>
+        </div>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item">
+        <div class="step-icon">
+          <lucide-icon [img]="icons.CheckCircle" [size]="18" [strokeWidth]="2"></lucide-icon>
+        </div>
+        <div class="step-content">
+          <span class="step-title">¡Listo!</span>
+          <span class="step-value">Tu cuenta se vinculará automáticamente</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timer mejorado -->
+    <div class="verification-timer-container">
+      <div class="timer-icon">
+        <lucide-icon [img]="icons.Clock" [size]="18" [strokeWidth]="2"></lucide-icon>
+      </div>
+      <div class="timer-content">
+        <span class="timer-label">Tiempo restante</span>
+        <span class="timer-value">{{ formattedTime }}</span>
+      </div>
+    </div>
+
+    @if (secondsRemaining <= 0) { <div class="expired-message">
+      <lucide-icon [img]="icons.AlertTriangle" [size]="18" [strokeWidth]="2"></lucide-icon>
+      <span>El código ha expirado</span>
+  </div>
+  <button class="retry-btn" (click)="retryRegistration()">
+    <lucide-icon [img]="icons.RefreshCw" [size]="18" [strokeWidth]="2"></lucide-icon>
+    Intentar de nuevo
+  </button>
+  }
+
+  <div class="polling-indicator" [class.active]="isPolling">
+    <div class="pulse-ring"></div>
+    <div class="pulse-dot"></div>
+    <span>Esperando verificación...</span>
+  </div>
+  } @else {
+  <!-- Success State -->
+  <div class="success-state">
+    <div class="success-icon">
+      <lucide-icon [img]="icons.CheckCircle" [size]="64" [strokeWidth]="1.5"></lucide-icon>
+    </div>
+    <h2 class="success-title">¡Cuenta Verificada!</h2>
+    <p class="success-message">Bienvenido a Grivyzom, {{ pendingRegistration.verification_code }}</p>
+    <p class="redirect-message">Redirigiendo al inicio...</p>
+  </div>
+  }
+</div>
+}
+</div>

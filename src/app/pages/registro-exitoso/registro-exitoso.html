@@ -1,0 +1,64 @@
+<div class="success-container">
+  <div class="confetti-container" aria-hidden="true"></div>
+  
+  <div class="success-card">
+    <div class="success-header">
+      <div class="success-icon-wrapper">
+        <div class="success-icon">
+          <lucide-icon [img]="icons.CheckCircle" [size]="64" [strokeWidth]="1.5"></lucide-icon>
+        </div>
+        <div class="sparkles">
+          <lucide-icon [img]="icons.Sparkles" [size]="24" [strokeWidth]="2" class="sparkle sparkle-1"></lucide-icon>
+          <lucide-icon [img]="icons.Sparkles" [size]="20" [strokeWidth]="2" class="sparkle sparkle-2"></lucide-icon>
+          <lucide-icon [img]="icons.Sparkles" [size]="18" [strokeWidth]="2" class="sparkle sparkle-3"></lucide-icon>
+        </div>
+      </div>
+      
+      <h1 class="success-title">¡Bienvenido a Grivyzom!</h1>
+      <p class="success-subtitle">Tu cuenta ha sido creada y verificada exitosamente</p>
+    </div>
+    
+    <div class="user-info-card">
+      <div class="user-avatar">
+        <lucide-icon [img]="icons.User" [size]="32" [strokeWidth]="1.5"></lucide-icon>
+      </div>
+      <div class="user-details">
+        <span class="user-label">Tu usuario web</span>
+        <span class="user-name">{{ username }}</span>
+      </div>
+    </div>
+    
+    <div class="minecraft-info-card">
+      <div class="minecraft-icon">
+        <lucide-icon [img]="icons.Gamepad2" [size]="24" [strokeWidth]="1.5"></lucide-icon>
+      </div>
+      <div class="minecraft-details">
+        <span class="minecraft-label">Cuenta Minecraft vinculada</span>
+        <span class="minecraft-name">{{ minecraftUsername }}</span>
+      </div>
+    </div>
+    
+    <div class="next-steps">
+      <h3>¿Qué puedes hacer ahora?</h3>
+      <ul class="steps-list">
+        <li>Personalizar tu perfil y avatar</li>
+        <li>Explorar la tienda de cosméticos</li>
+        <li>Conectarte al servidor y jugar</li>
+        <li>Unirte a nuestra comunidad en Discord</li>
+      </ul>
+    </div>
+    
+    <div class="action-buttons">
+      <app-animated-button
+        label="Ir al Inicio"
+        [icon]="icons.Home"
+        (click)="goToHome()">
+      </app-animated-button>
+      
+      <button class="secondary-btn" (click)="goToProfile()">
+        <lucide-icon [img]="icons.User" [size]="18" [strokeWidth]="2"></lucide-icon>
+        <span>Ver mi Perfil</span>
+      </button>
+    </div>
+  </div>
+</div>

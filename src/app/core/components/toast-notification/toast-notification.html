@@ -1,15 +1,21 @@
-@if (notification().show) {
-  <div class="toast-container" [@slideIn]>
-    <div class="toast success">
-      <div class="toast-icon">
-        <span class="icon">✓</span>
-      </div>
-      <div class="toast-content">
-        <p class="toast-message">{{ notification().message }}</p>
-      </div>
-      <button class="toast-close" (click)="close()" aria-label="Cerrar notificación">
-        <span>&times;</span>
+<div class="toasts-wrapper">
+  @for (notification of notificationService.notifications(); track notification) {
+    <div
+      [@toastAnimation]
+      [class]="getContainerClass(notification.type)"
+      role="alert"
+    >
+      <i class="toast-icon ci" [ngClass]="getIconClass(notification.type)"></i>
+      <p class="toast-message">{{ notification.message }}</p>
+      <button
+        type="button"
+        class="toast-close-btn"
+        (click)="onDismiss(notification)"
+        aria-label="Cerrar"
+      >
+        <i class="ci ci-Close_Big"></i>
       </button>
     </div>
-  </div>
-}
+  }
+</div>
+

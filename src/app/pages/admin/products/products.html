@@ -1,0 +1,515 @@
+<div class="admin-page">
+  <!-- Header -->
+  <app-admin-header [breadcrumbs]="breadcrumbs" />
+
+  <!-- Page Content -->
+  <div class="page-content">
+    <!-- Loading State -->
+    @if (isLoading()) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Cargando productos...</p>
+      </div>
+    } @else {
+      <!-- Products Section -->
+      <div class="content-card">
+        <!-- Card Header -->
+        <div class="card-header">
+          <div class="header-icon">
+            <lucide-angular [img]="icons.Package" [size]="24"></lucide-angular>
+          </div>
+          <div class="header-text">
+            <h3>Gestión de Productos</h3>
+            <p>Administra los productos de tu tienda</p>
+          </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body">
+          <!-- Success/Error Messages -->
+          @if (successMessage()) {
+            <div class="alert alert-success">
+              <lucide-angular [img]="icons.Check" [size]="18"></lucide-angular>
+              {{ successMessage() }}
+            </div>
+          }
+          @if (errorMessage()) {
+            <div class="alert alert-error">
+              <lucide-angular [img]="icons.AlertCircle" [size]="18"></lucide-angular>
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <!-- Products Header -->
+          <div class="products-header">
+            <h4>Productos ({{ products().length }})</h4>
+            <button class="btn-primary-small" (click)="openProductForm()" type="button">
+              <lucide-angular [img]="icons.Plus" [size]="18"></lucide-angular>
+              Nuevo Producto
+            </button>
+          </div>
+
+          <!-- Products Grid -->
+          @if (products().length > 0) {
+            <div class="products-grid">
+              @for (product of products(); track product.id) {
+                <div class="product-item"
+                     [style.--rarity-color]="getRarityColor(product.rarity)">
+                  <!-- Product Image -->
+                  <div class="product-image"
+                       [style.background-image]="'url(' + (product.imageUrl || '/assets/img/placeholder.png') + ')'">
+                    <!-- Badges -->
+                    <div class="product-badges">
+                      @if (product.featured) {
+                        <span class="badge badge-featured">Destacado</span>
+                      }
+                      @if (product.new) {
+                        <span class="badge badge-new">Nuevo</span>
+                      }
+                    </div>
+                  </div>
+
+                  <!-- Product Info -->
+                  <div class="product-info">
+                    <div class="product-header">
+                      <h5>{{ product.name }}</h5>
+                      <div class="product-actions">
+                        <button class="btn-icon" (click)="openProductForm(product)" type="button">
+                          <lucide-angular [img]="icons.Edit" [size]="16"></lucide-angular>
+                        </button>
+                        <button class="btn-icon danger" (click)="deleteProduct(product)" type="button">
+                          <lucide-angular [img]="icons.Trash2" [size]="16"></lucide-angular>
+                        </button>
+                      </div>
+                    </div>
+
+                    <p class="product-description">{{ product.shortDescription || product.description }}</p>
+
+                    <!-- Product Meta -->
+                    <div class="product-meta">
+                      <span class="product-type" [class]="'type-' + product.type">
+                        {{ getTypeLabel(product.type) }}
+                      </span>
+                      <span class="product-rarity" [style.color]="getRarityColor(product.rarity)">
+                        {{ RARITY_LABELS[product.rarity] }}
+                      </span>
+                      <span class="product-price">
+                        @if (product.discountPrice) {
+                          <span class="price-original">${{ product.price }}</span>
+                          <span class="price-discount">${{ product.discountPrice }}</span>
+                        } @else {
+                          ${{ product.price }}
+                        }
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="no-products">
+              <lucide-angular [img]="icons.Package" [size]="48"></lucide-angular>
+              <p>No hay productos disponibles</p>
+              <button class="btn-primary-small" (click)="openProductForm()" type="button">
+                <lucide-angular [img]="icons.Plus" [size]="18"></lucide-angular>
+                Crear Primer Producto
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Product Form Modal -->
+  @if (showProductForm()) {
+    <div class="modal-overlay" (click)="closeProductForm()">
+      <div class="product-modal" (click)="$event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="product-modal-header">
+          <h3>
+            <lucide-angular [img]="icons.Package" [size]="22"></lucide-angular>
+            {{ editingProduct() ? 'Editar Producto' : 'Nuevo Producto' }}
+          </h3>
+          <button class="btn-close" (click)="closeProductForm()" type="button">
+            <lucide-angular [img]="icons.X" [size]="20"></lucide-angular>
+          </button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="product-modal-body">
+          <!-- Messages -->
+          @if (successMessage()) {
+            <div class="alert alert-success">
+              <lucide-angular [img]="icons.Check" [size]="18"></lucide-angular>
+              {{ successMessage() }}
+            </div>
+          }
+          @if (errorMessage()) {
+            <div class="alert alert-error">
+              <lucide-angular [img]="icons.AlertCircle" [size]="18"></lucide-angular>
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <!-- Draft Indicator -->
+          @if (hasDraft() && !editingProduct()) {
+            <div class="alert alert-draft">
+              <lucide-angular [img]="icons.Save" [size]="18"></lucide-angular>
+              <span>Hay un borrador guardado. Los cambios se guardan automáticamente.</span>
+              <button class="btn-discard-draft" (click)="discardDraft()" type="button">
+                Descartar borrador
+              </button>
+            </div>
+          }
+
+          <!-- Basic Information -->
+          <div class="form-section">
+            <h4 class="form-section-title">Información Básica</h4>
+
+            <div class="form-group">
+              <label>Nombre del Producto *</label>
+              <input type="text" [(ngModel)]="productForm.name" (ngModelChange)="onFormChange()" placeholder="Ej: Rango MVP">
+            </div>
+
+            <div class="form-group">
+              <label>Descripción Corta</label>
+              <input type="text" [(ngModel)]="productForm.shortDescription" (ngModelChange)="onFormChange()" placeholder="Breve descripción del producto">
+            </div>
+
+            <div class="form-group">
+              <label>Descripción Completa</label>
+              <textarea [(ngModel)]="productForm.description" (ngModelChange)="onFormChange()" placeholder="Descripción detallada del producto"></textarea>
+            </div>
+          </div>
+
+          <!-- Product Type & Category -->
+          <div class="form-section">
+            <h4 class="form-section-title">Tipo y Categoría</h4>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Tipo de Producto *</label>
+                <select [(ngModel)]="productForm.type" (ngModelChange)="onFormChange()">
+                  @for (type of productTypes; track type.value) {
+                    <option [value]="type.value">{{ type.label }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Categoría *</label>
+                <select [(ngModel)]="productForm.categoryId" (ngModelChange)="onFormChange()">
+                  <option value="">Selecciona una categoría</option>
+                  @for (category of categories(); track category.id) {
+                    <option [value]="category.id">{{ category.name }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Rareza</label>
+                <select [(ngModel)]="productForm.rarity" (ngModelChange)="onFormChange()">
+                  @for (rarity of rarityOptions; track rarity.value) {
+                    <option [value]="rarity.value">{{ rarity.label }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Stock (vacío = ilimitado)</label>
+                <input type="number" [(ngModel)]="productForm.stock" (ngModelChange)="onFormChange()" placeholder="100">
+              </div>
+            </div>
+          </div>
+
+          <!-- Pricing -->
+          <div class="form-section">
+            <h4 class="form-section-title">Precios</h4>
+
+            <div class="form-row thirds">
+              <div class="form-group">
+                <label>Precio *</label>
+                <input type="number" step="0.01" [(ngModel)]="productForm.price" (ngModelChange)="onFormChange()" placeholder="9.99">
+              </div>
+
+              <div class="form-group">
+                <label>Precio con Descuento</label>
+                <input type="number" step="0.01" [(ngModel)]="productForm.discountPrice" (ngModelChange)="onFormChange()" placeholder="7.99">
+              </div>
+
+              <div class="form-group">
+                <label>% Descuento</label>
+                <input type="number" [(ngModel)]="productForm.discountPercent" (ngModelChange)="onFormChange()" placeholder="20">
+              </div>
+            </div>
+          </div>
+
+          <!-- Image Upload -->
+          <div class="form-section">
+            <h4 class="form-section-title">Imagen del Producto</h4>
+
+            <div class="image-upload-area">
+              @if (productImagePreview) {
+                <div class="image-preview-product has-image"
+                     [style.background-image]="'url(' + productImagePreview + ')'">
+                </div>
+              } @else {
+                <div class="image-preview-product">
+                  <div class="no-image">
+                    <lucide-angular [img]="icons.Image" [size]="32"></lucide-angular>
+                    <span>Sin imagen</span>
+                  </div>
+                </div>
+              }
+
+              <button class="btn-upload" (click)="triggerProductImageInput()" type="button">
+                <lucide-angular [img]="icons.Image" [size]="18"></lucide-angular>
+                Seleccionar Imagen
+              </button>
+              <input type="file" id="product-image-upload" (change)="onProductImageSelected($event)" accept="image/*" hidden>
+            </div>
+          </div>
+
+          <!-- Display Options -->
+          <div class="form-section">
+            <h4 class="form-section-title">Opciones de Visualización</h4>
+
+            <div class="checkbox-row">
+              <div class="checkbox-group">
+                <input type="checkbox" id="featured" [(ngModel)]="productForm.featured">
+                <label for="featured">Producto Destacado</label>
+              </div>
+
+              <div class="checkbox-group">
+                <input type="checkbox" id="new" [(ngModel)]="productForm.new">
+                <label for="new">Marcar como Nuevo</label>
+              </div>
+
+              <div class="checkbox-group">
+                <input type="checkbox" id="popular" [(ngModel)]="productForm.popular">
+                <label for="popular">Producto Popular</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Type-Specific Sections -->
+
+          <!-- RANK SPECIFIC -->
+          @if (productForm.type === 'rank') {
+            <div class="form-section">
+              <h4 class="form-section-title">Configuración de Rango</h4>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Prefijo del Rango</label>
+                  <input type="text" [(ngModel)]="$any(productForm).prefix" placeholder="[MVP]">
+                </div>
+
+                <div class="form-group">
+                  <label>Color Principal (hex)</label>
+                  <input type="text" [(ngModel)]="$any(productForm).color" placeholder="#8b5cf6">
+                </div>
+
+                <div class="form-group">
+                  <label>Prioridad</label>
+                  <input type="number" [(ngModel)]="$any(productForm).priority" placeholder="1">
+                </div>
+              </div>
+
+              <!-- Benefits -->
+              <div class="subsection">
+                <h5>Beneficios del Rango</h5>
+
+                @if (rankBenefits.length > 0) {
+                  <div class="benefits-list">
+                    @for (benefit of rankBenefits; track $index) {
+                      <div class="benefit-item">
+                        <div class="benefit-info">
+                          @if (benefit.icon) {
+                            <span class="benefit-icon">{{ benefit.icon }}</span>
+                          }
+                          <span class="benefit-text" [class.highlight]="benefit.highlight">{{ benefit.text }}</span>
+                        </div>
+                        <button class="btn-remove-item" (click)="removeBenefit($index)" type="button">
+                          <lucide-angular [img]="icons.X" [size]="16"></lucide-angular>
+                        </button>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Add Benefit Form -->
+                <div class="add-item-form">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <input type="text" [(ngModel)]="newBenefit.icon" placeholder="Icono (ej: ✈️)">
+                    </div>
+                    <div class="form-group" style="flex: 2;">
+                      <input type="text" [(ngModel)]="newBenefit.text" placeholder="Descripción del beneficio">
+                    </div>
+                    <div class="checkbox-group">
+                      <input type="checkbox" id="highlight-benefit" [(ngModel)]="newBenefit.highlight">
+                      <label for="highlight-benefit">Destacar</label>
+                    </div>
+                  </div>
+                  <button class="btn-add" (click)="addBenefit()" type="button">
+                    <lucide-angular [img]="icons.Plus" [size]="16"></lucide-angular>
+                    Añadir Beneficio
+                  </button>
+                </div>
+              </div>
+
+              <!-- Commands -->
+              <div class="subsection">
+                <h5>Comandos Incluidos</h5>
+
+                @if (rankCommands.length > 0) {
+                  <div class="commands-list">
+                    @for (command of rankCommands; track $index) {
+                      <div class="command-item">
+                        <code>{{ command }}</code>
+                        <button class="btn-remove-item" (click)="removeCommand($index)" type="button">
+                          <lucide-angular [img]="icons.X" [size]="16"></lucide-angular>
+                        </button>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Add Command Form -->
+                <div class="add-item-form">
+                  <input type="text" [(ngModel)]="newCommand" placeholder="/comando">
+                  <button class="btn-add" (click)="addCommand()" type="button">
+                    <lucide-angular [img]="icons.Plus" [size]="16"></lucide-angular>
+                    Añadir Comando
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- COSMETIC SPECIFIC -->
+          @if (productForm.type === 'cosmetic') {
+            <div class="form-section">
+              <h4 class="form-section-title">Configuración de Cosmético</h4>
+
+              <div class="form-group">
+                <label>Tipo de Cosmético</label>
+                <select [(ngModel)]="$any(productForm).cosmeticType">
+                  @for (type of cosmeticTypeOptions; track type.value) {
+                    <option [value]="type.value">{{ type.label }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          }
+
+          <!-- CRATE SPECIFIC -->
+          @if (productForm.type === 'crate') {
+            <div class="form-section">
+              <h4 class="form-section-title">Contenido de la Caja</h4>
+
+              @if (crateItems.length > 0) {
+                <div class="crate-items-list">
+                  @for (item of crateItems; track $index) {
+                    <div class="crate-item">
+                      <div class="crate-item-info">
+                        <span class="item-name">{{ item.name }}</span>
+                        <span class="item-rarity" [style.color]="getRarityColor(item.rarity)">
+                          {{ RARITY_LABELS[item.rarity] }}
+                        </span>
+                        @if (item.probability) {
+                          <span class="item-probability">{{ item.probability }}%</span>
+                        }
+                      </div>
+                      <button class="btn-remove-item" (click)="removeCrateItem($index)" type="button">
+                        <lucide-angular [img]="icons.X" [size]="16"></lucide-angular>
+                      </button>
+                    </div>
+                  }
+                </div>
+              }
+
+              <!-- Add Crate Item Form -->
+              <div class="add-item-form">
+                <div class="form-row">
+                  <div class="form-group" style="flex: 2;">
+                    <input type="text" [(ngModel)]="newCrateItem.name" placeholder="Nombre del item">
+                  </div>
+                  <div class="form-group">
+                    <select [(ngModel)]="newCrateItem.rarity">
+                      @for (rarity of rarityOptions; track rarity.value) {
+                        <option [value]="rarity.value">{{ rarity.label }}</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <input type="number" [(ngModel)]="newCrateItem.probability" placeholder="Probabilidad %">
+                  </div>
+                </div>
+                <button class="btn-add" (click)="addCrateItem()" type="button">
+                  <lucide-angular [img]="icons.Plus" [size]="16"></lucide-angular>
+                  Añadir Item
+                </button>
+              </div>
+            </div>
+          }
+
+          <!-- FEATURE SPECIFIC -->
+          @if (productForm.type === 'feature') {
+            <div class="form-section">
+              <h4 class="form-section-title">Configuración de Función</h4>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Comando</label>
+                  <input type="text" [(ngModel)]="$any(productForm).command" placeholder="/fly">
+                </div>
+
+                <div class="form-group">
+                  <label>Duración</label>
+                  <select [(ngModel)]="$any(productForm).duration">
+                    @for (duration of durationOptions; track duration.value) {
+                      <option [value]="duration.value">{{ duration.label }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ITEM SPECIFIC -->
+          @if (productForm.type === 'item') {
+            <div class="form-section">
+              <h4 class="form-section-title">Configuración de Item</h4>
+
+              <div class="form-group">
+                <label>Cantidad</label>
+                <input type="number" [(ngModel)]="$any(productForm).quantity" placeholder="1">
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="product-modal-footer">
+          <button class="btn-secondary" (click)="closeProductForm()" type="button" [disabled]="isSaving()">
+            Cancelar
+          </button>
+          <button class="btn-primary" (click)="saveProduct()" type="button" [disabled]="isSaving()">
+            @if (isSaving()) {
+              <div class="spinner-small"></div>
+              Guardando...
+            } @else {
+              <lucide-angular [img]="icons.Save" [size]="18"></lucide-angular>
+              {{ editingProduct() ? 'Actualizar Producto' : 'Crear Producto' }}
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

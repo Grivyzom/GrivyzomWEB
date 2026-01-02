@@ -1,0 +1,148 @@
+/* ============================================
+   SERVERS GRID - Section Layout
+   ============================================ */
+
+.servers-section {
+    width: 100%;
+    padding: 0;
+    margin-top: 32px;
+    margin-bottom: 48px;
+}
+
+/* ============================================
+   SECTION HEADER
+   ============================================ */
+
+.section-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.section-title {
+    margin: 0 0 8px;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1f2937;
+    letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+/* ============================================
+   GRID LAYOUT
+   ============================================ */
+
+.servers-grid {
+    display: grid;
+    gap: 24px;
+}
+
+/* Column Variants */
+.servers-grid.cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.servers-grid.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.servers-grid.cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 48px 24px;
+    background: #f9fafb;
+    border-radius: 16px;
+    border: 2px dashed #e5e7eb;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 1rem;
+    color: #9ca3af;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .servers-grid.cols-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .servers-grid.cols-3,
+    .servers-grid.cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .servers-grid {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .servers-section {
+        margin-bottom: 32px;
+    }
+
+    .section-header {
+        margin-bottom: 24px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .section-subtitle {
+        font-size: 1rem;
+    }
+
+    .servers-grid.cols-2,
+    .servers-grid.cols-3,
+    .servers-grid.cols-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .servers-grid {
+        gap: 16px;
+    }
+}
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .section-title {
+        color: #f9fafb;
+    }
+
+    .section-subtitle {
+        color: #9ca3af;
+    }
+
+    .empty-state {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .empty-state p {
+        color: #6b7280;
+    }
+}

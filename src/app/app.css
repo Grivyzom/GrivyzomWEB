@@ -14,9 +14,8 @@ main {
   width: 100%;
 }
 
-/* Add padding to the top to account for fixed navbar + notification bar */
+/* Main content - sin padding-top porque notification-bar ahora es sticky y ocupa espacio */
 .main-content {
-  padding-top: 110px; /* navbar (60px) + notification-bar (~50px) */
   flex: 1 0 auto;
   width: 100%;
 }
@@ -24,23 +23,4 @@ main {
 /* Ensure smooth scrolling */
 html {
   scroll-behavior: smooth;
-}
-
-/* Responsive adjustments for main content */
-@media (max-width: 768px) {
-  .main-content {
-    padding-top: 105px; /* navbar (55px) + notification-bar (~50px) */
-  }
-}
-
-@media (max-width: 480px) {
-  .main-content {
-    padding-top: 100px; /* navbar (50px) + notification-bar (~50px) */
-  }
-}
-
-@media (max-width: 360px) {
-  .main-content {
-    padding-top: 98px; /* navbar (48px) + notification-bar (~50px) */
-  }
 }

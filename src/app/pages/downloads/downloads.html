@@ -1,0 +1,46 @@
+<div class="downloads-container">
+  <header class="downloads-header">
+    <h1>Centro de Descargas</h1>
+    <p>Archivos, recursos y herramientas oficiales de Grivyzom.</p>
+  </header>
+
+  <div *ngIf="loading()" class="loading-state">
+    <p>Cargando archivos...</p>
+  </div>
+
+  <div *ngIf="error()" class="error-state">
+    <p>{{ error() }}</p>
+    <button (click)="loadFiles()">Reintentar</button>
+  </div>
+
+  <div *ngIf="!loading() && !error()" class="files-grid">
+    <div *ngFor="let file of files()" class="file-card">
+      <div class="file-icon">
+        <i-lucide [name]="icons.FileText" class="icon-lg"></i-lucide>
+      </div>
+      <div class="file-info">
+        <h3>{{ file.title }}</h3>
+        <p>{{ file.description }}</p>
+        <div class="file-meta">
+          <span class="category">{{ file.category }}</span>
+          <span class="downloads">
+            <i-lucide [name]="icons.Download" class="icon-sm"></i-lucide>
+            {{ file.download_count }}
+          </span>
+          <span *ngIf="file.min_role !== 'DEFAULT'" class="role-badge">
+            <i-lucide [name]="icons.Shield" class="icon-sm"></i-lucide>
+            {{ file.min_role }}
+          </span>
+        </div>
+      </div>
+      <button class="download-btn" (click)="onDownload(file.id)">
+        <i-lucide [name]="icons.Download"></i-lucide>
+        Descargar
+      </button>
+    </div>
+
+    <div *ngIf="files().length === 0" class="empty-state">
+      <p>No hay archivos disponibles en este momento.</p>
+    </div>
+  </div>
+</div>

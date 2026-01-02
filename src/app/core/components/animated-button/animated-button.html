@@ -1,8 +1,4 @@
-<button 
-  class="animated-btn" 
-  [title]="title"
-  [type]="type"
-  [disabled]="disabled"
+<button class="animated-btn" [ngClass]="customClass" [title]="title" [type]="type" [disabled]="disabled"
   (click)="onClick($event)">
   <span class="border-animation border-top"></span>
   <span class="border-animation border-bottom"></span>
@@ -11,9 +7,9 @@
   <span class="overlay-animation"></span>
   <span class="button-content">
     @if (iconSrc) {
-      <img [src]="iconSrc" [alt]="label" class="button-icon">
+    <img [src]="iconSrc" [alt]="label" class="button-icon">
     } @else if (icon) {
-      <i [class]="icon"></i>
+    <lucide-icon [img]="icon" [size]="18" [strokeWidth]="2"></lucide-icon>
     }
     <span class="button-text">{{ label }}</span>
   </span>

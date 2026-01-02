@@ -1,0 +1,47 @@
+<div class="action-bar" [class.has-banner]="hasBanner()">
+  <!-- Video Background (Priority if exists) -->
+  @if (hasVideo()) {
+  <video class="banner-video" autoplay muted loop playsinline [poster]="bannerImageUrl() || ''">
+    <source [src]="bannerVideoUrl()" type="video/mp4">
+  </video>
+  } @else if (bannerImageUrl()) {
+  <!-- Image Background -->
+  <div class="banner-bg" [style.backgroundImage]="'url(' + bannerImageUrl() + ')'"></div>
+  }
+
+  <!-- Gradient Overlay -->
+  <div class="bar-overlay"></div>
+
+  <!-- Content -->
+  <div class="bar-content">
+    <!-- Player Section -->
+    <div class="player-section">
+      <!-- Player Avatar -->
+      <div class="player-avatar">
+        <img [src]="playerSkinUrl()" [alt]="playerName()" class="avatar-img" (error)="onSkinError($event)">
+        <!-- Online Indicator -->
+        <span class="online-indicator" [class.online]="isOnline()"></span>
+      </div>
+
+      <!-- Player Info -->
+      <div class="player-info">
+        <h3 class="player-name">{{ playerName() }}</h3>
+        <div class="player-badges">
+          <span class="badge rank-badge">
+            <lucide-icon [img]="icons.Crown" [size]="12"></lucide-icon>
+            {{ playerRank() }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <!-- Profile Button -->
+      <a class="action-btn btn-profile" routerLink="/profile">
+        <lucide-icon [img]="icons.User" [size]="16"></lucide-icon>
+        <span>Ver Perfil</span>
+      </a>
+    </div>
+  </div>
+</div>

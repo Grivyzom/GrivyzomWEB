@@ -1,0 +1,133 @@
+<div class="admin-page">
+    <app-admin-header title="Gestión de Imágenes" subtitle="Editar imágenes de los componentes de la web"
+        [breadcrumbs]="[{label: 'Admin', route: '/admin'}, {label: 'Imágenes'}]">
+    </app-admin-header>
+
+    <div class="page-content">
+        <!-- Loading State -->
+        <div *ngIf="isLoading()" class="loading-container">
+            <div class="spinner"></div>
+            <p>Cargando componentes...</p>
+        </div>
+
+        <!-- Components Grid -->
+        <div *ngIf="!isLoading() && !editingComponent" class="components-grid">
+            <div *ngFor="let component of components" class="component-card" (click)="editComponent(component.id)">
+                <div class="card-image" [style.backgroundImage]="'url(' + component.image_url + ')'">
+                    <div class="card-overlay">
+                        <lucide-icon [img]="EditIcon" [size]="24"></lucide-icon>
+                        <span>Editar</span>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <div class="card-icon">
+                        <lucide-icon [img]="getIconForComponent(component.id)" [size]="20"></lucide-icon>
+                    </div>
+                    <div class="card-text">
+                        <h3>{{ component.name }}</h3>
+                        <p>{{ component.description }}</p>
+                    </div>
+                    <div class="card-status" [class.active]="component.has_data">
+                        {{ component.has_data ? 'Configurado' : 'Sin configurar' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editor Panel -->
+        <div *ngIf="editingComponent" class="editor-panel">
+            <div class="editor-header">
+                <div class="editor-title">
+                    <lucide-icon [img]="getIconForComponent(editingComponent)" [size]="24"></lucide-icon>
+                    <h2>{{ editingComponent === 'game-header' ? 'Game Header' : 'Hero Section' }}</h2>
+                </div>
+                <button class="btn-close" (click)="closeEditor()">
+                    <lucide-icon [img]="CloseIcon" [size]="20"></lucide-icon>
+                </button>
+            </div>
+
+            <div class="editor-body">
+                <!-- Messages -->
+                <div *ngIf="successMessage()" class="alert alert-success">
+                    <lucide-icon [img]="CheckIcon" [size]="18"></lucide-icon>
+                    {{ successMessage() }}
+                </div>
+
+                <div *ngIf="errorMessage()" class="alert alert-error">
+                    <lucide-icon [img]="AlertIcon" [size]="18"></lucide-icon>
+                    {{ errorMessage() }}
+                </div>
+
+                <form (ngSubmit)="saveComponent()">
+                    <!-- Image Section -->
+                    <div class="form-section">
+                        <label class="section-label">Imagen</label>
+                        <div class="image-editor">
+                            <div class="image-preview"
+                                [style.backgroundImage]="imagePreview ? 'url(' + imagePreview + ')' : 'none'"
+                                [class.has-image]="imagePreview">
+                                <div *ngIf="!imagePreview" class="no-image">
+                                    <lucide-icon [img]="ImageIcon" [size]="48"></lucide-icon>
+                                    <span>Sin imagen</span>
+                                </div>
+                            </div>
+                            <div class="image-controls">
+                                <button type="button" class="btn-upload" (click)="triggerFileInput()">
+                                    <lucide-icon [img]="UploadIcon" [size]="18"></lucide-icon>
+                                    Subir imagen
+                                </button>
+                                <input type="file" id="component-image-upload" accept="image/jpeg,image/png,image/webp"
+                                    (change)="onFileSelected($event)" hidden>
+                                <span class="file-hint">JPEG, PNG o WebP. Máx 10MB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Header Fields -->
+                    <div *ngIf="editingComponent === 'game-header'" class="form-fields">
+                        <div class="form-group">
+                            <label for="gh-title">Título</label>
+                            <input type="text" id="gh-title" [(ngModel)]="gameHeader.title" name="title"
+                                maxlength="200">
+                        </div>
+                        <div class="form-group">
+                            <label for="gh-subtitle">Subtítulo</label>
+                            <input type="text" id="gh-subtitle" [(ngModel)]="gameHeader.subtitle" name="subtitle"
+                                maxlength="300">
+                        </div>
+                        <div class="form-group">
+                            <label for="gh-button">Texto del Botón</label>
+                            <input type="text" id="gh-button" [(ngModel)]="gameHeader.button_text" name="button_text"
+                                maxlength="100">
+                        </div>
+                    </div>
+
+                    <!-- Hero Section Fields -->
+                    <div *ngIf="editingComponent === 'hero-section'" class="form-fields">
+                        <div class="form-group">
+                            <label for="hs-title">Título</label>
+                            <input type="text" id="hs-title" [(ngModel)]="heroSection.title" name="title"
+                                maxlength="200">
+                        </div>
+                        <div class="form-group">
+                            <label for="hs-description">Descripción</label>
+                            <textarea id="hs-description" [(ngModel)]="heroSection.description" name="description"
+                                rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" (click)="closeEditor()" [disabled]="isSaving()">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn-primary" [disabled]="isSaving()">
+                            <lucide-icon [img]="SaveIcon" [size]="18"></lucide-icon>
+                            {{ isSaving() ? 'Guardando...' : 'Guardar' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

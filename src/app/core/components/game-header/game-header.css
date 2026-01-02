@@ -1,0 +1,361 @@
+/* ============================================
+   GAME HEADER - Premium Hero Banner
+   ============================================ */
+
+.game-header {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  max-height: 45vh;
+  min-height: 280px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+
+  /* Base background while loading */
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.1);
+
+  /* Smooth transition for loaded state */
+  transition: box-shadow 0.3s ease;
+}
+
+.game-header.loaded {
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   BACKGROUND LAYER
+   ============================================ */
+
+.background-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bg-video,
+.bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bg-video {
+  object-fit: cover;
+}
+
+.bg-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.bg-image.ready {
+  opacity: 1;
+}
+
+/* Gradient Overlay - Premium dark gradient for text readability */
+.gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.3) 40%,
+      rgba(0, 0, 0, 0.6) 100%);
+  z-index: 1;
+}
+
+/* ============================================
+   CONTENT LAYER
+   ============================================ */
+
+.content-layer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 32px;
+  gap: 20px;
+
+  /* Animation */
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.content-layer.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   TITLE SECTION
+   ============================================ */
+
+.title-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.game-title {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+
+  /* Premium gradient text */
+  background: linear-gradient(180deg,
+      #ffffff 0%,
+      #f0f0f0 30%,
+      #d4d4d4 70%,
+      #a8a8a8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Subtle glow effect */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.game-tagline {
+  margin: 0;
+  font-size: clamp(0.9rem, 2vw, 1.3rem);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   ACTION BUTTONS
+   ============================================ */
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+/* Glass Button - For Copy IP */
+.btn-glass {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn-glass:active {
+  transform: translateY(0);
+}
+
+/* Primary Button - For Play Now */
+.btn-primary {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  color: #ffffff;
+  box-shadow:
+    0 4px 16px rgba(99, 102, 241, 0.35),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #7c7ff7 0%, #9d6ff8 50%, #b86cf8 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 28px rgba(99, 102, 241, 0.45),
+    0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow:
+    0 4px 12px rgba(99, 102, 241, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   LOADING SKELETON
+   ============================================ */
+
+.loading-skeleton {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.skeleton-title,
+.skeleton-subtitle,
+.skeleton-btn {
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.08) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+.skeleton-title {
+  width: 280px;
+  height: 48px;
+}
+
+.skeleton-subtitle {
+  width: 220px;
+  height: 24px;
+}
+
+.skeleton-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.skeleton-btn {
+  width: 140px;
+  height: 44px;
+  border-radius: 10px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .game-header {
+    aspect-ratio: 16 / 9;
+    min-height: 220px;
+    max-height: 35vh;
+    border-radius: 12px;
+  }
+
+  .content-layer {
+    padding: 16px 20px;
+    gap: 16px;
+  }
+
+  .game-tagline {
+    letter-spacing: 0.1em;
+  }
+
+  .action-buttons {
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-header {
+    aspect-ratio: 16 / 10;
+    min-height: 180px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+
+  .content-layer {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .title-section {
+    gap: 4px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .bg-image,
+  .content-layer,
+  .btn {
+    transition: none;
+  }
+
+  .skeleton-title,
+  .skeleton-subtitle,
+  .skeleton-btn {
+    animation: none;
+  }
+}

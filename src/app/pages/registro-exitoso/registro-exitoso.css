@@ -1,0 +1,313 @@
+.success-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(180deg, var(--lt-bg-primary) 0%, var(--lt-bg-secondary) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Confetti Container */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  opacity: 0;
+  animation: confetti-fall 4s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Success Card */
+.success-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  background: var(--lt-card-bg);
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 40px 32px;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: cardPopIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cardPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Success Header */
+.success-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.success-icon-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-icon {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 20px rgba(16, 185, 129, 0);
+  }
+}
+
+/* Sparkles */
+.sparkles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  color: #fbbf24;
+  animation: sparkleAnim 1.5s ease-in-out infinite;
+}
+
+.sparkle-1 {
+  top: -5px;
+  right: -5px;
+  animation-delay: 0s;
+}
+
+.sparkle-2 {
+  bottom: 0;
+  left: -10px;
+  animation-delay: 0.3s;
+}
+
+.sparkle-3 {
+  top: 50%;
+  right: -15px;
+  animation-delay: 0.6s;
+}
+
+@keyframes sparkleAnim {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+.success-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--lt-text-primary);
+  margin: 0;
+}
+
+.success-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: var(--lt-text-secondary);
+  margin: 0;
+}
+
+/* User Info Card */
+.user-info-card,
+.minecraft-info-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--lt-input-bg);
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.user-info-card:hover,
+.minecraft-info-card:hover {
+  border-color: var(--lt-secondary);
+}
+
+.user-avatar,
+.minecraft-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--lt-secondary), var(--lt-primary));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.user-details,
+.minecraft-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-label,
+.minecraft-label {
+  font-size: 12px;
+  color: var(--lt-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-name,
+.minecraft-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--lt-text-primary);
+}
+
+/* Next Steps */
+.next-steps {
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(6, 182, 212, 0.08));
+  border-radius: 12px;
+}
+
+.next-steps h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--lt-text-primary);
+  margin: 0 0 12px 0;
+}
+
+.steps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.steps-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--lt-text-secondary);
+}
+
+.steps-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.secondary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: var(--lt-text-secondary);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+  background: var(--lt-input-bg);
+  border-color: var(--lt-secondary);
+  color: var(--lt-secondary);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .success-card {
+    padding: 32px 20px;
+  }
+  
+  .success-title {
+    font-size: 24px;
+  }
+  
+  .success-icon-wrapper {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .success-icon {
+    width: 80px;
+    height: 80px;
+  }
+}

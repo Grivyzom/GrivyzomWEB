@@ -1,0 +1,305 @@
+/* ==================================================
+   CALENDAR MONTH VIEW - Full Calendar Grid
+   ================================================== */
+
+.calendar-month-view {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ==================================================
+   HEADER
+   ================================================== */
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 2px solid #f3f4f6;
+    background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+}
+
+.month-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.month-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+    letter-spacing: -0.02em;
+}
+
+.today-button {
+    padding: 6px 14px;
+    background: #f3f4f6;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.today-button:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+    transform: translateY(-1px);
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #6b7280;
+}
+
+.nav-button:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    color: #1f2937;
+    transform: scale(1.05);
+}
+
+.nav-button:active {
+    transform: scale(0.95);
+}
+
+/* ==================================================
+   DAY NAMES
+   ================================================== */
+
+.day-names {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    background: #fafbfc;
+}
+
+.day-name {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ==================================================
+   CALENDAR GRID
+   ================================================== */
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    padding: 20px;
+    flex: 1;
+    align-content: start;
+}
+
+.calendar-day {
+    position: relative;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 4px;
+    border-radius: 12px;
+    background: #f9fafb;
+    border: 2px solid transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+}
+
+.calendar-day:hover {
+    background: #f3f4f6;
+}
+
+.calendar-day.has-events {
+    cursor: pointer;
+    background: #eff6ff;
+    border-color: #dbeafe;
+}
+
+.calendar-day.has-events:hover {
+    background: #dbeafe;
+    border-color: #bfdbfe;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.calendar-day.other-month {
+    opacity: 0.35;
+}
+
+.calendar-day.past:not(.today):not(.selected) {
+    opacity: 0.6;
+}
+
+.calendar-day.today {
+    background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    border-color: transparent;
+}
+
+.calendar-day.today:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+}
+
+.calendar-day.selected:not(.today) {
+    background: #e0e7ff;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.day-number {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.calendar-day.today .day-number {
+    color: #ffffff;
+}
+
+/* ==================================================
+   EVENT INDICATORS
+   ================================================== */
+
+.event-indicators {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: center;
+    margin-top: auto;
+    max-width: 100%;
+}
+
+.event-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+}
+
+.calendar-day.has-events:hover .event-dot {
+    transform: scale(1.2);
+}
+
+.more-events {
+    font-size: 9px;
+    font-weight: 700;
+    color: #6b7280;
+    margin-left: 2px;
+}
+
+.calendar-day.today .more-events {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ==================================================
+   RESPONSIVE
+   ================================================== */
+
+@media (max-width: 1024px) {
+    .calendar-header {
+        padding: 16px;
+    }
+
+    .month-title {
+        font-size: 18px;
+    }
+
+    .calendar-grid {
+        padding: 16px;
+        gap: 6px;
+    }
+
+    .calendar-day {
+        padding: 6px 4px;
+    }
+
+    .day-number {
+        font-size: 13px;
+    }
+
+    .event-dot {
+        width: 5px;
+        height: 5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-header {
+        padding: 12px;
+    }
+
+    .month-title {
+        font-size: 16px;
+    }
+
+    .today-button {
+        font-size: 12px;
+        padding: 5px 12px;
+    }
+
+    .nav-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .day-names {
+        padding: 12px 12px 8px;
+        gap: 4px;
+    }
+
+    .day-name {
+        font-size: 10px;
+    }
+
+    .calendar-grid {
+        padding: 12px;
+        gap: 4px;
+    }
+
+    .calendar-day {
+        padding: 4px 2px;
+        border-radius: 8px;
+    }
+
+    .day-number {
+        font-size: 12px;
+    }
+
+    .event-dot {
+        width: 4px;
+        height: 4px;
+    }
+
+    .more-events {
+        font-size: 8px;
+    }
+}

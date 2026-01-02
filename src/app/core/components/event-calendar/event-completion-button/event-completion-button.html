@@ -1,0 +1,28 @@
+@if (!hasCompleted) {
+  <!-- Complete Button -->
+  <button
+    class="complete-event-btn"
+    [disabled]="isCompleting()"
+    (click)="completeEvent()"
+    title="Marcar evento como completado">
+    @if (isCompleting()) {
+      <span class="spinner"></span>
+      <span>Completando...</span>
+    } @else {
+      <lucide-icon [img]="icons.CheckCircle" [size]="18"></lucide-icon>
+      <span>Marcar Completado</span>
+      @if (grovsReward) {
+        <span class="reward-badge">+{{ grovsReward }} 💎</span>
+      }
+    }
+  </button>
+} @else {
+  <!-- Completed Badge -->
+  <div class="completed-badge" title="Evento completado">
+    <lucide-icon [img]="icons.Gift" [size]="18"></lucide-icon>
+    <span>¡Completado!</span>
+    @if (grovsReward) {
+      <span class="grovs-earned">+{{ grovsReward }} 💎</span>
+    }
+  </div>
+}

@@ -1,0 +1,40 @@
+<section class="store-section" [id]="id">
+    <!-- Section Header -->
+    <header class="section-header">
+        <div class="header-content">
+            @if (icon) {
+            <span class="section-icon">{{ icon }}</span>
+            }
+            <div class="header-text">
+                <h2 class="section-title">{{ title }}</h2>
+                @if (subtitle) {
+                <p class="section-subtitle">{{ subtitle }}</p>
+                }
+            </div>
+        </div>
+        <div class="header-line"></div>
+    </header>
+
+    <!-- Section Content -->
+    @if (slider) {
+    <!-- Slider Mode -->
+    <div class="slider-wrapper">
+        <button class="slider-btn prev" (click)="scrollLeft()">
+            <lucide-icon [img]="icons.ChevronLeft" [size]="24"></lucide-icon>
+        </button>
+
+        <div class="slider-container" #sliderContainer>
+            <ng-content></ng-content>
+        </div>
+
+        <button class="slider-btn next" (click)="scrollRight()">
+            <lucide-icon [img]="icons.ChevronRight" [size]="24"></lucide-icon>
+        </button>
+    </div>
+    } @else {
+    <!-- Grid Mode -->
+    <div class="section-content" [class]="'grid-cols-' + columns" [class.compact]="compact">
+        <ng-content></ng-content>
+    </div>
+    }
+</section>

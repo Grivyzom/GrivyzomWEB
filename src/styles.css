@@ -1,15 +1,5 @@
-@import "tailwindcss";
-
 /* Import Coolicons */
 @import "fonts/Webfont/coolicons.css";
-
-@theme {
-  --color-primary: #3b82f6;
-  --color-secondary: #7c3aed;
-  --color-accent: #10b981;
-  --color-dark: #0f0a1a;
-  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-}
 
 * {
   margin: 0;
@@ -24,7 +14,45 @@ html, body {
   padding: 0;
   background-color: #f5f7fa;
   color: #1a202c;
-  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Minimal, Purple, Auto-hiding Scrollbar --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(124, 58, 237, 0);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+body:hover::-webkit-scrollbar-thumb {
+  background-color: rgb(124, 58, 237);
+}
+
+body:hover::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(124, 58, 237);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 8px;
 }
 
 body {

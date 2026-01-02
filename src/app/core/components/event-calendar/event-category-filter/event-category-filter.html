@@ -1,0 +1,34 @@
+<div class="event-category-filter">
+    <div class="filter-header">
+        <h4 class="filter-title">Filtrar por categoría</h4>
+        @if (!allCategoriesActive()) {
+            <button class="clear-button" (click)="showAllCategories()" type="button">
+                Limpiar filtros
+            </button>
+        }
+    </div>
+
+    <div class="filter-chips">
+        <!-- All Categories Chip -->
+        <button class="filter-chip"
+                [class.active]="allCategoriesActive()"
+                (click)="showAllCategories()"
+                type="button">
+            <span class="chip-icon">📅</span>
+            <span class="chip-label">Todos</span>
+        </button>
+
+        <!-- Category Chips -->
+        @for (category of categories(); track category.id) {
+            <button class="filter-chip"
+                    [class.active]="isCategoryActive(category.id)"
+                    [style.--category-color]="getCategoryConfig(category.id).color"
+                    [style.--category-bg]="getCategoryConfig(category.id).bgColor"
+                    (click)="toggleCategory(category.id)"
+                    type="button">
+                <span class="chip-icon">{{ getCategoryConfig(category.id).icon }}</span>
+                <span class="chip-label">{{ getCategoryConfig(category.id).name }}</span>
+            </button>
+        }
+    </div>
+</div>

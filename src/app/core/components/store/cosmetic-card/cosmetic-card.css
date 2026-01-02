@@ -1,0 +1,465 @@
+/* ============================================
+   COSMETIC CARD - Compact Item Card
+   ============================================ */
+
+.cosmetic-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.05),
+        0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    will-change: transform;
+}
+
+.cosmetic-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.cosmetic-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.12),
+        0 24px 48px rgba(0, 0, 0, 0.16);
+}
+
+.cosmetic-card:hover::before {
+    opacity: 1;
+}
+
+/* Rarity Border Colors */
+.cosmetic-card.rarity-common {
+    border-color: #e2e8f0;
+}
+
+.cosmetic-card.rarity-rare {
+    border-color: #3b82f6;
+}
+
+.cosmetic-card.rarity-rare:hover {
+    box-shadow:
+        0 12px 32px rgba(59, 130, 246, 0.15),
+        0 24px 48px rgba(59, 130, 246, 0.2);
+}
+
+.cosmetic-card.rarity-epic {
+    border-color: #8b5cf6;
+}
+
+.cosmetic-card.rarity-epic:hover {
+    box-shadow:
+        0 12px 32px rgba(139, 92, 246, 0.15),
+        0 24px 48px rgba(139, 92, 246, 0.2);
+}
+
+.cosmetic-card.rarity-legendary {
+    border-color: #f59e0b;
+    box-shadow:
+        0 4px 12px rgba(245, 158, 11, 0.15),
+        0 0 20px rgba(245, 158, 11, 0.1);
+}
+
+.cosmetic-card.rarity-legendary:hover {
+    animation: legendary-glow-pulse 1.5s ease-in-out;
+    box-shadow:
+        0 12px 32px rgba(245, 158, 11, 0.25),
+        0 0 40px rgba(245, 158, 11, 0.2);
+}
+
+@keyframes legendary-glow-pulse {
+    0%, 100% {
+        box-shadow:
+            0 4px 12px rgba(245, 158, 11, 0.15),
+            0 0 20px rgba(245, 158, 11, 0.1);
+    }
+    50% {
+        box-shadow:
+            0 8px 16px rgba(245, 158, 11, 0.2),
+            0 0 30px rgba(245, 158, 11, 0.15);
+    }
+}
+
+/* ============================================
+   PREVIEW CONTAINER
+   ============================================ */
+
+.preview-container {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.preview-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.03) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.cosmetic-card:hover .preview-container::before {
+    opacity: 1;
+}
+
+.preview-image,
+.preview-animated {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.preview-image.hidden {
+    opacity: 0;
+}
+
+.cosmetic-card:hover .preview-image:not(.hidden) {
+    transform: scale(1.15) rotate(2deg);
+}
+
+.preview-animated {
+    position: absolute;
+    inset: 0;
+}
+
+/* Overlay */
+.preview-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    backdrop-filter: blur(2px);
+    z-index: 2;
+}
+
+.cosmetic-card:hover .preview-overlay {
+    opacity: 1;
+}
+
+.btn-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 50%;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    position: relative;
+}
+
+.btn-preview::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.btn-preview:hover {
+    transform: scale(1.2) rotate(5deg);
+    background: #ffffff;
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-preview:hover::before {
+    opacity: 1;
+}
+
+/* Badges */
+.type-badge {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.new-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: #22c55e;
+    border-radius: 10px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+/* ============================================
+   INFO SECTION
+   ============================================ */
+
+.card-info {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cosmetic-name {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Price Section */
+.price-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.price .original {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+}
+
+.price .current {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* Grovs Price */
+.price-grovs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.1));
+    border: 1.5px solid rgba(251, 191, 36, 0.3);
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.grovs-amount {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #f59e0b;
+}
+
+.grovs-icon {
+    font-size: 0.875rem;
+    line-height: 1;
+}
+
+/* Cashback Badge */
+.cashback-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(34, 197, 94, 0.25);
+    width: fit-content;
+}
+
+.btn-add-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow:
+        0 2px 8px rgba(99, 102, 241, 0.3),
+        0 1px 3px rgba(99, 102, 241, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-add-cart::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.3),
+        transparent,
+        rgba(255, 255, 255, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-add-cart:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow:
+        0 4px 16px rgba(99, 102, 241, 0.5),
+        0 2px 6px rgba(99, 102, 241, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-add-cart:hover::before {
+    opacity: 1;
+}
+
+.btn-add-cart:active {
+    transform: scale(1) rotate(0deg);
+}
+
+/* ============================================
+   RARITY GLOW
+   ============================================ */
+
+.rarity-glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    border-radius: 18px;
+}
+
+.cosmetic-card.rarity-rare:hover .rarity-glow {
+    opacity: 1;
+    box-shadow:
+        inset 0 0 40px rgba(59, 130, 246, 0.25),
+        inset 0 0 20px rgba(59, 130, 246, 0.15),
+        inset 0 -2px 10px rgba(59, 130, 246, 0.2);
+}
+
+.cosmetic-card.rarity-epic:hover .rarity-glow {
+    opacity: 1;
+    box-shadow:
+        inset 0 0 40px rgba(139, 92, 246, 0.3),
+        inset 0 0 20px rgba(139, 92, 246, 0.2),
+        inset 0 -2px 10px rgba(139, 92, 246, 0.25);
+}
+
+.cosmetic-card.rarity-legendary:hover .rarity-glow {
+    opacity: 1;
+    box-shadow:
+        inset 0 0 50px rgba(245, 158, 11, 0.35),
+        inset 0 0 25px rgba(245, 158, 11, 0.25),
+        inset 0 -2px 15px rgba(245, 158, 11, 0.3);
+}
+
+/* Legendary shimmer */
+.cosmetic-card.rarity-legendary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.2) 40%,
+            rgba(251, 191, 36, 0.3) 50%,
+            rgba(255, 255, 255, 0.2) 60%,
+            transparent 70%);
+    background-size: 300% 100%;
+    pointer-events: none;
+    border-radius: 18px;
+    z-index: 1;
+}
+
+.cosmetic-card.rarity-legendary:hover::after {
+    animation: shimmer 2.5s ease-in-out;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 300% 0;
+    }
+
+    100% {
+        background-position: -300% 0;
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 640px) {
+    .cosmetic-card {
+        border-radius: 12px;
+    }
+
+    .card-info {
+        padding: 12px;
+    }
+
+    .cosmetic-name {
+        font-size: 0.9rem;
+    }
+
+    .btn-add-cart {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* Dark mode removed - Enforcing light mode per design philosophy */

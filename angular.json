@@ -48,8 +48,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "20kB",
+                  "maximumError": "40kB"
                 }
               ],
               "outputHashing": "all"
@@ -64,6 +64,16 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": [
+              "grivyzom.com",
+              "www.grivyzom.com",
+              ".grivyzom.com",
+              "localhost",
+              "127.0.0.1",
+              "138.68.51.86"
+            ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "grivyzom-web:build:production"

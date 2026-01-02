@@ -1,0 +1,425 @@
+<div class="admin-page">
+    <app-admin-header title="Gestión de Contenido" subtitle="Editar Hero Section, Game Header y otros contenidos"
+        [breadcrumbs]="[{label: 'Admin', route: '/admin'}, {label: 'Contenido'}]">
+    </app-admin-header>
+
+    <div class="page-content">
+        <!-- Loading State -->
+        <div *ngIf="isLoading()" class="loading-container">
+            <div class="spinner"></div>
+            <p>Cargando contenido...</p>
+        </div>
+
+        <!-- Content -->
+        <div *ngIf="!isLoading()" class="content-sections">
+
+            <!-- Game Header Section -->
+            <section class="content-card">
+                <div class="card-header">
+                    <div class="header-icon">
+                        <lucide-icon [img]="ImageIcon" [size]="24"></lucide-icon>
+                    </div>
+                    <div class="header-text">
+                        <h3>Game Header</h3>
+                        <p>Imagen y texto principal del inicio</p>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <!-- Success/Error Messages -->
+                    <div *ngIf="successMessage()" class="alert alert-success">
+                        <lucide-icon [img]="CheckIcon" [size]="18"></lucide-icon>
+                        {{ successMessage() }}
+                    </div>
+
+                    <div *ngIf="errorMessage()" class="alert alert-error">
+                        <lucide-icon [img]="AlertIcon" [size]="18"></lucide-icon>
+                        {{ errorMessage() }}
+                    </div>
+
+                    <form class="game-header-form" (ngSubmit)="saveGameHeader()">
+                        <!-- Image Preview & Upload -->
+                        <div class="image-section">
+                            <label>Imagen de Fondo</label>
+                            <div class="image-preview-container">
+                                <div class="image-preview"
+                                    [style.backgroundImage]="imagePreview ? 'url(' + imagePreview + ')' : 'none'"
+                                    [class.has-image]="imagePreview">
+                                    <div *ngIf="!imagePreview" class="no-image">
+                                        <lucide-icon [img]="ImageIcon" [size]="48"></lucide-icon>
+                                        <span>Sin imagen</span>
+                                    </div>
+                                </div>
+                                <div class="image-actions">
+                                    <button type="button" class="btn-upload" (click)="triggerFileInput()">
+                                        <lucide-icon [img]="UploadIcon" [size]="18"></lucide-icon>
+                                        Subir imagen
+                                    </button>
+                                    <input type="file" id="image-upload" accept="image/jpeg,image/png,image/webp"
+                                        (change)="onFileSelected($event)" hidden>
+                                    <span class="file-hint">JPEG, PNG o WebP. Máx 10MB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Text Fields -->
+                        <div class="form-group">
+                            <label for="title">Título</label>
+                            <input type="text" id="title" [(ngModel)]="gameHeader.title" name="title" maxlength="200"
+                                placeholder="GRIVYZOM">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subtitle">Subtítulo</label>
+                            <input type="text" id="subtitle" [(ngModel)]="gameHeader.subtitle" name="subtitle"
+                                maxlength="300" placeholder="A WORLD OF ADVENTURE AND CREATIVITY">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="button_text">Texto del Botón</label>
+                            <input type="text" id="button_text" [(ngModel)]="gameHeader.button_text" name="button_text"
+                                maxlength="100" placeholder="JUGAR AHORA!">
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" (click)="loadGameHeader()"
+                                [disabled]="isSaving()">
+                                <lucide-icon [img]="RefreshIcon" [size]="18"></lucide-icon>
+                                Recargar
+                            </button>
+                            <button type="submit" class="btn-primary" [disabled]="isSaving()">
+                                <lucide-icon [img]="SaveIcon" [size]="18"></lucide-icon>
+                                {{ isSaving() ? 'Guardando...' : 'Guardar Cambios' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Calendar Events Section -->
+            <section class="content-card">
+                <div class="card-header">
+                    <div class="header-icon">
+                        <lucide-icon [img]="CalendarIcon" [size]="24"></lucide-icon>
+                    </div>
+                    <div class="header-text">
+                        <h3>Eventos del Calendario</h3>
+                        <p>Gestiona los eventos que aparecen en el calendario del inicio</p>
+                    </div>
+                    <button type="button" class="btn-primary-small" (click)="openEventForm()">
+                        <lucide-icon [img]="PlusIcon" [size]="16"></lucide-icon>
+                        Nuevo Evento
+                    </button>
+                </div>
+
+                <div class="card-body">
+                    <!-- Success/Error Messages for Events -->
+                    @if (eventSuccessMessage()) {
+                        <div class="alert alert-success">
+                            <lucide-icon [img]="CheckIcon" [size]="18"></lucide-icon>
+                            {{ eventSuccessMessage() }}
+                        </div>
+                    }
+
+                    @if (eventErrorMessage() && !showEventForm()) {
+                        <div class="alert alert-error">
+                            <lucide-icon [img]="AlertIcon" [size]="18"></lucide-icon>
+                            {{ eventErrorMessage() }}
+                        </div>
+                    }
+
+                    <!-- Events List -->
+                    @if (isLoadingEvents()) {
+                        <div class="loading-small">
+                            <div class="spinner"></div>
+                            <p>Cargando eventos...</p>
+                        </div>
+                    } @else if (events().length === 0) {
+                        <div class="empty-state">
+                            <lucide-icon [img]="CalendarIcon" [size]="48"></lucide-icon>
+                            <p>No hay eventos creados</p>
+                            <button type="button" class="btn-primary" (click)="openEventForm()">
+                                <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon>
+                                Crear Primer Evento
+                            </button>
+                        </div>
+                    } @else {
+                        <div class="events-grid">
+                            @for (event of events(); track event.id) {
+                                <div class="event-item"
+                                     [style.border-left-color]="getCategoryConfig(event.category).color">
+                                    <div class="event-header-item">
+                                        <div class="event-category-badge"
+                                             [style.background-color]="getCategoryConfig(event.category).bgColor"
+                                             [style.color]="getCategoryConfig(event.category).color">
+                                            {{ getCategoryConfig(event.category).icon }}
+                                            {{ getCategoryConfig(event.category).name }}
+                                        </div>
+                                        <span class="event-status" [class]="'status-' + event.status">
+                                            {{ event.status === 'upcoming' ? 'Próximo' : event.status === 'ongoing' ? 'En Curso' : event.status === 'completed' ? 'Finalizado' : 'Cancelado' }}
+                                        </span>
+                                    </div>
+
+                                    <h4 class="event-title-item">{{ event.title }}</h4>
+                                    <p class="event-date-item">{{ formatEventDate(event.date) }} • {{ event.startTime }}</p>
+
+                                    @if (event.location) {
+                                        <p class="event-location">📍 {{ event.location }}</p>
+                                    }
+
+                                    @if (event.prizes.length > 0) {
+                                        <p class="event-prizes">🏆 {{ event.prizes.length }} premio(s)</p>
+                                    }
+
+                                    <div class="event-actions">
+                                        <button type="button" class="btn-icon" (click)="openEventForm(event)"
+                                                title="Editar">
+                                            <lucide-icon [img]="EditIcon" [size]="16"></lucide-icon>
+                                        </button>
+                                        <button type="button" class="btn-icon btn-danger" (click)="deleteEvent(event)"
+                                                title="Eliminar">
+                                            <lucide-icon [img]="TrashIcon" [size]="16"></lucide-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Event Form Modal -->
+        @if (showEventForm()) {
+            <div class="modal-overlay" (click)="closeEventForm()">
+                <div class="modal-content event-modal" (click)="$event.stopPropagation()">
+                    <div class="modal-header">
+                        <h3>{{ editingEvent() ? 'Editar Evento' : 'Nuevo Evento' }}</h3>
+                        <button type="button" class="close-modal" (click)="closeEventForm()">
+                            <lucide-icon [img]="XIcon" [size]="24"></lucide-icon>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        @if (eventErrorMessage()) {
+                            <div class="alert alert-error">
+                                <lucide-icon [img]="AlertIcon" [size]="18"></lucide-icon>
+                                {{ eventErrorMessage() }}
+                            </div>
+                        }
+
+                        @if (eventSuccessMessage()) {
+                            <div class="alert alert-success">
+                                <lucide-icon [img]="CheckIcon" [size]="18"></lucide-icon>
+                                {{ eventSuccessMessage() }}
+                            </div>
+                        }
+
+                        <form (ngSubmit)="saveEvent()">
+                            <!-- Basic Info -->
+                            <div class="form-section">
+                                <h4>Información Básica</h4>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="event-title">Título *</label>
+                                        <input type="text" id="event-title" [(ngModel)]="eventForm.title"
+                                               name="title" required placeholder="Torneo de PvP">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="event-category">Categoría *</label>
+                                        <select id="event-category" [(ngModel)]="eventForm.category"
+                                                name="category" required>
+                                            @for (cat of categories(); track cat.id) {
+                                                <option [value]="cat.id">{{ cat.icon }} {{ cat.name }}</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="event-short-desc">Descripción Corta</label>
+                                    <input type="text" id="event-short-desc"
+                                           [(ngModel)]="eventForm.shortDescription"
+                                           name="shortDescription" maxlength="150"
+                                           placeholder="Breve resumen del evento">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="event-desc">Descripción Completa</label>
+                                    <textarea id="event-desc" [(ngModel)]="eventForm.description"
+                                              name="description" rows="4"
+                                              placeholder="Describe el evento en detalle..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Date & Time -->
+                            <div class="form-section">
+                                <h4>Fecha y Hora</h4>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="event-date">Fecha *</label>
+                                        <input type="date" id="event-date" [(ngModel)]="eventForm.date"
+                                               name="date" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="event-start-time">Hora Inicio *</label>
+                                        <input type="time" id="event-start-time"
+                                               [(ngModel)]="eventForm.startTime" name="startTime" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="event-end-time">Hora Fin</label>
+                                        <input type="time" id="event-end-time" [(ngModel)]="eventForm.endTime"
+                                               name="endTime">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="event-status">Estado</label>
+                                        <select id="event-status" [(ngModel)]="eventForm.status" name="status">
+                                            <option value="upcoming">Próximamente</option>
+                                            <option value="ongoing">En curso</option>
+                                            <option value="completed">Finalizado</option>
+                                            <option value="cancelled">Cancelado</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="event-location">Ubicación</label>
+                                        <input type="text" id="event-location" [(ngModel)]="eventForm.location"
+                                               name="location" placeholder="Servidor Survival, Spawn">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Banner Image -->
+                            <div class="form-section">
+                                <h4>Banner del Evento</h4>
+                                <div class="image-preview-container-small">
+                                    <div class="image-preview-small"
+                                         [style.backgroundImage]="eventBannerPreview ? 'url(' + eventBannerPreview + ')' : 'none'"
+                                         [class.has-image]="eventBannerPreview">
+                                        @if (!eventBannerPreview) {
+                                            <div class="no-image-small">
+                                                <lucide-icon [img]="ImageIcon" [size]="32"></lucide-icon>
+                                                <span>Sin banner</span>
+                                            </div>
+                                        }
+                                    </div>
+                                    <button type="button" class="btn-upload-small"
+                                            (click)="triggerEventBannerInput()">
+                                        <lucide-icon [img]="UploadIcon" [size]="16"></lucide-icon>
+                                        Subir Banner
+                                    </button>
+                                    <input type="file" id="event-banner-upload"
+                                           accept="image/jpeg,image/png,image/webp"
+                                           (change)="onEventBannerSelected($event)" hidden>
+                                </div>
+                            </div>
+
+                            <!-- Participants -->
+                            <div class="form-section">
+                                <h4>Participantes</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="event-max-participants">Máximo de Participantes</label>
+                                        <input type="number" id="event-max-participants"
+                                               [(ngModel)]="eventForm.maxParticipants"
+                                               name="maxParticipants" min="0" placeholder="Ilimitado">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" [(ngModel)]="eventForm.requiresRegistration"
+                                                   name="requiresRegistration">
+                                            Requiere Registro
+                                        </label>
+                                    </div>
+                                </div>
+
+                                @if (eventForm.requiresRegistration) {
+                                    <div class="form-group">
+                                        <label for="event-reg-url">URL de Registro</label>
+                                        <input type="url" id="event-reg-url"
+                                               [(ngModel)]="eventForm.registrationUrl"
+                                               name="registrationUrl"
+                                               placeholder="https://forms.example.com/registro">
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Prizes -->
+                            <div class="form-section">
+                                <h4>Premios</h4>
+
+                                <div class="prizes-list">
+                                    @for (prize of prizes; track $index) {
+                                        <div class="prize-item">
+                                            <div class="prize-info">
+                                                <strong>{{ prize.name }}</strong>
+                                                @if (prize.position) {
+                                                    <span class="prize-position">{{ prize.position }}° Lugar</span>
+                                                }
+                                                <span class="prize-rarity rarity-{{ prize.rarity }}">
+                                                    {{ prize.rarity || 'common' }}
+                                                </span>
+                                            </div>
+                                            <button type="button" class="btn-icon btn-danger"
+                                                    (click)="removePrize($index)">
+                                                <lucide-icon [img]="TrashIcon" [size]="14"></lucide-icon>
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="add-prize-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <input type="text" [(ngModel)]="newPrize.name" [ngModelOptions]="{standalone: true}"
+                                                   placeholder="Nombre del premio">
+                                        </div>
+                                        <div class="form-group">
+                                            <select [(ngModel)]="newPrize.rarity" [ngModelOptions]="{standalone: true}">
+                                                <option value="common">Común</option>
+                                                <option value="rare">Raro</option>
+                                                <option value="epic">Épico</option>
+                                                <option value="legendary">Legendario</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="number" [(ngModel)]="newPrize.position" [ngModelOptions]="{standalone: true}"
+                                                   placeholder="Posición" min="1">
+                                        </div>
+                                        <button type="button" class="btn-primary-small" (click)="addPrize()">
+                                            <lucide-icon [img]="PlusIcon" [size]="16"></lucide-icon>
+                                            Añadir
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn-secondary" (click)="closeEventForm()"
+                                        [disabled]="isSaving()">
+                                    Cancelar
+                                </button>
+                                <button type="submit" class="btn-primary" [disabled]="isSaving()">
+                                    <lucide-icon [img]="SaveIcon" [size]="18"></lucide-icon>
+                                    {{ isSaving() ? 'Guardando...' : 'Guardar Evento' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

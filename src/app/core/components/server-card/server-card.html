@@ -1,0 +1,72 @@
+<article class="server-card" [class]="statusClass">
+    <!-- Banner -->
+    <div class="card-banner">
+        <img [src]="server.bannerUrl" [alt]="server.name" class="banner-img" loading="lazy">
+        <div class="banner-overlay"></div>
+
+        <!-- Status Badge -->
+        <div class="status-badge" [class]="statusClass">
+            <span class="status-dot"></span>
+            <span class="status-text">{{ statusText }}</span>
+        </div>
+
+        <!-- Tags -->
+        @if (server.tags && server.tags.length > 0) {
+        <div class="card-tags">
+            @for (tag of server.tags; track tag) {
+            <span class="tag">{{ tag }}</span>
+            }
+        </div>
+        }
+    </div>
+
+    <!-- Content -->
+    <div class="card-content">
+        <!-- Title -->
+        <h3 class="card-title">{{ server.name }}</h3>
+
+        <!-- Description -->
+        <p class="card-description">{{ server.description }}</p>
+
+        <!-- Stats Row -->
+        <div class="card-stats">
+            <!-- Players Online -->
+            <div class="stat-item">
+                <lucide-icon [img]="icons.Users" [size]="16"></lucide-icon>
+                <span class="stat-value">{{ server.playersOnline }}</span>
+                <span class="stat-label">/ {{ server.maxPlayers }}</span>
+            </div>
+
+            <!-- Divider -->
+            <div class="stat-divider"></div>
+
+            <!-- Version -->
+            <div class="stat-item">
+                <lucide-icon [img]="icons.Gamepad2" [size]="16"></lucide-icon>
+                <span class="stat-value">{{ server.version }}</span>
+            </div>
+        </div>
+
+        <!-- Player Progress Bar -->
+        <div class="player-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="playerPercentage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action -->
+    <div class="card-action">
+        @if (server.route) {
+        <a [routerLink]="server.route" class="btn-view-more">
+            <span>Ver más</span>
+            <lucide-icon [img]="icons.ChevronRight" [size]="18"></lucide-icon>
+        </a>
+        } @else {
+        <button class="btn-view-more" (click)="onViewMore()">
+            <span>Ver más</span>
+            <lucide-icon [img]="icons.ChevronRight" [size]="18"></lucide-icon>
+        </button>
+        }
+    </div>
+</article>

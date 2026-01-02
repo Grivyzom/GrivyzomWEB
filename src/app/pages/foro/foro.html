@@ -1,0 +1,121 @@
+<div class="foro-container">
+    <!-- Header -->
+    <header class="foro-header">
+        <div class="header-content">
+            <h1>Foro</h1>
+            <p>Comparte builds, guías y conecta con otros jugadores</p>
+        </div>
+        <a routerLink="/foro/crear" class="create-btn">
+            <lucide-icon [img]="icons.PenSquare" [size]="18"></lucide-icon>
+            <span>Crear Post</span>
+        </a>
+    </header>
+
+    <div class="foro-layout">
+        <!-- Main Feed (70%) -->
+        <main class="feed-column">
+            <!-- Filter Tabs -->
+            <nav class="filter-tabs">
+                <button *ngFor="let filter of filters" class="filter-tab"
+                    [class.active]="currentFilter() === filter.key"
+                    [class.disabled]="filter.requiresAuth && !isAuthenticated()" (click)="setFilter(filter.key)">
+                    <lucide-icon [img]="filter.icon" [size]="16"></lucide-icon>
+                    <span>{{ filter.label }}</span>
+                </button>
+            </nav>
+
+            <!-- Category Chips (Optional) -->
+            <div class="category-chips" *ngIf="categories().length > 0">
+                <button class="chip" [class.active]="!currentCategory()" (click)="setCategory(undefined)">
+                    Todos
+                </button>
+                <button *ngFor="let cat of categories()" class="chip" [class.active]="currentCategory() === cat.slug"
+                    [style.--chip-color]="cat.color" (click)="setCategory(cat.slug)">
+                    {{ cat.name }}
+                </button>
+            </div>
+
+            <!-- Posts Feed -->
+            <div class="posts-feed">
+                <app-post-card *ngFor="let post of posts()" [post]="post" (likeClicked)="onLike($event)"
+                    (bookmarkClicked)="onBookmark($event)" (followClicked)="onFollow($event)">
+                </app-post-card>
+
+                <!-- Empty State -->
+                <div class="empty-state" *ngIf="!isLoading() && posts().length === 0">
+                    <div class="empty-icon">📝</div>
+                    <h3>No hay posts todavía</h3>
+                    <p>Sé el primero en compartir algo con el foro</p>
+                    <a routerLink="/foro/crear" class="cta-btn">
+                        Crear mi primer post
+                    </a>
+                </div>
+
+                <!-- Loading -->
+                <div class="loading-spinner" *ngIf="isLoading()">
+                    <div class="spinner"></div>
+                    <span>Cargando posts...</span>
+                </div>
+
+                <!-- Load More -->
+                <button *ngIf="currentPage() < totalPages() && !isLoading()" class="load-more-btn" (click)="loadMore()">
+                    Cargar más posts
+                </button>
+            </div>
+        </main>
+
+        <!-- Sidebar (30%) -->
+        <aside class="sidebar-column">
+            <!-- Top Contributors -->
+            <section class="sidebar-widget">
+                <h3 class="widget-title">
+                    <lucide-icon [img]="icons.Crown" [size]="18"></lucide-icon>
+                    Top Builders
+                </h3>
+                <ul class="contributors-list">
+                    <li *ngFor="let user of topContributors().slice(0, 5)" class="contributor-item">
+                        <div class="contributor-avatar">
+                            <img *ngIf="user.avatar_url" [src]="user.avatar_url" [alt]="user.username">
+                            <div *ngIf="!user.avatar_url" class="avatar-placeholder">
+                                {{ user.minecraft_username.charAt(0).toUpperCase() }}
+                            </div>
+                        </div>
+                        <div class="contributor-info">
+                            <span class="contributor-name">{{ user.minecraft_username }}</span>
+                            <span class="contributor-stats">{{ user.posts_count }} posts</span>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Trending Tags -->
+            <section class="sidebar-widget">
+                <h3 class="widget-title">
+                    <lucide-icon [img]="icons.Hash" [size]="18"></lucide-icon>
+                    Temas del Momento
+                </h3>
+                <div class="trending-tags">
+                    <button *ngFor="let tag of trendingTags().slice(0, 10)" class="trending-tag">
+                        #{{ tag.tag }}
+                        <span class="tag-count">{{ tag.count }}</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Categories -->
+            <section class="sidebar-widget">
+                <h3 class="widget-title">Categorías</h3>
+                <ul class="categories-list">
+                    <li *ngFor="let cat of categories()">
+                        <button class="category-btn" [class.active]="currentCategory() === cat.slug"
+                            (click)="setCategory(cat.slug)">
+                            <span class="category-dot" [style.background]="cat.color"></span>
+                            {{ cat.name }}
+                            <span class="category-count">{{ cat.posts_count }}</span>
+                        </button>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</div>

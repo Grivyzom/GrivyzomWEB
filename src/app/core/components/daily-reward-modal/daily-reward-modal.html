@@ -1,0 +1,126 @@
+@if (isOpen()) {
+  <div class="modal-overlay" (click)="close()">
+    <div class="modal-container" (click)="onModalContentClick($event)">
+
+      <!-- Close button -->
+      <button class="modal-close" (click)="close()" aria-label="Cerrar">
+        <lucide-icon [img]="icons.X" [size]="20"></lucide-icon>
+      </button>
+
+      @if (!showSuccess()) {
+        <!-- Reward Available State -->
+        <div class="modal-content">
+          <!-- Gift Icon Animation -->
+          <div class="gift-icon-container">
+            <div class="gift-icon-glow"></div>
+            <lucide-icon [img]="icons.Gift" [size]="64" class="gift-icon"></lucide-icon>
+          </div>
+
+          <!-- Title -->
+          <h2 class="modal-title">¡Recompensa Diaria Disponible!</h2>
+          <p class="modal-subtitle">Reclama tus Grovs de hoy</p>
+
+          <!-- Reward Breakdown -->
+          <div class="reward-breakdown">
+            <div class="reward-item">
+              <span class="reward-label">Recompensa Base</span>
+              <span class="reward-value">{{ projectedReward().grovs_amount }} 💎</span>
+            </div>
+
+            @if ((projectedReward().streak_bonus ?? 0) > 0) {
+              <div class="reward-item bonus">
+                <span class="reward-label">
+                  <lucide-icon [img]="icons.TrendingUp" [size]="16"></lucide-icon>
+                  Bonus de Racha ({{ currentStreak() }} días)
+                </span>
+                <span class="reward-value">+{{ projectedReward().streak_bonus }} 💎</span>
+              </div>
+            }
+
+            <div class="reward-divider"></div>
+
+            <div class="reward-item total">
+              <span class="reward-label">Total</span>
+              <span class="reward-value highlight">{{ projectedReward().total_grovs }} 💎</span>
+            </div>
+          </div>
+
+          <!-- Streak Progress -->
+          @if (nextMilestone()) {
+            <div class="streak-section">
+              <div class="streak-header">
+                <span class="streak-label">
+                  <lucide-icon [img]="icons.Trophy" [size]="16"></lucide-icon>
+                  Próximo Hito
+                </span>
+                <span class="streak-days">{{ currentStreak() }} / {{ nextMilestone()!.days }} días</span>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="milestoneProgress()"></div>
+              </div>
+
+              <p class="milestone-info">
+                {{ nextMilestone()!.title }} - <strong>+{{ nextMilestone()!.bonus_grovs }} 💎</strong>
+              </p>
+            </div>
+          } @else {
+            <div class="streak-section completed">
+              <p class="milestone-completed">
+                <lucide-icon [img]="icons.Trophy" [size]="20"></lucide-icon>
+                ¡Has completado todos los hitos! 🎉
+              </p>
+            </div>
+          }
+
+          <!-- Claim Button -->
+          <button
+            class="claim-btn"
+            [disabled]="isClaiming()"
+            (click)="claimReward()">
+            @if (isClaiming()) {
+              <span class="spinner"></span>
+              <span>Reclamando...</span>
+            } @else {
+              <span>¡Reclamar Recompensa!</span>
+            }
+          </button>
+        </div>
+      } @else {
+        <!-- Success State -->
+        <div class="modal-content success">
+          <!-- Success Icon -->
+          <div class="success-icon-container">
+            <div class="success-checkmark">
+              <svg viewBox="0 0 52 52">
+                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Success Message -->
+          <h2 class="modal-title success-title">¡Recompensa Reclamada!</h2>
+
+          @if (claimedReward()) {
+            <div class="success-amount">
+              <span class="amount-earned">+{{ claimedReward()!.total }}</span>
+              <span class="grovs-icon">💎</span>
+            </div>
+
+            @if (claimedReward()!.bonus > 0) {
+              <p class="success-streak">
+                🔥 Racha de {{ claimedReward()!.streak }} días
+              </p>
+            }
+          }
+
+          <p class="success-message">
+            Vuelve mañana para seguir tu racha
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,598 @@
+<div class="profile-container">
+  <!-- Background decoration -->
+  <div class="profile-background-decoration"></div>
+
+  <!-- Main Content -->
+  <div class="profile-content">
+    
+    <!-- Profile Header Card -->
+    <div class="profile-header-card">
+      <div 
+        [ngClass]="{'profile-banner': true, 'default-banner': !user?.active_banner?.image_url}" 
+        [style.backgroundImage]="user?.active_banner?.image_url ? 'url(' + user?.active_banner?.image_url + ')' : ''">
+      </div>
+      
+      <div class="profile-header-content">
+        <!-- Avatar Section -->
+        <div class="profile-avatar-section">
+          <div class="avatar-wrapper">
+            <img 
+              [src]="user?.avatar_url || 'assets/img/placeholder.svg'" 
+              alt="Avatar" 
+              class="avatar-image"
+              (error)="onAvatarError($event)">
+            <label for="avatar-upload" class="avatar-overlay">
+              <i class="ci ci-Camera"></i>
+              <span>Cambiar</span>
+            </label>
+            <input 
+              type="file" 
+              id="avatar-upload" 
+              class="avatar-input" 
+              accept="image/jpeg,image/png,image/webp"
+              (change)="onProfilePictureChange($event)">
+            @if (user?.avatar_url) {
+              <button 
+                type="button" 
+                class="avatar-delete-btn" 
+                (click)="onDeleteAvatar()"
+                title="Eliminar avatar">
+                <i class="ci ci-Delete_1"></i>
+              </button>
+            }
+          </div>
+          <div class="avatar-info">
+            <p class="avatar-hint">JPG, PNG o WebP</p>
+            <p class="avatar-hint">Máximo 5MB</p>
+          </div>
+        </div>
+
+        <!-- User Info Section -->
+        <div class="profile-user-info">
+          <div class="user-name-section">
+            <div class="user-name-wrapper">
+              <div class="player-head-wrapper small-head">
+                <img [src]="playerSkinUrl()" [alt]="user?.username" class="player-head" (error)="onAvatarError($event)">
+              </div>
+              <h1 class="user-name">{{ user?.username }}</h1>
+            </div>
+            <span class="role-badge" [ngClass]="getRoleBadgeClass()">
+              {{ user?.role_display }}
+            </span>
+          </div>
+          
+          @if (user?.minecraft_username) {
+            <div class="user-detail">
+              <i class="ci ci-Game_Controller_1"></i>
+              <span>{{ user?.minecraft_username }}</span>
+            </div>
+          }
+          
+          @if (user?.email) {
+            <div class="user-detail">
+              <i class="ci ci-Mail"></i>
+              <span>{{ user?.email }}</span>
+            </div>
+          }
+          
+          @if (getMemberSince()) {
+            <div class="user-detail">
+              <i class="ci ci-Calendar"></i>
+              <span>Miembro desde {{ getMemberSince() }}</span>
+            </div>
+          }
+        </div>
+
+        <!-- Logout Button -->
+        <div class="profile-actions">
+          <button class="logout-btn" (click)="onLogout()">
+            <i class="ci ci-Log_Out"></i>
+            <span>Cerrar Sesión</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-navigation">
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'profile'"
+        (click)="setActiveTab('profile')">
+        <i class="ci ci-User"></i>
+        <span>Perfil</span>
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'banners'"
+        (click)="setActiveTab('banners')">
+        <i class="ci ci-Photo_Picture"></i>
+        <span>Banners</span>
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'security'"
+        (click)="setActiveTab('security')">
+        <i class="ci ci-Lock"></i>
+        <span>Seguridad</span>
+      </button>
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'preferences'"
+        (click)="setActiveTab('preferences')">
+        <i class="ci ci-Settings"></i>
+        <span>Preferencias</span>
+      </button>
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'grovs'"
+        (click)="setActiveTab('grovs')">
+        <span class="grovs-tab-icon">💎</span>
+        <span>Mis Grovs</span>
+      </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      
+      <!-- PROFILE TAB -->
+      @if (activeTab === 'profile') {
+        <div class="content-card">
+          <div class="card-header">
+            <div class="card-title-section">
+              <i class="ci ci-User card-icon"></i>
+              <div>
+                <h2 class="card-title">Información del Perfil</h2>
+                <p class="card-subtitle">Actualiza tu información personal y de contacto</p>
+              </div>
+            </div>
+            
+            @if (!isEditingProfile) {
+              <button class="edit-btn" (click)="toggleEditProfile()">
+                <i class="ci ci-Edit"></i>
+                <span>Editar</span>
+              </button>
+            }
+          </div>
+
+          <form (ngSubmit)="onAccountInfoSubmit()" class="profile-form">
+            <!-- Username -->
+            <div class="form-group">
+              <label for="username" class="form-label">
+                <i class="ci ci-User"></i>
+                Nombre de Usuario
+              </label>
+              <input 
+                type="text" 
+                id="username" 
+                class="form-input" 
+                [(ngModel)]="username"
+                name="username"
+                [disabled]="!isEditingProfile"
+                placeholder="Tu nombre de usuario">
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="email" class="form-label">
+                <i class="ci ci-Mail"></i>
+                Correo Electrónico
+              </label>
+              <input 
+                type="email" 
+                id="email" 
+                class="form-input" 
+                [(ngModel)]="email"
+                name="email"
+                [disabled]="!isEditingProfile"
+                placeholder="tu@email.com">
+            </div>
+
+            <!-- Minecraft Username -->
+            <div class="form-group">
+              <label for="minecraft" class="form-label">
+                <i class="ci ci-Game_Controller_1"></i>
+                Nombre de Minecraft
+              </label>
+              <input 
+                type="text" 
+                id="minecraft" 
+                class="form-input" 
+                [(ngModel)]="minecraftName"
+                name="minecraftName"
+                [disabled]="!isEditingProfile"
+                placeholder="Tu nickname de Minecraft">
+            </div>
+
+            <!-- Discord -->
+            <div class="form-group">
+              <label for="discord" class="form-label">
+                <i class="ci ci-Message_2"></i>
+                Usuario de Discord
+              </label>
+              <input 
+                type="text" 
+                id="discord" 
+                class="form-input" 
+                [(ngModel)]="discord"
+                name="discord"
+                [disabled]="!isEditingProfile"
+                placeholder="usuario#0000">
+            </div>
+
+            <!-- Bio -->
+            <div class="form-group full-width">
+              <label for="bio" class="form-label">
+                <i class="ci ci-File_Text"></i>
+                Biografía
+              </label>
+              <textarea 
+                id="bio" 
+                class="form-textarea" 
+                [(ngModel)]="bio"
+                name="bio"
+                [disabled]="!isEditingProfile"
+                placeholder="Cuéntanos algo sobre ti..."
+                rows="4"></textarea>
+            </div>
+
+            <!-- Action Buttons -->
+            @if (isEditingProfile) {
+              <div class="form-actions">
+                <button type="button" class="cancel-btn" (click)="toggleEditProfile()">
+                  Cancelar
+                </button>
+                <app-animated-button
+                  label="Guardar Cambios"
+                  icon="ci ci-Check"
+                  type="submit"
+                  [disabled]="isLoading">
+                </app-animated-button>
+              </div>
+            }
+          </form>
+        </div>
+      }
+
+      <!-- BANNERS TAB -->
+      @if (activeTab === 'banners') {
+        <div class="content-card">
+          <div class="card-header">
+            <div class="card-title-section">
+              <i class="ci ci-Photo_Picture card-icon"></i>
+              <div>
+                <h2 class="card-title">Colección de Banners</h2>
+                <p class="card-subtitle">Selecciona un banner para mostrar en tu perfil y en la Action Bar.</p>
+              </div>
+            </div>
+            @if (user?.active_banner) {
+              <button class="edit-btn danger" (click)="setActiveBanner(null)">
+                <i class="ci ci-Delete_1"></i>
+                <span>Desactivar Banner</span>
+              </button>
+            }
+          </div>
+
+          <div class="banners-grid">
+            @if (hasCollectedBanners) {
+              @for (banner of collectedBanners; track banner.id) {
+                <div 
+                  class="banner-item"
+                  [class.active]="user?.active_banner?.id === banner.id"
+                  (click)="setActiveBanner(banner.id)">
+                  <img [src]="banner.image_url" [alt]="banner.name" class="banner-item-img" (error)="onAvatarError($event)">
+                  <div class="banner-item-overlay">
+                    <h3 class="banner-item-name">{{ banner.name }}</h3>
+                    <p class="banner-item-desc">{{ banner.description }}</p>
+                    @if (user?.active_banner?.id === banner.id) {
+                      <span class="active-indicator">
+                        <i class="ci ci-Check_Big"></i> Activo
+                      </span>
+                    }
+                  </div>
+                </div>
+              }
+            } @else {
+              <div class="info-message empty-banners">
+                <i class="ci ci-Box_Empty"></i>
+                <p>Aún no has coleccionado ningún banner. ¡Sigue jugando para desbloquearlos!</p>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- SECURITY TAB -->
+      @if (activeTab === 'security') {
+        <div class="content-card">
+          <div class="card-header">
+            <div class="card-title-section">
+              <i class="ci ci-Lock card-icon"></i>
+              <div>
+                <h2 class="card-title">Seguridad de la Cuenta</h2>
+                <p class="card-subtitle">Gestiona tu contraseña y configuración de seguridad</p>
+              </div>
+            </div>
+            
+            @if (!isEditingPassword) {
+              <button class="edit-btn" (click)="toggleEditPassword()">
+                <i class="ci ci-Edit"></i>
+                <span>Cambiar Contraseña</span>
+              </button>
+            }
+          </div>
+
+          @if (isEditingPassword) {
+            <form (ngSubmit)="onPasswordChangeSubmit()" class="profile-form">
+              <!-- Current Password -->
+              <div class="form-group">
+                <label for="currentPassword" class="form-label">
+                  <i class="ci ci-Lock"></i>
+                  Contraseña Actual
+                </label>
+                <div class="password-input-wrapper">
+                  <input 
+                    [type]="showCurrentPassword ? 'text' : 'password'" 
+                    id="currentPassword" 
+                    class="form-input" 
+                    [(ngModel)]="currentPassword"
+                    name="currentPassword"
+                    placeholder="Ingresa tu contraseña actual"
+                    required>
+                  <button
+                    type="button"
+                    class="toggle-password-btn"
+                    (click)="togglePasswordVisibility('current')">
+                    <i [class]="showCurrentPassword ? 'ci ci-View_Off' : 'ci ci-View'"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- New Password -->
+              <div class="form-group">
+                <label for="newPassword" class="form-label">
+                  <i class="ci ci-Lock_Check"></i>
+                  Nueva Contraseña
+                </label>
+                <div class="password-input-wrapper">
+                  <input 
+                    [type]="showNewPassword ? 'text' : 'password'" 
+                    id="newPassword" 
+                    class="form-input" 
+                    [(ngModel)]="newPassword"
+                    name="newPassword"
+                    placeholder="Ingresa tu nueva contraseña"
+                    required>
+                  <button
+                    type="button"
+                    class="toggle-password-btn"
+                    (click)="togglePasswordVisibility('new')">
+                    <i [class]="showNewPassword ? 'ci ci-View_Off' : 'ci ci-View'"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Confirm Password -->
+              <div class="form-group">
+                <label for="confirmPassword" class="form-label">
+                  <i class="ci ci-Lock_Check"></i>
+                  Confirmar Nueva Contraseña
+                </label>
+                <div class="password-input-wrapper">
+                  <input 
+                    [type]="showConfirmPassword ? 'text' : 'password'" 
+                    id="confirmPassword" 
+                    class="form-input" 
+                    [(ngModel)]="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Confirma tu nueva contraseña"
+                    required>
+                  <button
+                    type="button"
+                    class="toggle-password-btn"
+                    (click)="togglePasswordVisibility('confirm')">
+                    <i [class]="showConfirmPassword ? 'ci ci-View_Off' : 'ci ci-View'"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="form-actions">
+                <button type="button" class="cancel-btn" (click)="toggleEditPassword()">
+                  Cancelar
+                </button>
+                <app-animated-button
+                  label="Actualizar Contraseña"
+                  icon="ci ci-Check"
+                  type="submit"
+                  [disabled]="isLoading">
+                </app-animated-button>
+              </div>
+            </form>
+          } @else {
+            <div class="info-message">
+              <i class="ci ci-Info_Circle"></i>
+              <p>Tu contraseña está protegida. Haz clic en "Cambiar Contraseña" para actualizarla.</p>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- PREFERENCES TAB -->
+      @if (activeTab === 'preferences') {
+        <div class="content-card">
+          <div class="card-header">
+            <div class="card-title-section">
+              <i class="ci ci-Settings card-icon"></i>
+              <div>
+                <h2 class="card-title">Preferencias</h2>
+                <p class="card-subtitle">Personaliza tu experiencia en Grivyzom</p>
+              </div>
+            </div>
+          </div>
+
+          <form (ngSubmit)="onPreferencesSubmit()" class="profile-form">
+            <!-- Timezone -->
+            <div class="form-group full-width">
+              <label for="timezone" class="form-label">
+                <i class="ci ci-Clock"></i>
+                Zona Horaria
+              </label>
+              <select 
+                id="timezone" 
+                class="form-select" 
+                [(ngModel)]="timezone"
+                name="timezone">
+                <option value="">Selecciona tu zona horaria</option>
+                @for (tz of timezones$ | async; track tz) {
+                  <option [value]="tz">{{ tz }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Notifications -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <i class="ci ci-Notification"></i>
+                Notificaciones
+              </label>
+              <div class="preference-item">
+                <div class="preference-info">
+                  <p class="preference-title">Notificaciones por Email</p>
+                  <p class="preference-desc">Recibe actualizaciones importantes por correo</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" [(ngModel)]="notifications.email" name="emailNotifications">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="preference-item">
+                <div class="preference-info">
+                  <p class="preference-title">Notificaciones del Servidor</p>
+                  <p class="preference-desc">Alertas sobre eventos del servidor</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" [(ngModel)]="notifications.server" name="serverNotifications">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="form-actions">
+              <app-animated-button
+                label="Guardar Preferencias"
+                icon="ci ci-Check"
+                type="submit"
+                [disabled]="isLoading">
+              </app-animated-button>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- GROVS TAB -->
+      @if (activeTab === 'grovs') {
+        <div class="grovs-tab">
+          <!-- Balance Overview -->
+          <div class="grovs-overview">
+            <div class="balance-card main">
+              <div class="balance-header">
+                <span class="balance-icon">💎</span>
+                <h3>Balance Actual</h3>
+              </div>
+              <p class="balance-amount">{{ grovsBalance() }}</p>
+              <p class="balance-label">Grovs</p>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <span class="stat-icon">📈</span>
+                <div class="stat-content">
+                  <span class="stat-label">Total Ganado</span>
+                  <span class="stat-value positive">+{{ totalEarned() }}</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <span class="stat-icon">📉</span>
+                <div class="stat-content">
+                  <span class="stat-label">Total Gastado</span>
+                  <span class="stat-value negative">-{{ totalSpent() }}</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <span class="stat-icon">🔥</span>
+                <div class="stat-content">
+                  <span class="stat-label">Racha Actual</span>
+                  <span class="stat-value">{{ currentStreak() }} días</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <span class="stat-icon">⭐</span>
+                <div class="stat-content">
+                  <span class="stat-label">Mejor Racha</span>
+                  <span class="stat-value">{{ longestStreak() }} días</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transactions History -->
+          <div class="content-card">
+            <div class="card-header">
+              <div class="card-title-section">
+                <span class="card-icon">📊</span>
+                <div>
+                  <h2 class="card-title">Historial de Transacciones</h2>
+                  <p class="card-subtitle">Todas tus ganancias y gastos de Grovs</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="transactions-section">
+              @if (transactionsLoading()) {
+                <div class="loading-spinner">
+                  <div class="spinner"></div>
+                  <p>Cargando transacciones...</p>
+                </div>
+              } @else if (transactions().length === 0) {
+                <div class="empty-state">
+                  <span class="empty-icon">💎</span>
+                  <h4>No tienes transacciones aún</h4>
+                  <p>Comienza a ganar Grovs iniciando sesión diariamente o participando en eventos</p>
+                </div>
+              } @else {
+                <div class="transactions-list">
+                  @for (tx of transactions(); track tx.id) {
+                    <div class="transaction-item" [class.earn]="tx.amount > 0" [class.spend]="tx.amount < 0">
+                      <div class="tx-icon">{{ getTransactionIcon(tx.type) }}</div>
+                      <div class="tx-info">
+                        <p class="tx-description">{{ tx.description }}</p>
+                        <p class="tx-date">{{ formatDate(tx.created_at) }}</p>
+                      </div>
+                      <div class="tx-amount" [class.positive]="tx.amount > 0" [class.negative]="tx.amount < 0">
+                        {{ tx.amount > 0 ? '+' : '' }}{{ tx.amount }}
+                        <span class="grovs-label">💎</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+
+                <div class="transactions-footer">
+                  <button class="load-more-btn" (click)="loadMoreTransactions()" [disabled]="transactionsLoading()">
+                    <i class="ci ci-Refresh"></i>
+                    <span>Cargar más</span>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

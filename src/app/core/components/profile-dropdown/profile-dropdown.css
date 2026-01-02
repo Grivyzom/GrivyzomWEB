@@ -1,0 +1,383 @@
+/* ============================================
+   PROFILE DROPDOWN - Premium User Menu
+   ============================================ */
+
+.profile-dropdown {
+    position: relative;
+    display: inline-flex;
+}
+
+/* ============================================
+   TRIGGER BUTTON
+   ============================================ */
+
+.dropdown-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px 6px 6px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 50px;
+    cursor: pointer;
+    color: #374151;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    min-height: 44px;
+}
+
+.dropdown-trigger:hover {
+    background: rgba(99, 102, 241, 0.18);
+    border-color: rgba(99, 102, 241, 0.4);
+    color: #5a4fcf;
+}
+
+.dropdown-trigger:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.profile-dropdown.open .dropdown-trigger {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.5);
+    color: #5a4fcf;
+}
+
+/* Trigger Avatar */
+.trigger-avatar {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    image-rendering: pixelated;
+    border: 2px solid rgba(138, 116, 249, 0.5);
+}
+
+.online-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border: 2px solid #1e1e2e;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+}
+
+.trigger-name {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Chevron Animation */
+.chevron-icon {
+    opacity: 0.6;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.chevron-icon.rotated {
+    transform: rotate(90deg);
+}
+
+.dropdown-trigger:hover .chevron-icon {
+    opacity: 1;
+}
+
+/* ============================================
+   DROPDOWN MENU
+   ============================================ */
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 260px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        0 0 1px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    z-index: 1000;
+    overflow: hidden;
+    animation: dropdownSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropdownSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ============================================
+   MENU HEADER
+   ============================================ */
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef0f5 100%);
+}
+
+.header-avatar {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.header-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    image-rendering: pixelated;
+    border: 2px solid rgba(138, 116, 249, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.header-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1f2937;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.header-role {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #d97706;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.header-role lucide-icon {
+    color: #f59e0b;
+}
+
+/* ============================================
+   MENU ITEMS
+   ============================================ */
+
+.menu-items {
+    padding: 8px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    color: #374151;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+}
+
+.menu-item:hover {
+    background: #f3f4f6;
+    color: #5a4fcf;
+}
+
+.menu-item:focus {
+    outline: none;
+    background: #f3f4f6;
+}
+
+.menu-item lucide-icon {
+    color: #6b7280;
+    flex-shrink: 0;
+    transition: color 0.15s ease;
+}
+
+.menu-item:hover lucide-icon {
+    color: #5a4fcf;
+}
+
+.item-label {
+    flex: 1;
+}
+
+/* Badge */
+.item-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+/* Admin Item */
+.item-admin {
+    background: rgba(99, 102, 241, 0.08);
+}
+
+.item-admin:hover {
+    background: rgba(99, 102, 241, 0.15);
+}
+
+.item-admin lucide-icon {
+    color: #6366f1;
+}
+
+/* ============================================
+   MENU FOOTER (LOGOUT)
+   ============================================ */
+
+.menu-footer {
+    padding: 8px;
+    background: #fef2f2;
+}
+
+.item-danger {
+    color: #dc2626;
+}
+
+.item-danger:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.item-danger lucide-icon {
+    color: #dc2626;
+}
+
+.item-danger:hover lucide-icon {
+    color: #b91c1c;
+}
+
+/* ============================================
+   DIVIDER
+   ============================================ */
+
+.menu-divider {
+    height: 1px;
+    margin: 4px 0;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .trigger-name {
+        display: none;
+    }
+
+    .dropdown-trigger {
+        padding: 6px;
+        border-radius: 50%;
+    }
+
+    .chevron-icon {
+        display: none;
+    }
+
+    .dropdown-menu {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        min-width: 100%;
+        border-radius: 20px 20px 0 0;
+        max-height: 80vh;
+        overflow-y: auto;
+        animation: dropdownSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes dropdownSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .menu-header {
+        padding: 20px;
+    }
+
+    .header-avatar {
+        width: 56px;
+        height: 56px;
+    }
+
+    .menu-items {
+        padding: 12px;
+    }
+
+    .menu-item {
+        padding: 14px 16px;
+        font-size: 1rem;
+    }
+
+    .menu-footer {
+        padding: 12px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .dropdown-menu,
+    .chevron-icon,
+    .menu-item {
+        transition: none;
+        animation: none;
+    }
+}

@@ -1,0 +1,70 @@
+<section class="game-header" [class.loaded]="contentReady()">
+  <!-- Background Layer -->
+  <div class="background-layer">
+    <!-- Video Background (Priority) -->
+    @if (hasVideo()) {
+    <video class="bg-video" autoplay muted loop playsinline [poster]="data().image_url">
+      <source [src]="data().video_url" type="video/mp4">
+    </video>
+    } @else if (hasImage()) {
+    <!-- Image Background -->
+    <div class="bg-image" [class.ready]="imageReady()" [style.backgroundImage]="'url(' + data().image_url + ')'">
+    </div>
+    }
+
+    <!-- Gradient Overlay -->
+    <div class="gradient-overlay"></div>
+  </div>
+
+  <!-- Content Layer -->
+  <div class="content-layer" [class.visible]="!isLoading()">
+    <!-- Title Section -->
+    <div class="title-section">
+      <h1 class="game-title">{{ data().title }}</h1>
+      <p class="game-tagline">{{ data().subtitle }}</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <!-- Copy IP Button - Opens Modal -->
+      <button class="btn btn-glass" (click)="openIPModal()" [title]="'Ver direcciones IP'">
+        <lucide-icon [img]="CopyIcon" [size]="18"></lucide-icon>
+        <span>Copiar IP</span>
+      </button>
+
+      <!-- Play Button -->
+      <button class="btn btn-primary" (click)="onPlayClick()">
+        <lucide-icon [img]="PlayIcon" [size]="18"></lucide-icon>
+        <span>{{ data().button_text }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Skeleton -->
+  @if (isLoading()) {
+  <div class="loading-skeleton">
+    <div class="skeleton-title"></div>
+    <div class="skeleton-subtitle"></div>
+    <div class="skeleton-buttons">
+      <div class="skeleton-btn"></div>
+      <div class="skeleton-btn"></div>
+    </div>
+  </div>
+  }
+</section>
+
+<!-- IP Selection Modal -->
+@if (showIPModal()) {
+<app-base-modal title="Direcciones de Servidores" (onClose)="closeIPModal()" maxWidth="420px">
+  <app-ip-addresses-dropdown (onServerSelect)="onServerSelect($event)" [showInfoButton]="true"
+    (onInfoClick)="openInfoModal()" (onDone)="closeIPModal()">
+  </app-ip-addresses-dropdown>
+</app-base-modal>
+}
+
+<!-- Info Modal - "¿Por qué hay varias direcciones?" -->
+@if (showInfoModal()) {
+<app-base-modal title="¿Por qué hay varias direcciones?" (onClose)="closeInfoModal()" maxWidth="550px">
+  <app-why-multiple-servers [isStandalone]="true"></app-why-multiple-servers>
+</app-base-modal>
+}

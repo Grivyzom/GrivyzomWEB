@@ -1,4 +1,5 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { NotificationService } from './notification.service';
 
 export interface IPServer {
   id: string;
@@ -13,16 +14,10 @@ export interface IPServer {
   providedIn: 'root'
 })
 export class ServerIpService {
+  private readonly notificationService = inject(NotificationService);
+
   // Estado reactivo con signals
   private readonly servers = signal<IPServer[]>([
-    {
-      id: 'classic',
-      name: 'IP Classic Grivyzom',
-      ip: 'classic.grivyzom.com',
-      icon: 'assets/img/java_logo_icon.png',
-      type: 'classic',
-      description: 'Servidores clásicos de la network'
-    },
     {
       id: 'play',
       name: 'IP Play Grivyzom',
@@ -41,18 +36,7 @@ export class ServerIpService {
     }
   ]);
 
-  private readonly selectedServerId = signal<string | null>('classic');
-
-  // Notificación de copia exitosa
-  private readonly copyNotification = signal<{
-    message: string;
-    show: boolean;
-    timestamp: number;
-  }>({
-    message: '',
-    show: false,
-    timestamp: 0
-  });
+  private readonly selectedServerId = signal<string | null>('play');
 
   // Computed values
   readonly allServers = computed(() => this.servers());
@@ -60,7 +44,6 @@ export class ServerIpService {
     const id = this.selectedServerId();
     return this.servers().find(s => s.id === id) || this.servers()[0];
   });
-  readonly notification = computed(() => this.copyNotification());
 
   /**
    * Selecciona un servidor por ID
@@ -85,39 +68,13 @@ export class ServerIpService {
   async copyToClipboard(ip: string): Promise<boolean> {
     try {
       await navigator.clipboard.writeText(ip);
-      this.showNotification(`IP ${ip} copiada al portapapeles`);
+      this.notificationService.success(`IP "${ip}" copiada al portapapeles`);
       return true;
     } catch (err) {
       console.error('Error al copiar IP:', err);
-      this.showNotification('Error al copiar IP', true);
+      this.notificationService.error('Error al copiar la IP');
       return false;
     }
-  }
-
-  /**
-   * Muestra una notificación temporal
-   */
-  private showNotification(message: string, isError = false): void {
-    this.copyNotification.set({
-      message,
-      show: true,
-      timestamp: Date.now()
-    });
-
-    // Auto-ocultar después de 3 segundos
-    setTimeout(() => {
-      this.hideNotification();
-    }, 3000);
-  }
-
-  /**
-   * Oculta la notificación
-   */
-  hideNotification(): void {
-    this.copyNotification.update(state => ({
-      ...state,
-      show: false
-    }));
   }
 
   /**

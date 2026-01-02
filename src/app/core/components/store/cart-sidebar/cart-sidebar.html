@@ -1,0 +1,164 @@
+<!-- Backdrop -->
+<div class="cart-backdrop" [class.open]="isOpen()" (click)="close()"></div>
+
+<!-- Sidebar -->
+<aside class="cart-sidebar" [class.open]="isOpen()">
+    <!-- Header -->
+    <header class="cart-header">
+        <div class="header-title">
+            <lucide-icon [img]="icons.ShoppingCart" [size]="22"></lucide-icon>
+            <h3>Tu Carrito</h3>
+            <span class="item-count">{{ cart().itemCount }}</span>
+        </div>
+        <button class="btn-close" (click)="close()" aria-label="Cerrar carrito">
+            <lucide-icon [img]="icons.X" [size]="20"></lucide-icon>
+        </button>
+    </header>
+
+    <!-- Cart Content -->
+    <div class="cart-content">
+        @if (cartItems().length === 0) {
+        <!-- Empty State -->
+        <div class="empty-state">
+            <div class="empty-icon">🛒</div>
+            <h4>Tu carrito está vacío</h4>
+            <p>¡Explora la tienda y encuentra items increíbles!</p>
+        </div>
+        } @else {
+        <!-- Items List -->
+        <ul class="cart-items">
+            @for (item of cartItems(); track trackByProductId($index, item)) {
+            <li class="cart-item">
+                <img [src]="item.product.imageUrl" [alt]="item.product.name" class="item-image">
+
+                <div class="item-info">
+                    <h4 class="item-name">{{ item.product.name }}</h4>
+                    <span class="item-type">{{ item.product.type | titlecase }}</span>
+                </div>
+
+                <div class="item-controls">
+                    <div class="quantity-controls">
+                        <button class="qty-btn" (click)="updateQuantity(item.product.id, item.quantity - 1)"
+                            [disabled]="item.quantity <= 1">
+                            <lucide-icon [img]="icons.Minus" [size]="14"></lucide-icon>
+                        </button>
+                        <span class="quantity">{{ item.quantity }}</span>
+                        <button class="qty-btn" (click)="updateQuantity(item.product.id, item.quantity + 1)">
+                            <lucide-icon [img]="icons.Plus" [size]="14"></lucide-icon>
+                        </button>
+                    </div>
+
+                    <span class="item-price">${{ getItemPrice(item).toFixed(2) }}</span>
+                </div>
+
+                <button class="btn-remove" (click)="removeItem(item.product.id)" aria-label="Eliminar item">
+                    <lucide-icon [img]="icons.Trash2" [size]="16"></lucide-icon>
+                </button>
+            </li>
+            }
+        </ul>
+        }
+    </div>
+
+    <!-- Footer -->
+    @if (cartItems().length > 0) {
+    <footer class="cart-footer">
+        <!-- Payment Method Selector -->
+        <div class="payment-method-selector">
+            <h4 class="selector-title">Método de Pago</h4>
+
+            <div class="payment-options">
+                <!-- Dinero Real Option -->
+                <label class="payment-option" [class.selected]="selectedPaymentMethod() === 'money'">
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="money"
+                        [(ngModel)]="selectedPaymentMethod">
+                    <div class="option-content">
+                        <span class="option-icon">💳</span>
+                        <div class="option-details">
+                            <p class="option-label">Dinero Real</p>
+                            <p class="option-amount">${{ cart().total.toFixed(2) }}</p>
+                            @if (cartCashbackGrovs() > 0) {
+                            <p class="cashback-info">+{{ cartCashbackGrovs() }} 💎 Cashback</p>
+                            }
+                        </div>
+                    </div>
+                </label>
+
+                <!-- Grovs Option -->
+                @if (canPayWithGrovs()) {
+                <label class="payment-option" [class.selected]="selectedPaymentMethod() === 'grovs'">
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="grovs"
+                        [(ngModel)]="selectedPaymentMethod">
+                    <div class="option-content">
+                        <span class="option-icon">💎</span>
+                        <div class="option-details">
+                            <p class="option-label">Grovs</p>
+                            <p class="option-amount">{{ cartTotalGrovs() }} Grovs</p>
+                            <p class="balance-info" [class.insufficient]="grovsBalance() < cartTotalGrovs()">
+                                Balance: {{ grovsBalance() }} 💎
+                            </p>
+                        </div>
+                    </div>
+                </label>
+                } @else {
+                <div class="payment-option disabled">
+                    <div class="option-content">
+                        <span class="option-icon">💎</span>
+                        <div class="option-details">
+                            <p class="option-label">Grovs</p>
+                            <p class="disabled-message">No disponible para estos items</p>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- Totals -->
+        <div class="cart-totals">
+            @if (cart().discount > 0) {
+            <div class="total-row">
+                <span>Subtotal</span>
+                <span>${{ cart().subtotal.toFixed(2) }}</span>
+            </div>
+            <div class="total-row discount">
+                <span>Descuento</span>
+                <span>-${{ cart().discount.toFixed(2) }}</span>
+            </div>
+            }
+            <div class="total-row final">
+                <span>Total</span>
+                <span>${{ cart().total.toFixed(2) }}</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="cart-actions">
+            <button class="btn-clear" (click)="clearCart()">
+                Vaciar carrito
+            </button>
+
+            @if (selectedPaymentMethod() === 'money') {
+            <button class="btn-checkout money" (click)="checkout()">
+                <lucide-icon [img]="icons.CreditCard" [size]="18"></lucide-icon>
+                <span>Pagar ${{ cart().total.toFixed(2) }}</span>
+            </button>
+            } @else {
+            <button
+                class="btn-checkout grovs"
+                [disabled]="grovsBalance() < cartTotalGrovs()"
+                (click)="checkout()">
+                <span class="grovs-icon">💎</span>
+                <span>Pagar {{ cartTotalGrovs() }} Grovs</span>
+            </button>
+            }
+        </div>
+    </footer>
+    }
+</aside>

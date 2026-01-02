@@ -1,0 +1,55 @@
+<div class="calendar-month-view">
+    <!-- Header with Navigation -->
+    <div class="calendar-header">
+        <button class="nav-button" (click)="previousMonth()" type="button" aria-label="Mes anterior">
+            <lucide-angular [img]="icons.ChevronLeft" [size]="20"></lucide-angular>
+        </button>
+
+        <div class="month-info">
+            <h2 class="month-title">{{ monthData().monthName }} {{ monthData().year }}</h2>
+            <button class="today-button" (click)="goToToday()" type="button">Hoy</button>
+        </div>
+
+        <button class="nav-button" (click)="nextMonth()" type="button" aria-label="Mes siguiente">
+            <lucide-angular [img]="icons.ChevronRight" [size]="20"></lucide-angular>
+        </button>
+    </div>
+
+    <!-- Day Names Header -->
+    <div class="day-names">
+        @for (dayName of DAY_NAMES; track dayName) {
+            <div class="day-name">{{ dayName }}</div>
+        }
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="calendar-grid">
+        @for (week of monthData().weeks; track $index) {
+            @for (day of week; track day.date.getTime()) {
+                <div class="calendar-day"
+                     [class.other-month]="!day.isCurrentMonth"
+                     [class.today]="day.isToday"
+                     [class.past]="day.isPast && !day.isToday"
+                     [class.has-events]="day.hasEvents"
+                     [class.selected]="isDaySelected(day)"
+                     (click)="selectDay(day)">
+
+                    <span class="day-number">{{ day.dayNumber }}</span>
+
+                    @if (day.hasEvents) {
+                        <div class="event-indicators">
+                            @for (event of day.events.slice(0, 3); track event.id) {
+                                <span class="event-dot"
+                                      [style.background-color]="getCategoryColor(event.category)"
+                                      [title]="event.title"></span>
+                            }
+                            @if (day.events.length > 3) {
+                                <span class="more-events">+{{ day.events.length - 3 }}</span>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>

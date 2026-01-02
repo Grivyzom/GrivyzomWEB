@@ -1,0 +1,31 @@
+<app-base-modal
+    [title]="'Calendario de Eventos'"
+    [maxWidth]="'1400px'"
+    (onClose)="close()">
+
+    <div class="calendar-modal-content">
+        <!-- Category Filters -->
+        <app-event-category-filter />
+
+        <!-- Main Content: Two-column layout -->
+        <div class="calendar-grid">
+            <!-- Left: Calendar View -->
+            <div class="calendar-section">
+                <app-calendar-month-view />
+            </div>
+
+            <!-- Right: Event List -->
+            <div class="events-section">
+                <app-event-list-view />
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Panel (slides in when event selected) -->
+    @if (selectedEvent()) {
+        <app-event-detail-panel
+            [event]="selectedEvent()!"
+            (onClose)="closeDetailPanel()" />
+    }
+
+</app-base-modal>

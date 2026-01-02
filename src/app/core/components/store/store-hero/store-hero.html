@@ -1,0 +1,43 @@
+<section class="store-hero" [style.background-image]="backgroundUrl ? 'url(' + backgroundUrl + ')' : ''">
+    <!-- Overlay -->
+    <div class="hero-overlay"></div>
+
+    <!-- Animated particles -->
+    <div class="particles">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="hero-content">
+        @if (offer) {
+        <!-- Offer mode -->
+        <div class="offer-badge">
+            <lucide-icon [img]="icons.Sparkles" [size]="14"></lucide-icon>
+            <span>OFERTA ESPECIAL</span>
+        </div>
+        <h1 class="hero-title">{{ offer.title }}</h1>
+        <p class="hero-subtitle">{{ offer.description }}</p>
+        <div class="discount-display">
+            <span class="discount-value">-{{ offer.discountPercent }}%</span>
+            <span class="discount-label">de descuento</span>
+        </div>
+        } @else {
+        <!-- Default mode -->
+        <h1 class="hero-title">{{ title }}</h1>
+        <p class="hero-subtitle">{{ subtitle }}</p>
+        }
+
+        <button class="hero-cta" (click)="onCtaClick()">
+            <span>Ver Ofertas</span>
+            <lucide-icon [img]="icons.ArrowRight" [size]="18"></lucide-icon>
+        </button>
+    </div>
+
+    <!-- Decorative elements -->
+    <div class="hero-decoration left"></div>
+    <div class="hero-decoration right"></div>
+</section>

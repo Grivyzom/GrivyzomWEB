@@ -1,0 +1,70 @@
+<div class="profile-dropdown" [class.open]="isOpen()">
+    <!-- Trigger Button -->
+    <button class="dropdown-trigger" (click)="toggle()" [attr.aria-expanded]="isOpen()" aria-haspopup="true">
+        <div class="trigger-avatar">
+            <img [src]="avatarUrl" [alt]="displayName" class="avatar-img"
+                (error)="avatarUrl = 'assets/img/placeholder.svg'">
+            <span class="online-dot"></span>
+        </div>
+        <span class="trigger-name">{{ displayName }}</span>
+        <lucide-icon [img]="icons.ChevronRight" [size]="16" class="chevron-icon"
+            [class.rotated]="isOpen()"></lucide-icon>
+    </button>
+
+    <!-- Dropdown Menu -->
+    @if (isOpen()) {
+    <div class="dropdown-menu" role="menu">
+        <!-- User Header -->
+        <div class="menu-header">
+            <div class="header-avatar">
+                <img [src]="avatarUrl" [alt]="displayName" class="header-avatar-img">
+            </div>
+            <div class="header-info">
+                <span class="header-name">{{ displayName }}</span>
+                <span class="header-role">
+                    <lucide-icon [img]="icons.Crown" [size]="12"></lucide-icon>
+                    {{ roleDisplay }}
+                </span>
+            </div>
+        </div>
+
+        <div class="menu-divider"></div>
+
+        <!-- Menu Items -->
+        <div class="menu-items">
+            @for (item of menuItems; track item.label) {
+            @if (item.divider) {
+            <div class="menu-divider"></div>
+            } @else {
+            <a class="menu-item" [routerLink]="item.route" (click)="onItemClick(item, $event)" role="menuitem">
+                <lucide-icon [img]="item.icon" [size]="18"></lucide-icon>
+                <span class="item-label">{{ item.label }}</span>
+                @if (item.badge) {
+                <span class="item-badge">{{ item.badge }}</span>
+                }
+            </a>
+            }
+            }
+
+            <!-- Admin Panel (conditional) -->
+            @if (isStaff) {
+            <a class="menu-item item-admin" [routerLink]="adminItem.route" (click)="onItemClick(adminItem, $event)"
+                role="menuitem">
+                <lucide-icon [img]="adminItem.icon" [size]="18"></lucide-icon>
+                <span class="item-label">{{ adminItem.label }}</span>
+            </a>
+            }
+        </div>
+
+        <div class="menu-divider"></div>
+
+        <!-- Logout -->
+        <div class="menu-footer">
+            <button class="menu-item item-danger" (click)="onLogout()" role="menuitem">
+                <lucide-icon [img]="logoutItem.icon" [size]="18"></lucide-icon>
+                <span class="item-label">{{ logoutItem.label }}</span>
+            </button>
+        </div>
+    </div>
+    }
+</div>

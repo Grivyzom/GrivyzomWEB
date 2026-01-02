@@ -1,0 +1,413 @@
+/* ============================================
+   FEATURE CARD - Exclusive Feature Card
+   ============================================ */
+
+.feature-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 32px 28px 28px;
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.05),
+        0 4px 12px rgba(0, 0, 0, 0.08),
+        0 8px 24px rgba(0, 0, 0, 0.06);
+    border: 2px solid #e2e8f0;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    width: 100%;
+    min-width: 280px;
+    max-width: 380px;
+    height: 100%;
+    will-change: transform;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 20px;
+    padding: 2px;
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.6),
+        rgba(34, 197, 94, 0.2),
+        transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.08),
+        0 12px 24px rgba(0, 0, 0, 0.12),
+        0 24px 48px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+/* Rarity Borders */
+.feature-card.rarity-common {
+    border-color: #e2e8f0;
+}
+
+.feature-card.rarity-rare {
+    border-color: #3b82f6;
+}
+
+.feature-card.rarity-epic {
+    border-color: #8b5cf6;
+}
+
+.feature-card.rarity-legendary {
+    border-color: #f59e0b;
+}
+
+/* ============================================
+   ICON SECTION
+   ============================================ */
+
+.feature-icon-section {
+    margin-bottom: 16px;
+}
+
+.feature-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 3px solid #e2e8f0;
+    border-radius: 22px;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.feature-icon-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 22px;
+    background: linear-gradient(135deg,
+        rgba(34, 197, 94, 0.3),
+        rgba(22, 163, 74, 0.2),
+        transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.feature-card:hover .feature-icon-wrapper {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.12),
+        0 4px 8px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.feature-card:hover .feature-icon-wrapper::before {
+    opacity: 1;
+}
+
+.feature-icon {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+/* ============================================
+   COMMAND DISPLAY
+   ============================================ */
+
+.command-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    border-radius: 14px;
+    margin-bottom: 18px;
+    position: relative;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.command-display::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg,
+        rgba(34, 197, 94, 0.2),
+        transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.feature-card:hover .command-display {
+    transform: scale(1.05);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.25),
+        0 3px 6px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.feature-card:hover .command-display::before {
+    opacity: 1;
+}
+
+.command-display lucide-icon {
+    color: #22c55e;
+    filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.4));
+    transition: filter 0.3s ease;
+}
+
+.feature-card:hover .command-display lucide-icon {
+    filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.6));
+}
+
+.command-display code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #22c55e;
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+    transition: text-shadow 0.3s ease;
+}
+
+.feature-card:hover .command-display code {
+    text-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+}
+
+/* ============================================
+   CONTENT
+   ============================================ */
+
+.feature-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.feature-name {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.feature-description {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+/* Duration Badge */
+.duration-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.duration-badge.permanent {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: #16a34a;
+}
+
+.duration-badge lucide-icon {
+    opacity: 0.8;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.feature-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.price-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.original-price {
+    font-size: 0.95rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+}
+
+.current-price {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+.btn-unlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 16px 28px;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    border: none;
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow:
+        0 4px 12px rgba(34, 197, 94, 0.35),
+        0 2px 4px rgba(34, 197, 94, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.btn-unlock::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.3),
+        transparent 40%,
+        rgba(255, 255, 255, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-unlock::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn-unlock:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow:
+        0 8px 24px rgba(34, 197, 94, 0.5),
+        0 4px 8px rgba(34, 197, 94, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.btn-unlock:hover::before {
+    opacity: 1;
+}
+
+.btn-unlock:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.btn-unlock:active::after {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+}
+
+/* ============================================
+   NEW BADGE
+   ============================================ */
+
+.new-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 5px 10px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 640px) {
+    .feature-card {
+        min-width: 260px;
+        max-width: 100%;
+        padding: 24px 20px 20px;
+    }
+
+    .feature-icon-wrapper {
+        width: 70px;
+        height: 70px;
+    }
+
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .command-display code {
+        font-size: 1rem;
+    }
+
+    .feature-name {
+        font-size: 1.05rem;
+    }
+
+    .btn-unlock {
+        padding: 12px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .feature-card {
+        min-width: 100%;
+    }
+}
+
+/* Dark mode removed - Enforcing light mode per design philosophy */

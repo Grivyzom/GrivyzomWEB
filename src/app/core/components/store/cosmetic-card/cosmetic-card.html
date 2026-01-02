@@ -1,0 +1,78 @@
+<article class="cosmetic-card" [class]="'rarity-' + cosmetic.rarity" [class.hovered]="isHovered()"
+    (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="onPreview()">
+
+    <!-- Preview Container -->
+    <div class="preview-container">
+        <!-- Imagen estática -->
+        <img [src]="cosmetic.imageUrl" [alt]="cosmetic.name" class="preview-image"
+            [class.hidden]="isHovered() && cosmetic.previewUrl" loading="lazy">
+
+        <!-- Preview animado (GIF/Video) -->
+        @if (cosmetic.previewUrl && isHovered()) {
+        @if (cosmetic.previewType === 'video') {
+        <video class="preview-animated" [src]="cosmetic.previewUrl" autoplay loop muted playsinline preload="none">
+        </video>
+        } @else {
+        <img [src]="cosmetic.previewUrl" [alt]="cosmetic.name + ' preview'" class="preview-animated" loading="lazy">
+        }
+        }
+
+        <!-- Overlay con botones -->
+        <div class="preview-overlay">
+            <button class="btn-preview" title="Ver preview">
+                <lucide-icon [img]="icons.Eye" [size]="20"></lucide-icon>
+            </button>
+        </div>
+
+        <!-- Badge de tipo -->
+        <div class="type-badge" [style.background]="rarityColor.border">
+            {{ typeLabel }}
+        </div>
+
+        <!-- Badge nuevo -->
+        @if (cosmetic.new) {
+        <div class="new-badge">
+            <lucide-icon [img]="icons.Sparkles" [size]="10"></lucide-icon>
+            NEW
+        </div>
+        }
+    </div>
+
+    <!-- Info -->
+    <div class="card-info">
+        <h4 class="cosmetic-name">{{ cosmetic.name }}</h4>
+
+        <div class="price-section">
+            <div class="price-row">
+                <div class="price">
+                    @if (cosmetic.discountPrice) {
+                    <span class="original">${{ cosmetic.price.toFixed(2) }}</span>
+                    <span class="current">${{ cosmetic.discountPrice.toFixed(2) }}</span>
+                    } @else {
+                    <span class="current">${{ cosmetic.price.toFixed(2) }}</span>
+                    }
+                </div>
+
+                <button class="btn-add-cart" (click)="onAddToCart($event)" title="Añadir al carrito">
+                    <lucide-icon [img]="icons.ShoppingCart" [size]="16"></lucide-icon>
+                </button>
+            </div>
+
+            @if (cosmetic.grovs_price) {
+            <div class="price-grovs">
+                <span class="grovs-amount">{{ cosmetic.grovs_price }}</span>
+                <span class="grovs-icon">💎</span>
+            </div>
+            }
+
+            @if (cashbackGrovs > 0) {
+            <div class="cashback-badge">
+                +{{ cashbackGrovs }} 💎
+            </div>
+            }
+        </div>
+    </div>
+
+    <!-- Rarity glow -->
+    <div class="rarity-glow"></div>
+</article>

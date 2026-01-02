@@ -1,0 +1,125 @@
+<div class="gallery-container" (keydown)="onKeydown($event)" tabindex="0">
+    <!-- Header Section -->
+    <header class="gallery-header">
+        <div class="header-content">
+            <h1 class="gallery-title">
+                <i class="ci ci-Image"></i>
+                Galería
+            </h1>
+            <p class="gallery-subtitle">Explora los mejores momentos de nuestra comunidad</p>
+        </div>
+    </header>
+
+    <!-- Category Tabs -->
+    <nav class="category-tabs">
+        <button class="category-tab" [class.active]="selectedCategory() === null" (click)="selectCategory(null)">
+            <i class="ci ci-Grid"></i>
+            <span>Todos</span>
+        </button>
+        @for (category of categories(); track category.id) {
+        <button class="category-tab" [class.active]="selectedCategory() === category.slug"
+            (click)="selectCategory(category.slug)">
+            <i class="ci" [ngClass]="category.icon || 'ci-Folder'"></i>
+            <span>{{ category.name }}</span>
+            @if (category.image_count > 0) {
+            <span class="image-count">{{ category.image_count }}</span>
+            }
+        </button>
+        }
+    </nav>
+
+    <!-- Gallery Grid -->
+    <main class="gallery-main">
+        @if (loading()) {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Cargando imágenes...</p>
+        </div>
+        } @else if (error()) {
+        <div class="error-container">
+            <i class="ci ci-Warning"></i>
+            <p>{{ error() }}</p>
+            <button class="retry-btn" (click)="loadImages()">Reintentar</button>
+        </div>
+        } @else if (!hasImages()) {
+        <div class="empty-container">
+            <i class="ci ci-Image"></i>
+            <h3>No hay imágenes disponibles</h3>
+            <p>Aún no se han subido imágenes a esta categoría.</p>
+        </div>
+        } @else {
+        <div class="gallery-grid">
+            @for (image of displayedImages(); track image.id) {
+            <div class="gallery-item" (click)="openLightbox(image)">
+                <div class="image-wrapper">
+                    <img [src]="image.thumbnail_url || image.image_url" [alt]="image.title"
+                        (error)="onImageError($event)" loading="lazy">
+                    <div class="image-overlay">
+                        <div class="overlay-content">
+                            <h3>{{ image.title }}</h3>
+                            @if (image.author) {
+                            <span class="author">
+                                <i class="ci ci-User"></i>
+                                {{ image.author }}
+                            </span>
+                            }
+                        </div>
+                        <div class="zoom-icon">
+                            <i class="ci ci-Maximize"></i>
+                        </div>
+                    </div>
+                    @if (image.is_featured) {
+                    <div class="featured-badge">
+                        <i class="ci ci-Star"></i>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </main>
+
+    <!-- Lightbox Modal -->
+    @if (lightboxOpen()) {
+    <div class="lightbox-overlay" (click)="closeLightbox()">
+        <button class="lightbox-close" (click)="closeLightbox()">
+            <i class="ci ci-Close"></i>
+        </button>
+
+        <button class="lightbox-nav prev" (click)="prevImage($event)">
+            <i class="ci ci-ChevronLeft"></i>
+        </button>
+
+        <div class="lightbox-content" (click)="$event.stopPropagation()">
+            @if (lightboxImage()) {
+            <img [src]="lightboxImage()!.image_url" [alt]="lightboxImage()!.title" class="lightbox-image">
+            <div class="lightbox-info">
+                <h3>{{ lightboxImage()!.title }}</h3>
+                @if (lightboxImage()!.description) {
+                <p>{{ lightboxImage()!.description }}</p>
+                }
+                @if (lightboxImage()!.author) {
+                <span class="lightbox-author">
+                    <i class="ci ci-User"></i>
+                    {{ lightboxImage()!.author }}
+                </span>
+                }
+                <span class="lightbox-category">
+                    <i class="ci ci-Folder"></i>
+                    {{ lightboxImage()!.category.name }}
+                </span>
+            </div>
+            }
+        </div>
+
+        <button class="lightbox-nav next" (click)="nextImage($event)">
+            <i class="ci ci-ChevronRight"></i>
+        </button>
+
+        <div class="lightbox-counter">
+            {{ lightboxIndex() + 1 }} / {{ images().length }}
+        </div>
+    </div>
+    }
+</div>

@@ -1,0 +1,58 @@
+<div class="dashboard-page">
+    <app-admin-header title="Dashboard" subtitle="Resumen general del sistema" [breadcrumbs]="breadcrumbs">
+    </app-admin-header>
+
+    <div class="dashboard-content">
+        @if (isLoading()) {
+        <div class="loading-state">
+            <div class="loader"></div>
+            <span>Cargando estadísticas...</span>
+        </div>
+        } @else if (stats()) {
+        <!-- Stats Grid -->
+        <section class="stats-section">
+            <h2 class="section-title">Estadísticas Generales</h2>
+            <div class="stats-grid">
+                @for (card of statCards; track card.title) {
+                <app-stat-card [title]="card.title" [value]="card.value" [icon]="card.icon" [iconColor]="card.iconColor"
+                    [trend]="card.trend" [trendLabel]="card.trendLabel">
+                </app-stat-card>
+                }
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="actions-section">
+            <h2 class="section-title">Acciones Rápidas</h2>
+            <div class="actions-grid">
+                <a routerLink="/admin/users" class="quick-action">
+                    <lucide-icon [img]="icons.Users" [size]="24"></lucide-icon>
+                    <span class="action-label">Gestionar Usuarios</span>
+                    <span class="action-desc">Ver, editar y moderar usuarios</span>
+                </a>
+                <a routerLink="/admin/posts" class="quick-action">
+                    <lucide-icon [img]="icons.FileText" [size]="24"></lucide-icon>
+                    <span class="action-label">Moderar Posts</span>
+                    <span class="action-desc">Revisar y gestionar publicaciones</span>
+                </a>
+                <a routerLink="/admin/gallery" class="quick-action">
+                    <lucide-icon [img]="icons.Image" [size]="24"></lucide-icon>
+                    <span class="action-label">Galería</span>
+                    <span class="action-desc">Subir y organizar imágenes</span>
+                </a>
+                <a routerLink="/admin/content" class="quick-action">
+                    <lucide-icon [img]="icons.TrendingUp" [size]="24"></lucide-icon>
+                    <span class="action-label">Contenido</span>
+                    <span class="action-desc">Editar Hero, Headers y más</span>
+                </a>
+            </div>
+        </section>
+        } @else {
+        <!-- Error State -->
+        <div class="error-state">
+            <p>No se pudieron cargar las estadísticas.</p>
+            <button class="retry-btn" (click)="loadStats()">Reintentar</button>
+        </div>
+        }
+    </div>
+</div>

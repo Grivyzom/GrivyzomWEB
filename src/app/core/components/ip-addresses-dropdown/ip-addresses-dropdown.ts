@@ -37,9 +37,6 @@ export class IpAddressesDropdownComponent {
   readonly servers = computed(() => this.serverIpService.allServers());
   readonly selectedServer = computed(() => this.serverIpService.selectedServer());
 
-  // Estado de animación para el botón de copia
-  readonly copiedServerId = signal<string | null>(null);
-
   constructor() {
     // Effect para emitir cambios de servidor (solo cuando cambia, no en la inicialización)
     let isFirstRun = true;
@@ -68,18 +65,11 @@ export class IpAddressesDropdownComponent {
   }
 
   /**
-   * Copiar IP con feedback visual mejorado
+   * Copia la IP al portapapeles.
    */
-  async copyToClipboard(event: Event, server: IPServer): Promise<void> {
+  copyToClipboard(event: Event, server: IPServer): void {
     event.stopPropagation();
-
-    const success = await this.serverIpService.copyToClipboard(server.ip);
-
-    if (success) {
-      // Mostrar feedback visual temporal
-      this.copiedServerId.set(server.id);
-      setTimeout(() => this.copiedServerId.set(null), 2000);
-    }
+    this.serverIpService.copyToClipboard(server.ip);
   }
 
   /**
@@ -88,13 +78,6 @@ export class IpAddressesDropdownComponent {
   closeDropdown(): void {
     this.isOpen.set(false);
     this.onDone.emit();
-  }
-
-  /**
-   * Verificar si un servidor fue copiado recientemente
-   */
-  wasCopied(serverId: string): boolean {
-    return this.copiedServerId() === serverId;
   }
 
   /**

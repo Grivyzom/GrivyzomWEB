@@ -1,0 +1,156 @@
+<div class="rankings-page">
+  <!-- Background decoration -->
+  <div class="rankings-background-decoration"></div>
+
+  <!-- Main Content -->
+  <div class="rankings-content">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-content">
+        <div class="header-icon">
+          <i class="ci ci-Trophy"></i>
+        </div>
+        <div class="header-text">
+          <h1 class="page-title">Rankings</h1>
+          <p class="page-subtitle">Descubre quiénes lideran en cada servidor de Grivyzom</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rankings Card -->
+    <div class="content-card">
+      <!-- Server Selector -->
+      <div class="rankings-filters">
+        <div class="filter-section">
+          <label class="filter-label">
+            <i class="ci ci-Server"></i>
+            Servidor
+          </label>
+          <div class="server-selector">
+            @for (server of servers; track server.id) {
+              <button 
+                class="server-btn"
+                [class.active]="selectedServer === server.id"
+                (click)="selectServer(server.id)">
+                <i class="ci {{ server.icon }}"></i>
+                <span>{{ server.name }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Category Selector -->
+        <div class="filter-section">
+          <label class="filter-label">
+            <i class="ci ci-Category"></i>
+            Categoría
+          </label>
+          <div class="category-selector">
+            @for (category of rankingCategories; track category.id) {
+              <button 
+                class="category-btn"
+                [class.active]="selectedCategory === category.id"
+                (click)="selectCategory(category.id)">
+                <i class="ci {{ category.icon }}"></i>
+                <span>{{ category.name }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Selection Info -->
+      <div class="selection-info">
+        <span class="selection-badge">
+          <i class="ci ci-Trophy"></i>
+          Top 10 - {{ getSelectedServerName() }} - {{ getCategoryName() }}
+        </span>
+      </div>
+
+      <!-- Rankings Table -->
+      <div class="rankings-container">
+        @if (isLoadingRankings) {
+          <div class="rankings-loading">
+            <div class="loading-spinner"></div>
+            <p>Cargando rankings...</p>
+          </div>
+        } @else {
+          <div class="rankings-table">
+            <!-- Header -->
+            <div class="rankings-header">
+              <span class="col-position">#</span>
+              <span class="col-player">Jugador</span>
+              <span class="col-value">{{ getCategoryName() }}</span>
+            </div>
+            
+            <!-- Players List -->
+            @for (player of topPlayers; track player.position) {
+              <div class="ranking-row" [class]="getPositionClass(player.position)">
+                <div class="col-position">
+                  @if (player.position <= 3) {
+                    <div class="position-medal">
+                      <i class="ci ci-Trophy"></i>
+                      <span>{{ player.position }}</span>
+                    </div>
+                  } @else {
+                    <span class="position-number">{{ player.position }}</span>
+                  }
+                </div>
+                <div class="col-player">
+                  <img 
+                    [src]="getPlayerSkinUrl(player.minecraftUsername)" 
+                    [alt]="player.username"
+                    class="player-skin"
+                    (error)="onSkinError($event)">
+                  <div class="player-info">
+                    <span class="player-name">{{ player.username }}</span>
+                    <span class="player-mc-name">{{ player.minecraftUsername }}</span>
+                  </div>
+                </div>
+                <div class="col-value">
+                  <span class="value-text">{{ formatRankingValue(player.value, selectedCategory) }}</span>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- User Position (si está autenticado) -->
+          @if (user) {
+            <div class="user-ranking-section">
+              <div class="user-ranking-divider">
+                <span>Tu posición</span>
+              </div>
+              <div class="ranking-row user-row">
+                <div class="col-position">
+                  <span class="position-number">--</span>
+                </div>
+                <div class="col-player">
+                  <img 
+                    [src]="getPlayerSkinUrl(user.minecraft_username || 'Steve')" 
+                    [alt]="user.username"
+                    class="player-skin"
+                    (error)="onSkinError($event)">
+                  <div class="player-info">
+                    <span class="player-name">{{ user.username }}</span>
+                    <span class="player-mc-name">{{ user.minecraft_username || 'Sin vincular' }}</span>
+                  </div>
+                </div>
+                <div class="col-value">
+                  <span class="value-text">--</span>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- Info Message -->
+      <div class="rankings-info">
+        <i class="ci ci-Info_Circle"></i>
+        <p>Los rankings se actualizan cada 5 minutos. Vincula tu cuenta de Minecraft para aparecer en las tablas.</p>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="nav-dropdown" [class.open]="isOpen()">
+    <!-- Trigger Button -->
+    <button class="dropdown-trigger" [ngClass]="triggerClass" (click)="toggle()" [attr.aria-expanded]="ariaExpanded()"
+        aria-haspopup="true" type="button">
+
+        @if (icon) {
+        <lucide-icon [img]="icon" [size]="20" [strokeWidth]="2"></lucide-icon>
+        }
+
+        <span class="trigger-label">{{ label }}</span>
+
+        <lucide-icon [img]="ChevronDownIcon" [size]="16" [strokeWidth]="2" class="chevron-icon"
+            [class.rotated]="isOpen()">
+        </lucide-icon>
+    </button>
+
+    <!-- Desktop: Floating Popover -->
+    @if (isOpen()) {
+    <div class="dropdown-menu desktop-menu" [class.align-right]="align === 'right'" role="menu">
+
+        @for (item of items; track item.label) {
+        @if (item.divider) {
+        <hr class="dropdown-divider">
+        } @else {
+        @if (item.url) {
+        @if (item.external) {
+        <a class="dropdown-item" [href]="item.url" target="_blank" rel="noopener noreferrer" role="menuitem"
+            (click)="onItemClick(item, $event)">
+            @if (item.icon) {
+            <lucide-icon [img]="item.icon" [size]="18" [strokeWidth]="2"></lucide-icon>
+            }
+            <span>{{ item.label }}</span>
+        </a>
+        } @else {
+        <a class="dropdown-item" [routerLink]="item.url" role="menuitem" (click)="onItemClick(item, $event)">
+            @if (item.icon) {
+            <lucide-icon [img]="item.icon" [size]="18" [strokeWidth]="2"></lucide-icon>
+            }
+            <span>{{ item.label }}</span>
+        </a>
+        }
+        } @else {
+        <button class="dropdown-item" type="button" role="menuitem" (click)="onItemClick(item, $event)">
+            @if (item.icon) {
+            <lucide-icon [img]="item.icon" [size]="18" [strokeWidth]="2"></lucide-icon>
+            }
+            <span>{{ item.label }}</span>
+        </button>
+        }
+        }
+        }
+    </div>
+    }
+
+    <!-- Mobile: Accordion (inside mobile menu flow) -->
+    <div class="dropdown-accordion mobile-menu" [class.expanded]="isOpen()" role="menu">
+
+        @for (item of items; track item.label) {
+        @if (item.divider) {
+        <hr class="dropdown-divider">
+        } @else {
+        @if (item.url) {
+        @if (item.external) {
+        <a class="dropdown-item" [href]="item.url" target="_blank" rel="noopener noreferrer" role="menuitem"
+            (click)="onItemClick(item, $event)">
+            @if (item.icon) {
+            <lucide-icon [img]="item.icon" [size]="18" [strokeWidth]="2"></lucide-icon>
+            }
+            <span>{{ item.label }}</span>
+        </a>
+        } @else {
+        <a class="dropdown-item" [routerLink]="item.url" role="menuitem" (click)="onItemClick(item, $event)">
+            @if (item.icon) {
+            <lucide-icon [img]="item.icon" [size]="18" [strokeWidth]="2"></lucide-icon>
+            }
+            <span>{{ item.label }}</span>
+        </a>
+        }
+        } @else {
+        <button class="dropdown-item" type="button" role="menuitem" (click)="onItemClick(item, $event)">
+            @if (item.icon) {
+            <lucide-icon [img]="item.icon" [size]="18" [strokeWidth]="2"></lucide-icon>
+            }
+            <span>{{ item.label }}</span>
+        </button>
+        }
+        }
+        }
+    </div>
+</div>

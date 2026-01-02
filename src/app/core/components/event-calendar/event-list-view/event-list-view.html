@@ -1,0 +1,100 @@
+<div class="event-list-view">
+    <!-- Header -->
+    <div class="list-header">
+        <h3 class="list-title">{{ listTitle() }}</h3>
+        @if (selectedDate()) {
+            <button class="clear-filter-button" (click)="clearDateFilter()" type="button">
+                Ver todos
+            </button>
+        }
+    </div>
+
+    <!-- Events List -->
+    <div class="events-container">
+        @if (displayEvents().length === 0) {
+            <!-- Empty State -->
+            <div class="empty-state">
+                <lucide-angular [img]="icons.Calendar" [size]="48" color="#d1d5db"></lucide-angular>
+                <p class="empty-message">No hay eventos para mostrar</p>
+                @if (selectedDate()) {
+                    <button class="empty-action" (click)="clearDateFilter()" type="button">
+                        Ver todos los eventos
+                    </button>
+                }
+            </div>
+        } @else {
+            <!-- Event Cards -->
+            @for (event of displayEvents(); track event.id) {
+                <div class="event-card"
+                     [style.border-left-color]="getCategoryConfig(event.category).color"
+                     (click)="selectEvent(event)">
+
+                    <!-- Event Header -->
+                    <div class="event-header">
+                        <div class="event-category"
+                             [style.background-color]="getCategoryConfig(event.category).bgColor"
+                             [style.color]="getCategoryConfig(event.category).color">
+                            <span class="category-icon">{{ getCategoryConfig(event.category).icon }}</span>
+                            <span class="category-name">{{ getCategoryConfig(event.category).name }}</span>
+                        </div>
+
+                        <span class="event-status" [ngClass]="getStatusClass(event.status)">
+                            {{ getStatusLabel(event.status) }}
+                        </span>
+                    </div>
+
+                    <!-- Event Title -->
+                    <h4 class="event-title">{{ event.title }}</h4>
+
+                    <!-- Event Meta -->
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <lucide-angular [img]="icons.Calendar" [size]="14"></lucide-angular>
+                            <span>{{ formatEventDate(event.date) }}</span>
+                        </div>
+
+                        <div class="meta-item">
+                            <lucide-angular [img]="icons.Clock" [size]="14"></lucide-angular>
+                            <span>{{ formatEventTime(event.startTime, event.endTime) }}</span>
+                        </div>
+
+                        @if (event.location) {
+                            <div class="meta-item">
+                                <lucide-angular [img]="icons.MapPin" [size]="14"></lucide-angular>
+                                <span>{{ event.location }}</span>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Event Description -->
+                    @if (event.shortDescription || event.description) {
+                        <p class="event-description">
+                            {{ event.shortDescription || event.description }}
+                        </p>
+                    }
+
+                    <!-- Event Footer -->
+                    <div class="event-footer">
+                        @if (event.prizes.length > 0) {
+                            <div class="prizes-indicator">
+                                <lucide-angular [img]="icons.Trophy" [size]="14"></lucide-angular>
+                                <span>{{ event.prizes.length }} premio{{ event.prizes.length > 1 ? 's' : '' }}</span>
+                            </div>
+                        }
+
+                        @if (event.maxParticipants) {
+                            <div class="participants-indicator">
+                                <lucide-angular [img]="icons.Users" [size]="14"></lucide-angular>
+                                <span>{{ event.currentParticipants || 0 }}/{{ event.maxParticipants }}</span>
+                            </div>
+                        }
+
+                        <div class="view-details">
+                            Ver detalles →
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

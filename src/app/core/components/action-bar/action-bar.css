@@ -1,0 +1,260 @@
+/* ============================================
+   ACTION BAR - Premium Player Info Bar
+   ============================================ */
+
+.action-bar {
+  position: relative;
+  width: 100%;
+  min-height: 80px;
+  border-radius: 14px;
+  overflow: hidden;
+
+  /* Default gradient background */
+  background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Banner Background - Image */
+.banner-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+/* Banner Background - Video */
+.banner-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Overlay */
+.bar-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      rgba(15, 15, 25, 0.92) 0%,
+      rgba(15, 15, 25, 0.75) 50%,
+      rgba(15, 15, 25, 0.6) 100%);
+  z-index: 1;
+}
+
+.action-bar.has-banner .bar-overlay {
+  background: linear-gradient(90deg,
+      rgba(15, 15, 25, 0.88) 0%,
+      rgba(15, 15, 25, 0.6) 40%,
+      rgba(15, 15, 25, 0.4) 100%);
+}
+
+/* Content */
+.bar-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  gap: 20px;
+}
+
+/* ============================================
+   PLAYER SECTION
+   ============================================ */
+
+.player-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Player Avatar */
+.player-avatar {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  image-rendering: pixelated;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.player-avatar:hover .avatar-img {
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: scale(1.02);
+}
+
+/* Online Indicator */
+.online-indicator {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #64748b;
+  border: 3px solid #1e1e2e;
+  transition: background-color 0.3s ease;
+}
+
+.online-indicator.online {
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+/* Player Info */
+.player-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.player-name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Badges */
+.player-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rank-badge {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+/* ============================================
+   QUICK ACTIONS
+   ============================================ */
+
+.quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.btn-profile {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-profile:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-profile:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 640px) {
+  .action-bar {
+    border-radius: 12px;
+  }
+
+  .bar-content {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .player-section {
+    justify-content: flex-start;
+  }
+
+  .player-avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .online-indicator {
+    width: 12px;
+    height: 12px;
+  }
+
+  .player-name {
+    font-size: 1.1rem;
+  }
+
+  .quick-actions {
+    width: 100%;
+  }
+
+  .action-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 12px 16px;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .avatar-img,
+  .action-btn,
+  .online-indicator {
+    transition: none;
+  }
+}

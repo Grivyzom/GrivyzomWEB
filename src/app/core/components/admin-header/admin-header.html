@@ -1,0 +1,30 @@
+<header class="admin-header">
+    <!-- Breadcrumbs -->
+    @if (breadcrumbs.length > 0) {
+    <nav class="breadcrumbs">
+        @for (crumb of breadcrumbs; track crumb.label; let last = $last) {
+        @if (crumb.route && !last) {
+        <a [routerLink]="crumb.route" class="breadcrumb-link">{{ crumb.label }}</a>
+        <lucide-icon [img]="icons.ChevronRight" [size]="14" class="breadcrumb-separator"></lucide-icon>
+        } @else {
+        <span class="breadcrumb-current">{{ crumb.label }}</span>
+        }
+        }
+    </nav>
+    }
+
+    <!-- Title Section -->
+    <div class="header-content">
+        <div class="title-section">
+            <h1 class="page-title">{{ title }}</h1>
+            @if (subtitle) {
+            <p class="page-subtitle">{{ subtitle }}</p>
+            }
+        </div>
+
+        <!-- Actions Slot -->
+        <div class="header-actions">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</header>

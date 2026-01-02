@@ -1,0 +1,72 @@
+<article class="post-card" [class.pinned]="post.is_pinned" [class.featured]="post.is_featured">
+    <!-- Badges -->
+    <div class="post-badges" *ngIf="post.is_pinned || post.is_featured">
+        <span class="badge pinned" *ngIf="post.is_pinned">
+            <lucide-icon [img]="icons.Pin" [size]="12"></lucide-icon>
+            Fijado
+        </span>
+        <span class="badge featured" *ngIf="post.is_featured">
+            <lucide-icon [img]="icons.Star" [size]="12"></lucide-icon>
+            Destacado
+        </span>
+    </div>
+
+    <!-- Author Header -->
+    <header class="post-author" (mouseenter)="onAuthorMouseEnter($event)" (mouseleave)="onAuthorMouseLeave()">
+        <div class="author-avatar">
+            <img *ngIf="post.author.avatar_url" [src]="post.author.avatar_url" [alt]="post.author.username">
+            <div *ngIf="!post.author.avatar_url" class="avatar-placeholder">
+                {{ post.author.minecraft_username.charAt(0).toUpperCase() }}
+            </div>
+        </div>
+        <div class="author-info">
+            <div class="author-name-row">
+                <a [routerLink]="['/perfil', post.author.id]" class="author-name">
+                    {{ post.author.minecraft_username }}
+                </a>
+                <span class="author-role">{{ post.author.role_display }}</span>
+                <span class="post-time">· {{ timeAgo }}</span>
+            </div>
+        </div>
+        <button *ngIf="showFollowButton && !post.is_following_author" class="follow-btn" (click)="onFollow($event)">
+            <lucide-icon [img]="icons.UserPlus" [size]="14"></lucide-icon>
+            Seguir
+        </button>
+    </header>
+
+    <!-- Content -->
+    <a [routerLink]="['/comunidad/post', post.slug]" class="post-content-link">
+        <div class="post-content" [class.has-cover]="post.cover_image">
+            <div class="post-text">
+                <h3 class="post-title">{{ post.title }}</h3>
+                <p class="post-excerpt">{{ post.excerpt }}</p>
+            </div>
+            <div class="post-cover" *ngIf="post.cover_image">
+                <img [src]="post.cover_image" [alt]="post.title">
+            </div>
+        </div>
+    </a>
+
+    <!-- Footer -->
+    <footer class="post-footer">
+        <div class="post-actions">
+            <button class="action-btn" [class.active]="post.is_liked" (click)="onLike($event)">
+                <lucide-icon [img]="icons.Heart" [size]="18" [class.filled]="post.is_liked"></lucide-icon>
+                <span>{{ post.likes_count }}</span>
+            </button>
+            <a [routerLink]="['/comunidad/post', post.slug]" class="action-btn">
+                <lucide-icon [img]="icons.MessageCircle" [size]="18"></lucide-icon>
+                <span>{{ post.comments_count }}</span>
+            </a>
+            <button class="action-btn" [class.active]="post.is_bookmarked" (click)="onBookmark($event)">
+                <lucide-icon [img]="icons.Bookmark" [size]="18" [class.filled]="post.is_bookmarked"></lucide-icon>
+            </button>
+        </div>
+        <div class="post-tags" *ngIf="post.tags && post.tags.length > 0">
+            <span class="tag" *ngFor="let tag of post.tags.slice(0, 3)"
+                [style.background-color]="post.category?.color + '20'" [style.color]="post.category?.color">
+                #{{ tag }}
+            </span>
+        </div>
+    </footer>
+</article>

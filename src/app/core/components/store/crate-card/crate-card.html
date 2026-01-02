@@ -1,0 +1,107 @@
+<article class="crate-card" [class]="'rarity-' + crate.rarity" [class.animating]="isAnimating()">
+    <!-- Crate Visual -->
+    <div class="crate-visual" (click)="onViewDetails()">
+        <!-- Glow effect -->
+        <div class="crate-glow"></div>
+
+        <!-- Crate image with animation -->
+        <div class="crate-image-wrapper" [class.shake]="isAnimating()">
+            <img [src]="crate.imageUrl" [alt]="crate.name" class="crate-image">
+
+            <!-- Sparkles -->
+            <div class="sparkles">
+                <lucide-icon [img]="icons.Sparkles" [size]="16" class="sparkle s1"></lucide-icon>
+                <lucide-icon [img]="icons.Sparkles" [size]="12" class="sparkle s2"></lucide-icon>
+                <lucide-icon [img]="icons.Sparkles" [size]="14" class="sparkle s3"></lucide-icon>
+            </div>
+        </div>
+
+        <!-- Guaranteed rarity badge -->
+        @if (crate.guaranteedRarity) {
+        <div class="guaranteed-badge" [style.background]="getRarityColor(crate.guaranteedRarity)">
+            <lucide-icon [img]="icons.Star" [size]="12"></lucide-icon>
+            <span>Mínimo {{ rarityLabels[crate.guaranteedRarity] }}</span>
+        </div>
+        }
+
+        <!-- New badge -->
+        @if (crate.new) {
+        <div class="new-badge">NUEVA</div>
+        }
+    </div>
+
+    <!-- Crate Info -->
+    <div class="crate-info">
+        <h4 class="crate-name">{{ crate.name }}</h4>
+        <p class="crate-description">{{ crate.description }}</p>
+
+        <!-- Possible Items Preview -->
+        <div class="possible-items">
+            <span class="items-label">Posibles items:</span>
+            <div class="items-icons">
+                @for (item of crate.possibleItems.slice(0, 5); track item.name) {
+                <div class="item-dot" [style.background]="getRarityColor(item.rarity)"
+                    [title]="item.name + ' (' + rarityLabels[item.rarity] + ')'">
+                </div>
+                }
+                @if (crate.possibleItems.length > 5) {
+                <span class="more-items">+{{ crate.possibleItems.length - 5 }}</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Quantity Selector -->
+    <div class="quantity-selector">
+        <button class="qty-btn" [class.active]="selectedQuantity() === 1" (click)="selectQuantity(1)">
+            <span class="qty-amount">x1</span>
+        </button>
+        <button class="qty-btn" [class.active]="selectedQuantity() === 5" (click)="selectQuantity(5)">
+            <span class="qty-amount">x5</span>
+            @if (crate.bulkPricing?.[0]?.savings) {
+            <span class="qty-savings">-{{ crate.bulkPricing![0].savings }}%</span>
+            }
+        </button>
+        <button class="qty-btn" [class.active]="selectedQuantity() === 10" (click)="selectQuantity(10)">
+            <span class="qty-amount">x10</span>
+            @if (crate.bulkPricing?.[1]?.savings) {
+            <span class="qty-savings">-{{ crate.bulkPricing![1].savings }}%</span>
+            }
+        </button>
+    </div>
+
+    <!-- Footer with price and buy button -->
+    <div class="crate-footer">
+        <div class="price-section-crate">
+            <div class="price-info">
+                <span class="price">${{ currentPrice.toFixed(2) }}</span>
+                @if (savings) {
+                <span class="savings-badge">Ahorras {{ savings }}%</span>
+                }
+            </div>
+
+            @if (crate.grovs_price) {
+            <div class="price-grovs-crate">
+                <span class="grovs-amount">{{ crate.grovs_price }}</span>
+                <span class="grovs-icon">💎</span>
+            </div>
+            }
+
+            @if (cashbackGrovs > 0) {
+            <div class="cashback-badge-crate">
+                +{{ cashbackGrovs }} 💎
+            </div>
+            }
+        </div>
+
+        <button class="btn-buy" (click)="onAddToCart()">
+            <lucide-icon [img]="icons.ShoppingCart" [size]="18"></lucide-icon>
+            <span>Comprar</span>
+        </button>
+    </div>
+
+    <!-- Legendary shimmer -->
+    @if (isLegendary) {
+    <div class="shimmer-overlay"></div>
+    }
+</article>

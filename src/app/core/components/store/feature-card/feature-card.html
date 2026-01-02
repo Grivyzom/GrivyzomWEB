@@ -1,0 +1,50 @@
+<article class="feature-card" [class]="'rarity-' + feature.rarity">
+    <!-- Icon Section -->
+    <div class="feature-icon-section">
+        <div class="feature-icon-wrapper" [style.border-color]="rarityBorder">
+            <img [src]="feature.imageUrl" [alt]="feature.name" class="feature-icon">
+        </div>
+    </div>
+
+    <!-- Command Display -->
+    @if (feature.command) {
+    <div class="command-display">
+        <lucide-icon [img]="icons.Terminal" [size]="14"></lucide-icon>
+        <code>{{ feature.command }}</code>
+    </div>
+    }
+
+    <!-- Content -->
+    <div class="feature-content">
+        <h4 class="feature-name">{{ feature.name }}</h4>
+        <p class="feature-description">{{ feature.description }}</p>
+
+        <!-- Duration Badge -->
+        <div class="duration-badge" [class.permanent]="isPermanent">
+            <lucide-icon [img]="durationIcon" [size]="14"></lucide-icon>
+            <span>{{ durationLabel }}</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="feature-footer">
+        <div class="price-section">
+            @if (feature.discountPrice) {
+            <span class="original-price">${{ feature.price.toFixed(2) }}</span>
+            <span class="current-price">${{ feature.discountPrice.toFixed(2) }}</span>
+            } @else {
+            <span class="current-price">${{ feature.price.toFixed(2) }}</span>
+            }
+        </div>
+
+        <button class="btn-unlock" (click)="onAddToCart()">
+            <lucide-icon [img]="icons.Unlock" [size]="16"></lucide-icon>
+            <span>Desbloquear</span>
+        </button>
+    </div>
+
+    <!-- New badge -->
+    @if (feature.new) {
+    <div class="new-badge">NUEVO</div>
+    }
+</article>

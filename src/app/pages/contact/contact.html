@@ -1,0 +1,73 @@
+<section class="contact-section">
+  <div class="contact-container">
+    <div class="contact-content">
+      <div class="contact-form-wrapper">
+        <div class="contact-header">
+          <h2>Hablemos de tu proyecto</h2>
+          <p>Ayudamos a empresas y particulares a construir su identidad de marca.</p>
+        </div>
+        
+        <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm">
+          <div class="form-group">
+            <label for="fullName">Nombre</label>
+            <input type="text" id="fullName" name="fullName" ngModel required class="form-control">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" name="email" ngModel required email class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="discord">Discord</label>
+              <input type="text" id="discord" name="discord" ngModel class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Mensaje</label>
+            <textarea id="message" name="message" rows="4" ngModel required class="form-control"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <app-animated-button
+              label="Enviar mensaje"
+              [disabled]="!contactForm.form.valid"
+              [type]="'submit'"
+              customClass="full-width-btn">
+            </app-animated-button>
+          </div>
+          
+          <p class="privacy-policy">
+            Al enviar este formulario, acepto la <a href="#">política de privacidad</a>.
+          </p>
+        </form>
+        
+        <div *ngIf="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+      </div>
+
+      <div class="testimonial-wrapper">
+        <div class="testimonial-content">
+          <div class="logo">
+             <span class="logo-icon">🌴</span> <span class="logo-text">Workcation</span>
+          </div>
+          <blockquote>
+            “Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo expedita voluptas culpa sapiente alias molestiae. Numquam corrupti in laborum sed rerum et corporis.”
+          </blockquote>
+          <div class="author">
+            <div class="author-img-placeholder"></div>
+            <div class="author-info">
+              <div class="author-name">Brenna Goyette</div>
+              <div class="author-title">CEO de Workcation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
