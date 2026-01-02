@@ -1,6 +1,6 @@
-import { Injectable, signal, computed, inject } from '@angular/core';
+import { Injectable, signal, computed, inject, Injector, runInInjectionContext } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface Banner {
@@ -76,6 +76,17 @@ export interface RegistrationStatusResponse {
   providedIn: 'root'
 })
 export class AuthService {
+  // Callback to initialize grovs after login (set by GrovsService)
+  private onLoginCallback: ((user: any) => void) | null = null;
+  private onLogoutCallback: (() => void) | null = null;
+
+  /**
+   * Register callbacks for grovs initialization (called by GrovsService)
+   */
+  registerGrovsCallbacks(onLogin: (user: any) => void, onLogout: () => void): void {
+    this.onLoginCallback = onLogin;
+    this.onLogoutCallback = onLogout;
+  }
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl;
 
@@ -117,6 +128,10 @@ export class AuthService {
     }, { withCredentials: true }).pipe(
       map(response => {
         this._updateUserSession(response.user);
+        // Initialize grovs after login (non-reactive)
+        if (this.onLoginCallback) {
+          this.onLoginCallback(response.user);
+        }
         return true;
       })
       // No catchError here - let errors propagate to the component
@@ -201,12 +216,19 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth/logout/`, {}, { withCredentials: true }).pipe(
       map(() => {
         this._updateUserSession(null);
+        // Reset grovs on logout (non-reactive)
+        if (this.onLogoutCallback) {
+          this.onLogoutCallback();
+        }
         return true;
       }),
       catchError(error => {
         console.error('Logout error:', error);
         // Limpiar sesión local incluso si falla el backend
         this._updateUserSession(null);
+        if (this.onLogoutCallback) {
+          this.onLogoutCallback();
+        }
         return of(true);
       })
     );

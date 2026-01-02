@@ -41,8 +41,12 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.username, this.password).subscribe({
       next: () => {
         console.log('Login successful, navigating to:', this.returnUrl);
-        this.router.navigateByUrl(this.returnUrl);
-        this.isLoading = false;
+        // Small delay to let Angular finish processing auth state changes
+        // This prevents page freeze from cascading signal updates
+        setTimeout(() => {
+          this.router.navigateByUrl(this.returnUrl);
+          this.isLoading = false;
+        }, 100);
       },
       error: (error) => {
         console.error('Error during login:', error);

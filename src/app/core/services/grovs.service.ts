@@ -78,23 +78,43 @@ export class GrovsService {
     `${this.balance().toLocaleString()} Grovs`
   );
 
-  // ========================================================================
-  // CONSTRUCTOR - Auto-sync with AuthService
-  // ========================================================================
+  // Flag to prevent multiple initializations
+  private initialized = false;
 
   constructor() {
-    // Efecto que sincroniza balance cuando el usuario cambia
-    // allowSignalWrites: true permite actualizar signals dentro del effect
-    effect(() => {
-      const user = this.authService.currentUser();
-      if (user) {
-        // Solo actualizar si hay un usuario autenticado
-        this.updateStateFromUser(user);
-        this.checkDailyRewardAvailability();
-      } else {
-        this.resetState();
-      }
-    }, { allowSignalWrites: true });
+    // Register callbacks with AuthService (non-reactive pattern)
+    this.authService.registerGrovsCallbacks(
+      (user) => this.initForUser(user),
+      () => this.resetForLogout()
+    );
+
+    // Initialize from stored user if exists (page refresh case)
+    const storedUser = this.authService.currentUser();
+    if (storedUser) {
+      this.initForUser(storedUser);
+    }
+  }
+
+  /**
+   * Initialize grovs data for authenticated user
+   * Called explicitly after login instead of using effect()
+   */
+  initForUser(user: any): void {
+    if (this.initialized) return;
+    this.initialized = true;
+
+    if (user) {
+      this.updateStateFromUser(user);
+      this.checkDailyRewardAvailability();
+    }
+  }
+
+  /**
+   * Reset for logout
+   */
+  resetForLogout(): void {
+    this.initialized = false;
+    this.resetState();
   }
 
   // ========================================================================

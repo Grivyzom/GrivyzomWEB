@@ -60,19 +60,31 @@ export class DailyRewardModalComponent {
     return Math.min(Math.max(progress, 0), 100);
   });
 
+  // Flag to prevent showing modal multiple times
+  private hasShownModal = false;
+
   constructor() {
     // Auto-show modal when authenticated and reward is available
+    // allowSignalWrites: true required for setting isOpen inside effect
     effect(() => {
       const isAuth = this.isAuthenticated();
       const rewardAvailable = this.dailyRewardAvailable();
 
-      if (isAuth && rewardAvailable && !this.isOpen()) {
-        // Delay 1 second for better UX
+      // Reset flag on logout
+      if (!isAuth) {
+        this.hasShownModal = false;
+        return;
+      }
+
+      // Show modal only once per session
+      if (isAuth && rewardAvailable && !this.isOpen() && !this.hasShownModal) {
+        this.hasShownModal = true;
+        // Delay 3 seconds for page to stabilize after login
         setTimeout(() => {
           this.isOpen.set(true);
-        }, 1000);
+        }, 3000);
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   /**
